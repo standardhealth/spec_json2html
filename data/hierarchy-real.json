@@ -1,0 +1,30 @@
+{
+  "label": "SHR",
+  "type": "SHR",
+  "children": [
+    {
+      "type" : "DataElement",
+      "label" : "CareProfessionalRole",
+      "isEntry" : false,
+      "concepts" : [],
+      "description" : "A professional role in treating or providing medical care to the patient",
+      "value" : {
+        "label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+        "type": "CodeFromValueSetValue",
+        "valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+      }
+    },
+    {
+      "type": "DataElement",
+      "label": "FamilyRelationship",
+      "isEntry": false,
+      "concepts": [],
+      "description": "The relationship between the person of record and another individual",
+      "value": {
+        "label": "code from http://standardhealthrecord.org/actors/vs/FamilyRelationship",
+        "type": "CodeFromValueSetValue",
+        "valueset": "http://standardhealthrecord.org/actors/vs/FamilyRelationship"
+      }
+    }
+  ]
+}

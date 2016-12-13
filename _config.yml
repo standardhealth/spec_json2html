@@ -1,0 +1,24 @@
+# =============================================
+# Build config
+# =============================================
+
+root:       public
+dest:       dist
+assets:     <%= site.dest %>/assets
+
+data:       data/*.{json,yml}
+
+templates:  templates
+includes:   <%= site.templates %>/includes/*.hbs
+layouts:    <%= site.templates %>/layouts
+layout:     default.hbs
+
+# Extensions
+helpers:
+  - <%= site.templates %>/helpers/*.js
+
+# =============================================
+# Site metadata
+# =============================================
+
+description:      <%= pkg.description %>

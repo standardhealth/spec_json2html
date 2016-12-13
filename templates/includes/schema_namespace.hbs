@@ -1,0 +1,10 @@
+<div class="row">
+  <a href="#">{{label}}</a>
+  <ul>
+    {{#each children as |child|}}
+      {{#if child}}
+        {{> (shr_partial child.type) }}
+      {{/if}}
+    {{/each}}
+  </ul>
+</div>

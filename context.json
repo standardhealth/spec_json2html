@@ -1,0 +1,704 @@
+{
+	"name": "shr_partial",
+	"hash": {},
+	"data": {
+		"root": {
+			"layoutdir": "templates/layouts",
+			"layoutext": "",
+			"partials": [
+				"templates/includes/*.hbs"
+			],
+			"data": {
+				"footer": {},
+				"head": {},
+				"Namespace": {},
+				"nav-main": {},
+				"schema_concept": {},
+				"schema_data_element": {},
+				"schema_group": {},
+				"schema_identifier": {},
+				"schema_quantified_value": {},
+				"schema_shr": {},
+				"schema_value": {},
+				"hierarchy": {
+					"label": "SHR",
+					"type": "SHR",
+					"children": [
+						{
+							"type": "DataElement",
+							"label": "CareProfessionalRole",
+							"isEntry": false,
+							"concepts": [],
+							"description": "A professional role in treating or providing medical care to the patient",
+							"value": {
+								"label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+								"type": "CodeFromValueSetValue",
+								"valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+							}
+						},
+						{
+							"type": "DataElement",
+							"label": "FamilyRelationship",
+							"isEntry": false,
+							"concepts": [],
+							"description": "The relationship between the person of record and another individual",
+							"value": {
+								"label": "code from http://standardhealthrecord.org/actors/vs/FamilyRelationship",
+								"type": "CodeFromValueSetValue",
+								"valueset": "http://standardhealthrecord.org/actors/vs/FamilyRelationship"
+							}
+						}
+					]
+				}
+			},
+			"assets": "../..",
+			"ext": ".html",
+			"pkg": {
+				"name": "shr-assemble-spec",
+				"version": "1.0.0",
+				"description": "",
+				"main": "index.js",
+				"scripts": {
+					"test": "echo \"Error: no test specified\" && exit 1"
+				},
+				"author": "",
+				"license": "ISC",
+				"devDependencies": {
+					"grunt": "^1.0.1",
+					"grunt-assemble": "^0.5.0",
+					"grunt-contrib-clean": "^1.0.0",
+					"grunt-contrib-jshint": "^1.1.0",
+					"handlebars-helpers": "^0.7.5"
+				}
+			},
+			"site": {
+				"root": "public",
+				"dest": "dist",
+				"assets": "dist/assets",
+				"data": "data/*.{json,yml}",
+				"templates": "templates",
+				"includes": "templates/includes/*.hbs",
+				"layouts": "templates/layouts",
+				"layout": "default.hbs",
+				"helpers": [
+					"templates/helpers/*.js"
+				],
+				"description": ""
+			},
+			"helpers": [
+				"templates/helpers/*.js"
+			],
+			"plugins": [
+				null,
+				null,
+				null
+			],
+			"originalAssets": "",
+			"originalLayout": "default.hbs",
+			"dataFiles": [
+				"data/*.{json,yml}"
+			],
+			"_plugins": [
+				"node_modules/grunt-assemble/lib/plugins/*.js"
+			],
+			"engine": "handlebars",
+			"pages": [
+				{
+					"_page": "all",
+					"dirname": "dist/templates",
+					"filename": "schema.html",
+					"pageName": "schema.html",
+					"pagename": "schema.html",
+					"basename": "schema",
+					"src": "templates/schema.hbs",
+					"dest": "dist/templates/schema.html",
+					"assets": "../..",
+					"ext": ".html",
+					"extname": ".html",
+					"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+					"data": {},
+					"filePair": {
+						"src": [
+							"templates/schema.hbs"
+						],
+						"dest": "dist/",
+						"orig": {
+							"src": [
+								"templates/*.hbs"
+							],
+							"dest": "dist/"
+						}
+					},
+					"index": 0,
+					"number": 1,
+					"first": true,
+					"middle": false,
+					"last": true,
+					"isCurrentPage": true,
+					"relativeLink": "schema.html"
+				}
+			],
+			"tags": [],
+			"categories": [],
+			"footer": {},
+			"head": {},
+			"Namespace": {},
+			"nav-main": {},
+			"schema_concept": {},
+			"schema_data_element": {},
+			"schema_group": {},
+			"schema_identifier": {},
+			"schema_quantified_value": {},
+			"schema_shr": {},
+			"schema_value": {},
+			"hierarchy": {
+				"label": "SHR",
+				"type": "SHR",
+				"children": [
+					{
+						"type": "DataElement",
+						"label": "CareProfessionalRole",
+						"isEntry": false,
+						"concepts": [],
+						"description": "A professional role in treating or providing medical care to the patient",
+						"value": {
+							"label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+							"type": "CodeFromValueSetValue",
+							"valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+						}
+					},
+					{
+						"type": "DataElement",
+						"label": "FamilyRelationship",
+						"isEntry": false,
+						"concepts": [],
+						"description": "The relationship between the person of record and another individual",
+						"value": {
+							"label": "code from http://standardhealthrecord.org/actors/vs/FamilyRelationship",
+							"type": "CodeFromValueSetValue",
+							"valueset": "http://standardhealthrecord.org/actors/vs/FamilyRelationship"
+						}
+					}
+				]
+			},
+			"page": {
+				"_page": "all",
+				"dirname": "dist/templates",
+				"filename": "schema.html",
+				"pageName": "schema.html",
+				"pagename": "schema.html",
+				"basename": "schema",
+				"src": "templates/schema.hbs",
+				"dest": "dist/templates/schema.html",
+				"assets": "../..",
+				"ext": ".html",
+				"extname": ".html",
+				"page": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    {{> head }}\n  </head>\n  <body>\n\n    <a class=\"sr-only\" href=\"#content\">Skip to main content</a>\n    <!-- Navigation component -->\n    {{> nav-main }}\n\n\n    <div class=\"container bs-docs-container\">\n      <p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>\n    </div>\n\n    <!-- Footer -->\n    {{> footer }}\n\n  </body>\n</html>",
+				"data": {},
+				"filePair": {
+					"src": [
+						"templates/schema.hbs"
+					],
+					"dest": "dist/",
+					"orig": {
+						"src": [
+							"templates/*.hbs"
+						],
+						"dest": "dist/"
+					}
+				},
+				"index": 0,
+				"number": 1,
+				"first": true,
+				"middle": false,
+				"last": true
+			},
+			"dirname": "dist/templates",
+			"absolute": "dist/templates/schema.html",
+			"filename": "schema.html",
+			"pageName": "schema.html",
+			"pagename": "schema.html",
+			"basename": "schema",
+			"extname": ".html",
+			"pagination": {
+				"prev": {
+					"_page": "all",
+					"dirname": "dist/templates",
+					"filename": "schema.html",
+					"pageName": "schema.html",
+					"pagename": "schema.html",
+					"basename": "schema",
+					"src": "templates/schema.hbs",
+					"dest": "dist/templates/schema.html",
+					"assets": "../..",
+					"ext": ".html",
+					"extname": ".html",
+					"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+					"data": {},
+					"filePair": {
+						"src": [
+							"templates/schema.hbs"
+						],
+						"dest": "dist/",
+						"orig": {
+							"src": [
+								"templates/*.hbs"
+							],
+							"dest": "dist/"
+						}
+					},
+					"index": 0,
+					"number": 1,
+					"first": true,
+					"middle": false,
+					"last": true,
+					"isCurrentPage": true,
+					"relativeLink": "schema.html"
+				},
+				"next": {
+					"_page": "all",
+					"dirname": "dist/templates",
+					"filename": "schema.html",
+					"pageName": "schema.html",
+					"pagename": "schema.html",
+					"basename": "schema",
+					"src": "templates/schema.hbs",
+					"dest": "dist/templates/schema.html",
+					"assets": "../..",
+					"ext": ".html",
+					"extname": ".html",
+					"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+					"data": {},
+					"filePair": {
+						"src": [
+							"templates/schema.hbs"
+						],
+						"dest": "dist/",
+						"orig": {
+							"src": [
+								"templates/*.hbs"
+							],
+							"dest": "dist/"
+						}
+					},
+					"index": 0,
+					"number": 1,
+					"first": true,
+					"middle": false,
+					"last": true,
+					"isCurrentPage": true,
+					"relativeLink": "schema.html"
+				},
+				"index": {
+					"_page": "all",
+					"dirname": "dist/templates",
+					"filename": "schema.html",
+					"pageName": "schema.html",
+					"pagename": "schema.html",
+					"basename": "schema",
+					"src": "templates/schema.hbs",
+					"dest": "dist/templates/schema.html",
+					"assets": "../..",
+					"ext": ".html",
+					"extname": ".html",
+					"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+					"data": {},
+					"filePair": {
+						"src": [
+							"templates/schema.hbs"
+						],
+						"dest": "dist/",
+						"orig": {
+							"src": [
+								"templates/*.hbs"
+							],
+							"dest": "dist/"
+						}
+					},
+					"index": 0,
+					"number": 1,
+					"first": true,
+					"middle": false,
+					"last": true,
+					"isCurrentPage": true,
+					"relativeLink": "schema.html"
+				},
+				"number": 1,
+				"currentPage": 1,
+				"totalPages": 1
+			},
+			"blockParams": [],
+			"knownHelpers": {
+				"helperMissing": true,
+				"blockHelperMissing": true,
+				"each": true,
+				"if": true,
+				"unless": true,
+				"with": true,
+				"log": true,
+				"lookup": true
+			}
+		},
+		"_parent": {
+			"root": {
+				"layoutdir": "templates/layouts",
+				"layoutext": "",
+				"partials": [
+					"templates/includes/*.hbs"
+				],
+				"data": {
+					"footer": {},
+					"head": {},
+					"Namespace": {},
+					"nav-main": {},
+					"schema_concept": {},
+					"schema_data_element": {},
+					"schema_group": {},
+					"schema_identifier": {},
+					"schema_quantified_value": {},
+					"schema_shr": {},
+					"schema_value": {},
+					"hierarchy": {
+						"label": "SHR",
+						"type": "SHR",
+						"children": [
+							{
+								"type": "DataElement",
+								"label": "CareProfessionalRole",
+								"isEntry": false,
+								"concepts": [],
+								"description": "A professional role in treating or providing medical care to the patient",
+								"value": {
+									"label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+									"type": "CodeFromValueSetValue",
+									"valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+								}
+							},
+							{
+								"type": "DataElement",
+								"label": "FamilyRelationship",
+								"isEntry": false,
+								"concepts": [],
+								"description": "The relationship between the person of record and another individual",
+								"value": {
+									"label": "code from http://standardhealthrecord.org/actors/vs/FamilyRelationship",
+									"type": "CodeFromValueSetValue",
+									"valueset": "http://standardhealthrecord.org/actors/vs/FamilyRelationship"
+								}
+							}
+						]
+					}
+				},
+				"assets": "../..",
+				"ext": ".html",
+				"pkg": {
+					"name": "shr-assemble-spec",
+					"version": "1.0.0",
+					"description": "",
+					"main": "index.js",
+					"scripts": {
+						"test": "echo \"Error: no test specified\" && exit 1"
+					},
+					"author": "",
+					"license": "ISC",
+					"devDependencies": {
+						"grunt": "^1.0.1",
+						"grunt-assemble": "^0.5.0",
+						"grunt-contrib-clean": "^1.0.0",
+						"grunt-contrib-jshint": "^1.1.0",
+						"handlebars-helpers": "^0.7.5"
+					}
+				},
+				"site": {
+					"root": "public",
+					"dest": "dist",
+					"assets": "dist/assets",
+					"data": "data/*.{json,yml}",
+					"templates": "templates",
+					"includes": "templates/includes/*.hbs",
+					"layouts": "templates/layouts",
+					"layout": "default.hbs",
+					"helpers": [
+						"templates/helpers/*.js"
+					],
+					"description": ""
+				},
+				"helpers": [
+					"templates/helpers/*.js"
+				],
+				"plugins": [
+					null,
+					null,
+					null
+				],
+				"originalAssets": "",
+				"originalLayout": "default.hbs",
+				"dataFiles": [
+					"data/*.{json,yml}"
+				],
+				"_plugins": [
+					"node_modules/grunt-assemble/lib/plugins/*.js"
+				],
+				"engine": "handlebars",
+				"pages": [
+					{
+						"_page": "all",
+						"dirname": "dist/templates",
+						"filename": "schema.html",
+						"pageName": "schema.html",
+						"pagename": "schema.html",
+						"basename": "schema",
+						"src": "templates/schema.hbs",
+						"dest": "dist/templates/schema.html",
+						"assets": "../..",
+						"ext": ".html",
+						"extname": ".html",
+						"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+						"data": {},
+						"filePair": {
+							"src": [
+								"templates/schema.hbs"
+							],
+							"dest": "dist/",
+							"orig": {
+								"src": [
+									"templates/*.hbs"
+								],
+								"dest": "dist/"
+							}
+						},
+						"index": 0,
+						"number": 1,
+						"first": true,
+						"middle": false,
+						"last": true,
+						"isCurrentPage": true,
+						"relativeLink": "schema.html"
+					}
+				],
+				"tags": [],
+				"categories": [],
+				"footer": {},
+				"head": {},
+				"Namespace": {},
+				"nav-main": {},
+				"schema_concept": {},
+				"schema_data_element": {},
+				"schema_group": {},
+				"schema_identifier": {},
+				"schema_quantified_value": {},
+				"schema_shr": {},
+				"schema_value": {},
+				"hierarchy": {
+					"label": "SHR",
+					"type": "SHR",
+					"children": [
+						{
+							"type": "DataElement",
+							"label": "CareProfessionalRole",
+							"isEntry": false,
+							"concepts": [],
+							"description": "A professional role in treating or providing medical care to the patient",
+							"value": {
+								"label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+								"type": "CodeFromValueSetValue",
+								"valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+							}
+						},
+						{
+							"type": "DataElement",
+							"label": "FamilyRelationship",
+							"isEntry": false,
+							"concepts": [],
+							"description": "The relationship between the person of record and another individual",
+							"value": {
+								"label": "code from http://standardhealthrecord.org/actors/vs/FamilyRelationship",
+								"type": "CodeFromValueSetValue",
+								"valueset": "http://standardhealthrecord.org/actors/vs/FamilyRelationship"
+							}
+						}
+					]
+				},
+				"page": {
+					"_page": "all",
+					"dirname": "dist/templates",
+					"filename": "schema.html",
+					"pageName": "schema.html",
+					"pagename": "schema.html",
+					"basename": "schema",
+					"src": "templates/schema.hbs",
+					"dest": "dist/templates/schema.html",
+					"assets": "../..",
+					"ext": ".html",
+					"extname": ".html",
+					"page": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    {{> head }}\n  </head>\n  <body>\n\n    <a class=\"sr-only\" href=\"#content\">Skip to main content</a>\n    <!-- Navigation component -->\n    {{> nav-main }}\n\n\n    <div class=\"container bs-docs-container\">\n      <p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>\n    </div>\n\n    <!-- Footer -->\n    {{> footer }}\n\n  </body>\n</html>",
+					"data": {},
+					"filePair": {
+						"src": [
+							"templates/schema.hbs"
+						],
+						"dest": "dist/",
+						"orig": {
+							"src": [
+								"templates/*.hbs"
+							],
+							"dest": "dist/"
+						}
+					},
+					"index": 0,
+					"number": 1,
+					"first": true,
+					"middle": false,
+					"last": true
+				},
+				"dirname": "dist/templates",
+				"absolute": "dist/templates/schema.html",
+				"filename": "schema.html",
+				"pageName": "schema.html",
+				"pagename": "schema.html",
+				"basename": "schema",
+				"extname": ".html",
+				"pagination": {
+					"prev": {
+						"_page": "all",
+						"dirname": "dist/templates",
+						"filename": "schema.html",
+						"pageName": "schema.html",
+						"pagename": "schema.html",
+						"basename": "schema",
+						"src": "templates/schema.hbs",
+						"dest": "dist/templates/schema.html",
+						"assets": "../..",
+						"ext": ".html",
+						"extname": ".html",
+						"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+						"data": {},
+						"filePair": {
+							"src": [
+								"templates/schema.hbs"
+							],
+							"dest": "dist/",
+							"orig": {
+								"src": [
+									"templates/*.hbs"
+								],
+								"dest": "dist/"
+							}
+						},
+						"index": 0,
+						"number": 1,
+						"first": true,
+						"middle": false,
+						"last": true,
+						"isCurrentPage": true,
+						"relativeLink": "schema.html"
+					},
+					"next": {
+						"_page": "all",
+						"dirname": "dist/templates",
+						"filename": "schema.html",
+						"pageName": "schema.html",
+						"pagename": "schema.html",
+						"basename": "schema",
+						"src": "templates/schema.hbs",
+						"dest": "dist/templates/schema.html",
+						"assets": "../..",
+						"ext": ".html",
+						"extname": ".html",
+						"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+						"data": {},
+						"filePair": {
+							"src": [
+								"templates/schema.hbs"
+							],
+							"dest": "dist/",
+							"orig": {
+								"src": [
+									"templates/*.hbs"
+								],
+								"dest": "dist/"
+							}
+						},
+						"index": 0,
+						"number": 1,
+						"first": true,
+						"middle": false,
+						"last": true,
+						"isCurrentPage": true,
+						"relativeLink": "schema.html"
+					},
+					"index": {
+						"_page": "all",
+						"dirname": "dist/templates",
+						"filename": "schema.html",
+						"pageName": "schema.html",
+						"pagename": "schema.html",
+						"basename": "schema",
+						"src": "templates/schema.hbs",
+						"dest": "dist/templates/schema.html",
+						"assets": "../..",
+						"ext": ".html",
+						"extname": ".html",
+						"page": "<p>I'm the schema.hbs file!</p>\n{{>schema_shr}}\n\n<p>hierarchy.label : {{hierarchy.label}}</p>\n<p>hierarchy.type: {{hierarchy.type}}</p>",
+						"data": {},
+						"filePair": {
+							"src": [
+								"templates/schema.hbs"
+							],
+							"dest": "dist/",
+							"orig": {
+								"src": [
+									"templates/*.hbs"
+								],
+								"dest": "dist/"
+							}
+						},
+						"index": 0,
+						"number": 1,
+						"first": true,
+						"middle": false,
+						"last": true,
+						"isCurrentPage": true,
+						"relativeLink": "schema.html"
+					},
+					"number": 1,
+					"currentPage": 1,
+					"totalPages": 1
+				},
+				"blockParams": [],
+				"knownHelpers": {
+					"helperMissing": true,
+					"blockHelperMissing": true,
+					"each": true,
+					"if": true,
+					"unless": true,
+					"with": true,
+					"log": true,
+					"lookup": true
+				}
+			}
+		},
+		"key": 0,
+		"index": 0,
+		"first": true,
+		"last": false
+	},
+	"blockParams": [
+		null,
+		[
+			{
+				"type": "DataElement",
+				"label": "CareProfessionalRole",
+				"isEntry": false,
+				"concepts": [],
+				"description": "A professional role in treating or providing medical care to the patient",
+				"value": {
+					"label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+					"type": "CodeFromValueSetValue",
+					"valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+				}
+			},
+			0
+		]
+	]
+}

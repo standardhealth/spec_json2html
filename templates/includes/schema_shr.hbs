@@ -1,0 +1,7 @@
+<h2>Parsing Specification Hierarchy for: {{hierarchy.label}}</h2>
+
+{{#each hierarchy.children as |child|}}
+  {{#if child}}
+    {{> (shr_partial child.type) }}
+  {{/if}}
+{{/each}}
