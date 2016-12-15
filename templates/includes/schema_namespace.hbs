@@ -1,10 +1,11 @@
 <div class="row">
-  <a href="#">{{label}}</a>
-  <ul>
+  <h1>{{label}}</h1>
+  <div class="spec-data-elements">
     {{#each children as |child|}}
       {{#if child}}
-        {{> (shr_partial child.type) }}
+        {{!-- > (shr_partial child.type) --}}
+        {{> schema_dataelement namespace=../../label follow=../../follow }}
       {{/if}}
     {{/each}}
-  </ul>
+  </div>
 </div>

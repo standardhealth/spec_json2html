@@ -5,7 +5,7 @@
 root:       public
 dest:       dist
 assets:     <%= site.dest %>/assets
-
+pages:      pages
 data:       data/*.{json,yml}
 
 templates:  templates

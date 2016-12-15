@@ -1,3 +1,14 @@
-<p>Value:</p>
-<p>Value:label [ {{label}} ]</p>
-<p>Value:type [ {{type}} ]</p>
+{{#eq type "QuantifiedValue"}}
+  {{> schema_quantifiedvalue }}
+{{else}}
+  <p>{{label}}</p>
+  <p>{{type}}</p>
+  {{#if valueset}}
+    <p>{{valueset}}</p>
+  {{/if}}
+  {{#if identifier}}
+    <p class="spec-identifier">
+      {{> schema_identifier identifier}}
+    </p>
+  {{/if}}
+{{/eq}}

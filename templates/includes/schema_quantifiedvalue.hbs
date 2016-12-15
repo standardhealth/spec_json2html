@@ -1,3 +1,9 @@
 <p>Quantified Value:</p>
 <p>QuantifiedValue.min [ {{min}} ]</p>
 <p>QuantifiedValue.max [ {{max}} ]</p>
+
+{{#eq value.type "OrValues"}}
+  {{#each value.values as |item| }}
+    {{> schema_value item}}
+  {{/each}}
+{{/eq}}

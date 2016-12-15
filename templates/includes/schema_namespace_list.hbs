@@ -1,0 +1,11 @@
+<div class="row">
+  <a href="{{getNamespaceFilename label}}">{{label}}</a>
+  <ul class="spec-data-element-list">
+    {{#each children as |child|}}
+      {{#if child}}
+        {{!-- > (shr_partial child.type) --}}
+        {{> schema_dataelement_list namespace=../../label }}
+      {{/if}}
+    {{/each}}
+  </ul>
+</div>

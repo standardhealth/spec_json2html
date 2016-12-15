@@ -2,6 +2,6 @@
 
 {{#each hierarchy.children as |child|}}
   {{#if child}}
-    {{> (shr_partial child.type) }}
+    {{> schema_namespace_list }}
   {{/if}}
 {{/each}}
