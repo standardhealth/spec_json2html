@@ -18,4 +18,45 @@
     {{> footer }}
 
   </body>
+      <script>
+    String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+      $(document).ready(function() {
+        $.getJSON("hierarchy.json",function(data) {
+          window.hierarchy = data;
+          window.namespaces = _.indexBy(hierarchy.children,"label");
+          window.de = _.map(hierarchy.children,function(namespace) {
+            namespace.index = _.indexBy(namespace.children,"label");
+          });
+          hierarchy.index = namespaces;
+        });
+      });
+      function deep(h) {
+        _.each(h,function(item) {
+          if (item && _.isObject(item)) {
+            if (item.type == "Identifier") {
+              if (item.namespace == "primitive") {
+                item.description = item.label.capitalize();
+              }
+              if (item.namespace.startsWith("shr.")) {
+                console.log("SHR Namespace : " + item.namespace);
+                item.idref = hierarchy.index[item.namespace].index[item.label];
+              }
+              console.log("Identifier = " + item);
+            }
+            deep(item);
+          } else {
+            if (item && _.isArray(item)) {
+              _.each(item,function(child) {
+                deep(child);
+              });
+            }
+            // not an object, not an array
+            // console.log(item);
+          }
+        });
+      }
+      
+    </script>
 </html>
