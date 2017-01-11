@@ -9,6 +9,9 @@
  */
 var helpers = require('handlebars-helpers')();
 var _ = require('lodash');
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
 module.exports = function(grunt) {
 'use strict';
 
@@ -16,12 +19,43 @@ module.exports = function(grunt) {
   if(!grunt.file.exists('vendor')) {
     grunt.fail.fatal('>> Please run "bower install" before continuing.');
   }
-
+      var deep = function(children,hierarchy) {
+      //  console.log(children);
+      var hierarchy = hierarchy;
+        _.each(children,function(item) {
+          if (item && _.isObject(item)) {
+            if (item.type == "Identifier") {
+              if (item.namespace == "primitive") {
+                item.description = item.label.capitalize();
+              }
+              if (item.namespace.startsWith("shr.")) {
+                item.idref = hierarchy.index[item.namespace].index[item.label];
+              }
+            }
+            deep(item,hierarchy);
+          } else {
+            if (item && _.isArray(item)) {
+              _.each(item,function(child) {
+                deep(child,hierarchy);
+              });
+            }
+          }
+        });
+      }
+      
   // Set up the top-level pages for each namespace
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
   var data = grunt.file.readJSON('./data/hierarchy.json');
-  var namespaces = _.map(data.children,function(item) {
+  var namespaces = _.indexBy(data.children,"label");
+  _.map(data.children,function(namespace) {
+    namespace.index = _.indexBy(namespace.children,"label");
+  });
+  data.index = namespaces;
+  deep(data.children,data);
+ // console.log(JSON.stringify(data.index))
+    
+  var namespace_pages = _.map(data.children,function(item) {
     item.follow=true;
     return {
       filename:item.label.split('.')[1],  // labels are shr.namespace so we name the page based on the name of the namespace
@@ -29,7 +63,8 @@ module.exports = function(grunt) {
       content:spec_template
     }
   });
-  /* console.log(JSON.stringify(namespaces)); */
+  
+  /* console.log(JSON.stringify(namespace_pages)); */
 
   // Project Configuration
   grunt.initConfig({
@@ -60,7 +95,7 @@ module.exports = function(grunt) {
       },
       pages: {
         options : {
-          pages:namespaces
+          pages:namespace_pages
         },
         files :[
           {dest: '<%= site.dest %>/<%= site.pages %>/shr/',src:'!*'}

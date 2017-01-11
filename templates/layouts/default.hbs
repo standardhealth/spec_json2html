@@ -30,6 +30,7 @@
             namespace.index = _.indexBy(namespace.children,"label");
           });
           hierarchy.index = namespaces;
+          deep(hierarchy.children);
         });
       });
       function deep(h) {
@@ -40,10 +41,10 @@
                 item.description = item.label.capitalize();
               }
               if (item.namespace.startsWith("shr.")) {
-                console.log("SHR Namespace : " + item.namespace);
+             //   console.log("SHR Namespace : " + item.namespace);
                 item.idref = hierarchy.index[item.namespace].index[item.label];
               }
-              console.log("Identifier = " + item);
+              // console.log("Identifier = " + item);
             }
             deep(item);
           } else {
