@@ -19,7 +19,7 @@ module.exports = function(grunt) {
   if(!grunt.file.exists('vendor')) {
     grunt.fail.fatal('>> Please run "bower install" before continuing.');
   }
-      var deep = function(children,hierarchy) {
+      var addHierarchyIndex = function(children,hierarchy) {
       //  console.log(children);
       var hierarchy = hierarchy;
         _.each(children,function(item) {
@@ -32,17 +32,17 @@ module.exports = function(grunt) {
                 item.idref = hierarchy.index[item.namespace].index[item.label];
               }
             }
-            deep(item,hierarchy);
+            addHierarchyIndex(item,hierarchy);
           } else {
             if (item && _.isArray(item)) {
               _.each(item,function(child) {
-                deep(child,hierarchy);
+                addHierarchyIndex(child,hierarchy);
               });
             }
           }
         });
       }
-      
+
   // Set up the top-level pages for each namespace
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
@@ -52,9 +52,9 @@ module.exports = function(grunt) {
     namespace.index = _.indexBy(namespace.children,"label");
   });
   data.index = namespaces;
-  deep(data.children,data);
+  addHierarchyIndex(data.children,data);
  // console.log(JSON.stringify(data.index))
-    
+
   var namespace_pages = _.map(data.children,function(item) {
     item.follow=true;
     return {
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
       content:spec_template
     }
   });
-  
+
   /* console.log(JSON.stringify(namespace_pages)); */
 
   // Project Configuration
@@ -77,7 +77,23 @@ module.exports = function(grunt) {
     clean: {
       example: ['<%= site.dest %>']
     },
-
+    copy: {
+      main: {
+        files: [
+          {expand:true, src: ['node_modules/handlebars-helpers/**'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets'}
+        ]
+      }
+    },
+    /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
+    browserify: {
+      vendor: {
+        src: ['templates/includes/hb_shr.js'],
+        dest: '<%= site.dest %>/<%= site.pages %>/shr/assets/app.js',
+        options: {
+          require: ['handlebars','handlebars-helpers']
+        }
+      }
+    },
     assemble: {
       options: {
         pkg: '<%= pkg %>',
@@ -108,6 +124,8 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-assemble');
-  grunt.registerTask('default',['assemble']);
+  grunt.registerTask('default',['browserify','assemble']);
 }

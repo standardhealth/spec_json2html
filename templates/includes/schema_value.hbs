@@ -1,14 +1,21 @@
 {{#eq type "QuantifiedValue"}}
   {{> schema_quantifiedvalue }}
 {{else}}
-  <p>{{label}}</p>
-  <p>{{type}}</p>
+<table>
+  <thead>
+    <tr>
+      <th>value</th>
+      <th>count</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
   {{#if valueset}}
-    <p>{{valueset}}</p>
+    <tr><td>{{valueset}}</td></tr>
   {{/if}}
   {{#if identifier}}
-    <p class="spec-identifier">
       {{> schema_identifier identifier}}
-    </p>
   {{/if}}
+  </tbody>
+  </table>
 {{/eq}}

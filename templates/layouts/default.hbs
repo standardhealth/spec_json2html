@@ -10,8 +10,11 @@
     {{> nav-main }}
 
 
-    <div class="container bs-docs-container">
+    <div style="width:40%;display:inline-block">
       {{> body }}
+    </div>
+    <div id="dynamic_view" style="width:40%;display:inline-block">
+      dynamic view
     </div>
 
     <!-- Footer -->
@@ -23,17 +26,28 @@
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
       $(document).ready(function() {
-        $.getJSON("hierarchy.json",function(data) {
-          window.hierarchy = data;
-          window.namespaces = _.indexBy(hierarchy.children,"label");
-          window.de = _.map(hierarchy.children,function(namespace) {
-            namespace.index = _.indexBy(namespace.children,"label");
+
+        $("#load_hierarchy").click(function() {
+
+          $.getJSON("hierarchy.json",function(data) {
+            window.hierarchy = data;
+            window.namespaces = _.indexBy(hierarchy.children,"label");
+            window.de = _.map(hierarchy.children,function(namespace) {
+              namespace.index = _.indexBy(namespace.children,"label");
+            });
+            hierarchy.index = namespaces;
+            addHierarchyIndex(hierarchy.children);
+
+            /* Call Handlebars.compile on the templates
+             and then call the template with hierarchy as the context */
           });
-          hierarchy.index = namespaces;
-          deep(hierarchy.children);
+
         });
+
+
       });
-      function deep(h) {
+      /* Add an index to namespaces and idref member to each identifier to make it easy to show the description */
+      function addHierarchyIndex(h) {
         _.each(h,function(item) {
           if (item && _.isObject(item)) {
             if (item.type == "Identifier") {
@@ -46,11 +60,11 @@
               }
               // console.log("Identifier = " + item);
             }
-            deep(item);
+            addHierarchyIndex(item);
           } else {
             if (item && _.isArray(item)) {
               _.each(item,function(child) {
-                deep(child);
+                addHierarchyIndex(child);
               });
             }
             // not an object, not an array
@@ -58,6 +72,9 @@
           }
         });
       }
-      
+
     </script>
+
+
+
 </html>
