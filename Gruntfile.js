@@ -12,10 +12,6 @@ var _ = require('lodash');
 module.exports = function(grunt) {
 'use strict';
 
-  // Delete after first run
-  if(!grunt.file.exists('vendor')) {
-    grunt.fail.fatal('>> Please run "bower install" before continuing.');
-  }
 
   // Set up the top-level pages for each namespace
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
@@ -36,11 +32,10 @@ module.exports = function(grunt) {
     // Project metadata
     pkg:    grunt.file.readJSON('package.json'),
     site:   grunt.file.readYAML('_config.yml'),
-    vendor: grunt.file.readJSON('.bowerrc').directory,
 
     // Before generation, remove files from previous build
     clean: {
-      example: ['<%= site.dest %>']
+      example: ['<%= site.dest %>/<%= site.pages %>']
     },
 
     assemble: {
@@ -48,6 +43,7 @@ module.exports = function(grunt) {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
         data: ['<%= site.data %>'],
+        assets: '<%= site.assets %>',
 
         // Templates
         partials: '<%= site.includes %>',

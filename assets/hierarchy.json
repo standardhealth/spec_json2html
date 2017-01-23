@@ -1,0 +1,3981 @@
+{
+  "label": "SHR",
+  "type": "SHR",
+  "children": [
+    {
+      "label": "shr.actors",
+      "type": "Namespace",
+      "children": [
+        {
+          "type": "DataElement",
+          "label": "CareProfessionalRole",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A professional role in treating or providing medical care to the patient",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/actors/vs/CareProfessionalRole",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/actors/vs/CareProfessionalRole"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "ContactInformation",
+          "isEntry": false,
+          "concepts": [],
+          "description": "One or more ways to contact an individual or organization",
+          "value": {
+            "type": "QuantifiedValue",
+            "min": 1,
+            "value": {
+              "type": "OrValues",
+              "values": [
+                {
+                  "label": "shr.core:Address",
+                  "type": "Value",
+                  "identifier": {
+                    "label": "Address",
+                    "type": "Identifier",
+                    "namespace": "shr.core"
+                  }
+                },
+                {
+                  "label": "shr.demographics:TelephoneContact",
+                  "type": "Value",
+                  "identifier": {
+                    "label": "TelephoneContact",
+                    "type": "Identifier",
+                    "namespace": "shr.demographics"
+                  }
+                },
+                {
+                  "label": "shr.demographics:EmailContact",
+                  "type": "Value",
+                  "identifier": {
+                    "label": "EmailContact",
+                    "type": "Identifier",
+                    "namespace": "shr.demographics"
+                  }
+                },
+                {
+                  "label": "shr.demographics:OtherTelecomContact",
+                  "type": "Value",
+                  "identifier": {
+                    "label": "OtherTelecomContact",
+                    "type": "Identifier",
+                    "namespace": "shr.demographics"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "DeceasedIndicator",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0011065",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0011065",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0011065"
+            }
+          ],
+          "description": "Boolean indicator where true indicates the person is deceased.",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/vs/ThreeValueLogic",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/vs/ThreeValueLogic"
+          }
+        },
+        {
+          "type": "Group",
+          "label": "FamilyMember",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0080103",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0080103",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0080103"
+            }
+          ],
+          "description": "A person related to the person of record by blood, adoption, or marriage.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "value": {
+                "label": "shr.core:HumanName",
+                "type": "Value",
+                "identifier": {
+                  "label": "HumanName",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.actors:ContactInformation",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContactInformation",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:FamilyRelationship",
+                "type": "Value",
+                "identifier": {
+                  "label": "FamilyRelationship",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:DeceasedIndicator",
+                "type": "Value",
+                "identifier": {
+                  "label": "DeceasedIndicator",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "FamilyRelationship",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The relationship between the person of record and another individual",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/actors/vs/FamilyRelationship",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/actors/vs/FamilyRelationship"
+          }
+        },
+        {
+          "type": "Group",
+          "label": "MedicalCareProvision",
+          "isEntry": true,
+          "concepts": [],
+          "description": "An actor providing or responsible for a providing type of service to the person of record during a time period.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:CareProfessionalRole",
+                "type": "Value",
+                "identifier": {
+                  "label": "CareProfessionalRole",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "type": "OrValues",
+                "values": [
+                  {
+                    "label": "shr.actors:MedicalProfessional",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "MedicalProfessional",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  },
+                  {
+                    "label": "shr.actors:Organization",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "Organization",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  },
+                  {
+                    "label": "shr.actors:FamilyMember",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "FamilyMember",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  },
+                  {
+                    "label": "shr.actors:UnrelatedThirdParty",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "UnrelatedThirdParty",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Group",
+          "label": "MedicalProfessional",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C2220264",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C2220264",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C2220264"
+            }
+          ],
+          "description": "A person who is licensed to practice a healing art.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "value": {
+                "label": "shr.core:HumanName",
+                "type": "Value",
+                "identifier": {
+                  "label": "HumanName",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.actors:ContactInformation",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContactInformation",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:OrganizationAffiliation",
+                "type": "Value",
+                "identifier": {
+                  "label": "OrganizationAffiliation",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:NationalProviderIdentifier",
+                "type": "Value",
+                "identifier": {
+                  "label": "NationalProviderIdentifier",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.actors:MedicalSpecialty",
+                "type": "Value",
+                "identifier": {
+                  "label": "MedicalSpecialty",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:AdministrativeGender",
+                "type": "Value",
+                "identifier": {
+                  "label": "AdministrativeGender",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "MedicalSpecialty",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A branch of medicine practiced by the provider",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/actors/vs/MedicalSpecialty",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/actors/vs/MedicalSpecialty"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "NationalProviderIdentifier",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A unique 10-digit number to allow providers to identify themselves in a standard way throughout their industry",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "Organization",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1561598",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1561598",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1561598"
+            }
+          ],
+          "description": "A social or legal structure formed by human beings",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "value": {
+                "label": "shr.actors:OrganizationName",
+                "type": "Value",
+                "identifier": {
+                  "label": "OrganizationName",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:OrganizationType",
+                "type": "Value",
+                "identifier": {
+                  "label": "OrganizationType",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:ContactInformation",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContactInformation",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:NationalProviderIdentifier",
+                "type": "Value",
+                "identifier": {
+                  "label": "NationalProviderIdentifier",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "OrganizationAffiliation",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0932026",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0932026",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0932026"
+            }
+          ],
+          "description": "Membership, association, or connection to an organization",
+          "value": {
+            "label": "shr.actors:Organization",
+            "type": "RefValue",
+            "identifier": {
+              "label": "Organization",
+              "type": "Identifier",
+              "namespace": "shr.actors"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "OrganizationName",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The name of the organization. Sometimes the name is not unique, so we allow for multiple names for the same organization.",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "OrganizationType",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A classification of the organization in terms of its major role in healthcare",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/actors/vs/OrganizationType",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/actors/vs/OrganizationType"
+          }
+        },
+        {
+          "type": "Group",
+          "label": "SupportProvision",
+          "isEntry": true,
+          "concepts": [],
+          "description": "An actor providing or responsible for non-medical care during a stated time period.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.actors:SupportRole",
+                "type": "Value",
+                "identifier": {
+                  "label": "SupportRole",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "type": "OrValues",
+                "values": [
+                  {
+                    "label": "shr.actors:MedicalProfessional",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "MedicalProfessional",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  },
+                  {
+                    "label": "shr.actors:Organization",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "Organization",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  },
+                  {
+                    "label": "shr.actors:FamilyMember",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "FamilyMember",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  },
+                  {
+                    "label": "shr.actors:UnrelatedThirdParty",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "UnrelatedThirdParty",
+                      "type": "Identifier",
+                      "namespace": "shr.actors"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "SupportRole",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A role in treating or providing medical care to the patient",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/actors/vs/SupportRole",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/actors/vs/SupportRole"
+          }
+        },
+        {
+          "type": "Group",
+          "label": "UnrelatedThirdParty",
+          "isEntry": true,
+          "concepts": [],
+          "description": "A person, other than a medical professional or family member, who is relevant to the health or social situation of the person of record.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "value": {
+                "label": "shr.core:HumanName",
+                "type": "Value",
+                "identifier": {
+                  "label": "HumanName",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.actors:ContactInformation",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContactInformation",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "shr.allergy",
+      "type": "Namespace",
+      "children": [
+        {
+          "type": "DataElement",
+          "label": "AssociatedSubstanceRisk",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The entry describing the ongoing substance risk that this adverse substance reaction event is a result of.",
+          "value": {
+            "label": "shr.allergy:SubstanceRisk",
+            "type": "RefValue",
+            "identifier": {
+              "label": "SubstanceRisk",
+              "type": "Identifier",
+              "namespace": "shr.allergy"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "AttributionCertainty",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "Adverse Event Attribution to Product or Procedure (http://uts.nlm.nih.gov/metathesaurus:C1510821)",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1510821",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1510821"
+            }
+          ],
+          "description": "A specific identifiable level (defined qualitatively or quantitatively) of probability of adverse event being caused or associated with the product or procedure administration to a patient.",
+          "value": {
+            "label": "code from http://hl7.org/fhir/reaction-event-certainty",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/reaction-event-certainty"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Criticality",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "Criticality (http://uts.nlm.nih.gov/metathesaurus:C3858539)",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C3858539",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C3858539"
+            }
+          ],
+          "description": "A clinical judgment as to the worst case result of a future exposure (including substance administration). When the worst case result is assessed to have a life-threatening or organ system threatening potential, it is considered to be of high criticality.",
+          "value": {
+            "label": "code from http://hl7.org/fhir/allergy-intolerance-criticality",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/allergy-intolerance-criticality"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "NegativeSubstanceRisk",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A statement of no known association of a substance and risk of adverse reaction",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "shr.allergy:NegativeSubstanceRiskAssertion",
+                "type": "Value",
+                "identifier": {
+                  "label": "NegativeSubstanceRiskAssertion",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              },
+              {
+                "label": "shr.allergy:NegativeSubstanceRiskSubstance",
+                "type": "Value",
+                "identifier": {
+                  "label": "NegativeSubstanceRiskSubstance",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "NegativeSubstanceRiskAssertion",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A coded assertion of no known adverse reaction risk that includes the substance or substance class in the code.",
+          "value": {
+            "label": "code descending from No known allergy (http://snomed.info/sct:716186003)",
+            "type": "CodeFromAncestorValue",
+            "ancestor": {
+              "label": "No known allergy (http://snomed.info/sct:716186003)",
+              "type": "Concept",
+              "codesystem": "http://snomed.info/sct",
+              "code": "716186003",
+              "url": "https://uts.nlm.nih.gov/snomedctBrowser.html?conceptId=716186003"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "NegativeSubstanceRiskSubstance",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A substance that poses no known risk for an adverse reaction.",
+          "value": {
+            "label": "shr.core:Substance",
+            "type": "Value",
+            "identifier": {
+              "label": "Substance",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "PositiveSubstanceRisk",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A record of a clinical assessment of an allergy or intolerance; a propensity, or a potential risk to an individual, to have an adverse reaction on future exposure to the specified substance, or class of substance.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "type": "OrValues",
+                "values": [
+                  {
+                    "label": "shr.allergy:PositiveSubstanceRiskAssertion",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "PositiveSubstanceRiskAssertion",
+                      "type": "Identifier",
+                      "namespace": "shr.allergy"
+                    }
+                  },
+                  {
+                    "label": "shr.allergy:PostiveSubstanceRiskSubstance",
+                    "type": "Value",
+                    "identifier": {
+                      "label": "PostiveSubstanceRiskSubstance",
+                      "type": "Identifier",
+                      "namespace": "shr.allergy"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.allergy:UsualManifestation",
+                "type": "Value",
+                "identifier": {
+                  "label": "UsualManifestation",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.allergy:Criticality",
+                "type": "Value",
+                "identifier": {
+                  "label": "Criticality",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Onset",
+                "type": "Value",
+                "identifier": {
+                  "label": "Onset",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "PositiveSubstanceRiskAssertion",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A coded assertion of an allergy or intolerance that includes the substance in the code.",
+          "value": {
+            "label": "code descending from Propensity to adverse reactions (http://snomed.info/sct:420134006)",
+            "type": "CodeFromAncestorValue",
+            "ancestor": {
+              "label": "Propensity to adverse reactions (http://snomed.info/sct:420134006)",
+              "type": "Concept",
+              "codesystem": "http://snomed.info/sct",
+              "code": "420134006",
+              "url": "https://uts.nlm.nih.gov/snomedctBrowser.html?conceptId=420134006"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "PostiveSubstanceRiskSubstance",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A substance that poses a risk of adverse reaction.",
+          "value": {
+            "label": "shr.core:Substance",
+            "type": "Value",
+            "identifier": {
+              "label": "Substance",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "SubstanceAttribution",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "Attribution (http://uts.nlm.nih.gov/metathesaurus:C0596130)",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0596130",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0596130"
+            }
+          ],
+          "description": "The substance to which this adverse event is attributed to",
+          "value": {
+            "label": "shr.core:Substance",
+            "type": "Value",
+            "identifier": {
+              "label": "Substance",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "SubstanceReaction",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "Adverse reaction to substance (http://uts.nlm.nih.gov/metathesaurus:C0559966)",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0559966",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0559966"
+            }
+          ],
+          "description": "An instance of an adverse reaction attributed to ingestion of or contact with a substance",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.allergy:SubstanceAttribution",
+                "type": "Value",
+                "identifier": {
+                  "label": "SubstanceAttribution",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "value": {
+                "label": "shr.core:Symptom",
+                "type": "Value",
+                "identifier": {
+                  "label": "Symptom",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.allergy:AssociatedSubstanceRisk",
+                "type": "Value",
+                "identifier": {
+                  "label": "AssociatedSubstanceRisk",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.allergy:AttributionCertainty",
+                "type": "Value",
+                "identifier": {
+                  "label": "AttributionCertainty",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Description",
+                "type": "Value",
+                "identifier": {
+                  "label": "Description",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Onset",
+                "type": "Value",
+                "identifier": {
+                  "label": "Onset",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "SubstanceRisk",
+          "isEntry": true,
+          "concepts": [],
+          "description": "A postive or negative clinical statement pertaining to an individual's allergies and intolerances to substances or classes of substances.",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "shr.allergy:PositiveSubstanceRisk",
+                "type": "Value",
+                "identifier": {
+                  "label": "PositiveSubstanceRisk",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              },
+              {
+                "label": "shr.allergy:NegativeSubstanceRisk",
+                "type": "Value",
+                "identifier": {
+                  "label": "NegativeSubstanceRisk",
+                  "type": "Identifier",
+                  "namespace": "shr.allergy"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "UsualManifestation",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The expected or usual symptoms that result from the exposure, such as sneezing, rash, etc.",
+          "value": {
+            "label": "shr.core:Symptom",
+            "type": "Value",
+            "identifier": {
+              "label": "Symptom",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "shr.core",
+      "type": "Namespace",
+      "children": [
+        {
+          "type": "Group",
+          "label": "Address",
+          "isEntry": false,
+          "concepts": [],
+          "description": "An address expressed using postal conventions (as opposed to GPS or other location definition formats). This data type may be used to convey addresses for use in delivering mail as well as for visiting locations and which might not be valid for mail delivery. There are a variety of postal address formats defined around the world. (Source: HL7 FHIR)",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 2,
+              "value": {
+                "label": "shr.core:AddressLine",
+                "type": "Value",
+                "identifier": {
+                  "label": "AddressLine",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:City",
+                "type": "Value",
+                "identifier": {
+                  "label": "City",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:County",
+                "type": "Value",
+                "identifier": {
+                  "label": "County",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:State",
+                "type": "Value",
+                "identifier": {
+                  "label": "State",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:PostalCode",
+                "type": "Value",
+                "identifier": {
+                  "label": "PostalCode",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Country",
+                "type": "Value",
+                "identifier": {
+                  "label": "Country",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "AddressLine",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Part of an address that contains the house number, apartment number, street name, street direction, P.O. Box number, delivery hints, and similar address information. (Source: HL7 FHIR)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "City",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1555315",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1555315",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1555315"
+            }
+          ],
+          "description": "The name of a city, town, village or other community or delivery center. (Source: HL7 FHIR)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Comment",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0947611",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0947611",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0947611"
+            }
+          ],
+          "description": "A critical or explanatory note written to discuss, support, explain changes to, or dispute information.",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Country",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0454664",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0454664",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0454664"
+            }
+          ],
+          "description": "Country - a nation as commonly understood or generally accepted, expressed in ISO 3166 Alpha-2 (2-letter) codes",
+          "value": {
+            "label": "code from http://www.nationsonline.org/oneworld/country_code_list.htm",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://www.nationsonline.org/oneworld/country_code_list.htm"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "County",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0079170",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0079170",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0079170"
+            }
+          ],
+          "description": "The name of the administrative area at a level below that of a state but above that of a city or town. Outside the US, a district or the equivalent. (Source: HL7 FHIR)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Description",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0678257",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0678257",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0678257"
+            }
+          ],
+          "description": "An account, representation, statement, or explanation of something.",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Details",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1522508",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1522508",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1522508"
+            }
+          ],
+          "description": "Particulars considered individually and in relation to a whole.",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Duration",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0449238",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0449238",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0449238"
+            }
+          ],
+          "description": "The length of time that something continues",
+          "value": {
+            "label": "primitive:time",
+            "type": "Value",
+            "identifier": {
+              "label": "time",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "EffectiveDateRange",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C2985763",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C2985763",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C2985763"
+            }
+          ],
+          "description": "The date and time span for when an entry is active or valid.",
+          "value": {
+            "label": "shr.core:Period",
+            "type": "Value",
+            "identifier": {
+              "label": "Period",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "EndTime",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1522314",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1522314",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1522314"
+            }
+          ],
+          "description": "The time at which something is to end or did end.",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "primitive:dateTime",
+                "type": "Value",
+                "identifier": {
+                  "label": "dateTime",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              },
+              {
+                "label": "primitive:date",
+                "type": "Value",
+                "identifier": {
+                  "label": "date",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "EntryType",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Fully-qualified name of the type of entry that is missing",
+          "value": {
+            "label": "primitive:uri",
+            "type": "Value",
+            "identifier": {
+              "label": "uri",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Explanation",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "Explanation (http://uts.nlm.nih.gov/metathesaurus:C0681841)",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0681841",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0681841"
+            }
+          ],
+          "description": "A set of statements describing a group of facts that clarifies the cause, context and/or consequence of those facts.",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "FamilyName",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The portion of a person's name that reflects the genealogy of the person. In western cultures, this is the 'last' name. In eastern cultures, the family name appears before the person's given name(s). In some cultures (e.g. Eritrea) the family name of a son is the first name of his father. (Source: HL7 V3)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "FullName",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A full human name as it is spoken or written",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "GeopoliticalLocation",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0017446",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0017446",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0017446"
+            }
+          ],
+          "description": "The countries of the world and major geopolitical subregions, such as US states",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:City",
+                "type": "Value",
+                "identifier": {
+                  "label": "City",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:State",
+                "type": "Value",
+                "identifier": {
+                  "label": "State",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Country",
+                "type": "Value",
+                "identifier": {
+                  "label": "Country",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "GivenName",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A set of names given to a person at birth, but not including the family name. In western cultures, this property would contain the 'first' and 'middle' names. Note that in some cultures, the given name is placed after the family name. Note also that this property contains multiple elements, so it can handle those situations where a person has more than one 'middle' name. (Source: HL7 V3)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "HumanName",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1547383",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1547383",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1547383"
+            }
+          ],
+          "description": "A name for a human being.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:FullName",
+                "type": "Value",
+                "identifier": {
+                  "label": "FullName",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:HumanNamePrefix",
+                "type": "Value",
+                "identifier": {
+                  "label": "HumanNamePrefix",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:GivenName",
+                "type": "Value",
+                "identifier": {
+                  "label": "GivenName",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:FamilyName",
+                "type": "Value",
+                "identifier": {
+                  "label": "FamilyName",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.core:HumanNameSuffix",
+                "type": "Value",
+                "identifier": {
+                  "label": "HumanNameSuffix",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.core:HumanNameUse",
+                "type": "Value",
+                "identifier": {
+                  "label": "HumanNameUse",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "HumanNamePrefix",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Contains a set of honorific terms that typically appear before a person's name, for example Mr., Mrs., Dr., etc. Prefixes have a strong association to the immediately following name part. (Source: HL7 V3)",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/vs/HumanNamePrefix",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/vs/HumanNamePrefix"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "HumanNameSuffix",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Part of the name that is acquired as a title due to academic, legal, employment or nobility status, etc. and that appears at the end of the name.",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "primitive:code",
+                "type": "Value",
+                "identifier": {
+                  "label": "code",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              },
+              {
+                "label": "primitive:string",
+                "type": "Value",
+                "identifier": {
+                  "label": "string",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "HumanNameUse",
+          "isEntry": false,
+          "concepts": [],
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/vs/HumanNameUse",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/vs/HumanNameUse"
+          }
+        },
+        {
+          "type": "Group",
+          "label": "MissingEntryExplanation",
+          "isEntry": true,
+          "concepts": [],
+          "description": "The reason for why an Entry of the given EntryType and matching the Expression does not exist.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EntryType",
+                "type": "Value",
+                "identifier": {
+                  "label": "EntryType",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.core:SpecificCriteria",
+                "type": "Value",
+                "identifier": {
+                  "label": "SpecificCriteria",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:MissingEntryReason",
+                "type": "Value",
+                "identifier": {
+                  "label": "MissingEntryReason",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Explanation",
+                "type": "Value",
+                "identifier": {
+                  "label": "Explanation",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "MissingEntryReason",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A coded reason for the non-existence of an entry.",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/EntryAbsentReason",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/EntryAbsentReason"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Onset",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0277793",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0277793",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0277793"
+            }
+          ],
+          "description": "The beginning or first appearance of a mental or physical disorder.",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "shr.core:OnsetDate",
+                "type": "Value",
+                "identifier": {
+                  "label": "OnsetDate",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              },
+              {
+                "label": "shr.core:OnsetAge",
+                "type": "Value",
+                "identifier": {
+                  "label": "OnsetAge",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              },
+              {
+                "label": "shr.core:OnsetDateTime",
+                "type": "Value",
+                "identifier": {
+                  "label": "OnsetDateTime",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "OnsetAge",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The age when manifestations initially showed",
+          "value": {
+            "label": "primitive:positiveInt",
+            "type": "Value",
+            "identifier": {
+              "label": "positiveInt",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "OnsetDate",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0574845",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0574845",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0574845"
+            }
+          ],
+          "description": "Date when manifestations first showed",
+          "value": {
+            "label": "primitive:date",
+            "type": "Value",
+            "identifier": {
+              "label": "date",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "OnsetDateTime",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0574845",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0574845",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0574845"
+            }
+          ],
+          "description": "Date and time when manifestations first showed",
+          "value": {
+            "label": "primitive:dateTime",
+            "type": "Value",
+            "identifier": {
+              "label": "dateTime",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "Period",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1948053",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1948053",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1948053"
+            }
+          ],
+          "description": "A period of time defined by a start and end time, date, or year",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:StartTime",
+                "type": "Value",
+                "identifier": {
+                  "label": "StartTime",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EndTime",
+                "type": "Value",
+                "identifier": {
+                  "label": "EndTime",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "PostalCode",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1514254",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1514254",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1514254"
+            }
+          ],
+          "description": "A postal code designating a region defined by the postal service. (Source: HL7 FHIR)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Priority",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0549179",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0549179",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0549179"
+            }
+          ],
+          "description": "A numbered priority where 1=highest priority, 2=second highest priority, etc",
+          "value": {
+            "label": "primitive:positiveInt",
+            "type": "Value",
+            "identifier": {
+              "label": "positiveInt",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "SpecificCriteria",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Any additional criteria defining the entry that doesn't exist, such as an attribute value",
+          "value": {
+            "label": "primitive:uri",
+            "type": "Value",
+            "identifier": {
+              "label": "uri",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "StartTime",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1301880",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1301880",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1301880"
+            }
+          ],
+          "description": "The time at which something is to start or did start.",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "primitive:dateTime",
+                "type": "Value",
+                "identifier": {
+                  "label": "dateTime",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              },
+              {
+                "label": "primitive:date",
+                "type": "Value",
+                "identifier": {
+                  "label": "date",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "State",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1552743",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1552743",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1552743"
+            }
+          ],
+          "description": "Sub-unit of a country with limited sovereignty in a federally organized country. A code may be used if codes are in common use (i.e. US 2 letter state codes). (Source: HL7 FHIR)",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "shr.core:UnitedStatesState",
+                "type": "Value",
+                "identifier": {
+                  "label": "UnitedStatesState",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              },
+              {
+                "label": "primitive:string",
+                "type": "Value",
+                "identifier": {
+                  "label": "string",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Substance",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0439861",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0439861",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0439861"
+            }
+          ],
+          "description": "A material, mixture, class or category of substance, including drugs, foods, environmental agents, etc.",
+          "value": {
+            "label": "code descending from Substance (http://snomed.info/sct:105590001)",
+            "type": "CodeFromAncestorValue",
+            "ancestor": {
+              "label": "Substance (http://snomed.info/sct:105590001)",
+              "type": "Concept",
+              "codesystem": "http://snomed.info/sct",
+              "code": "105590001",
+              "url": "https://uts.nlm.nih.gov/snomedctBrowser.html?conceptId=105590001"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Summary",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "Summary (http://uts.nlm.nih.gov/metathesaurus:C1706244)",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1706244",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1706244"
+            }
+          ],
+          "description": "A shortened version of an item of information, containing only the main points.",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Symptom",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1457887",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1457887",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1457887"
+            }
+          ],
+          "description": "An indication that a person has a condition or disease or manifestation of that condition or disease. Some examples of symptoms are headache, fever, fatigue, nausea, vomiting, and pain.",
+          "value": {
+            "label": "code descending from Finding reported by subject or history provider (http://snomed.info/sct:418799008)",
+            "type": "CodeFromAncestorValue",
+            "ancestor": {
+              "label": "Finding reported by subject or history provider (http://snomed.info/sct:418799008)",
+              "type": "Concept",
+              "codesystem": "http://snomed.info/sct",
+              "code": "418799008",
+              "url": "https://uts.nlm.nih.gov/snomedctBrowser.html?conceptId=418799008"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "UnitedStatesState",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C3148680",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C3148680",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C3148680"
+            }
+          ],
+          "description": "A state or territory in the USA expressed by 2-letter US Postal code",
+          "value": {
+            "label": "code from http://pe.usps.com/text/pub28/28apb.htm",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://pe.usps.com/text/pub28/28apb.htm"
+          }
+        }
+      ]
+    },
+    {
+      "label": "shr.demographics",
+      "type": "Namespace",
+      "children": [
+        {
+          "type": "Group",
+          "label": "AddressOfResidence",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0682130",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0682130",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0682130"
+            }
+          ],
+          "description": "A location where a person lives or has lived",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Address",
+                "type": "Value",
+                "identifier": {
+                  "label": "Address",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:ResidenceAddressUse",
+                "type": "Value",
+                "identifier": {
+                  "label": "ResidenceAddressUse",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:ResidenceAddressDescription",
+                "type": "Value",
+                "identifier": {
+                  "label": "ResidenceAddressDescription",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "AdministrativeGender",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1550327",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1550327",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1550327"
+            }
+          ],
+          "description": "Gender is used to refer to administrative sex rather than biological sex and therefore should easily be classified into female and male.  This attribute does not include terms related to clinical gender.",
+          "value": {
+            "label": "code from http://hl7.org/fhir/ValueSet/administrative-gender",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/ValueSet/administrative-gender"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "CountryOfIssue",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A country acting as an assuing authority for a document",
+          "value": {
+            "label": "shr.core:Country",
+            "type": "Value",
+            "identifier": {
+              "label": "Country",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "DateOfBirth",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C2919018",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C2919018",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C2919018"
+            }
+          ],
+          "description": "A date of birth or approximate year or period (year or date range), if estimated.",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "primitive:date",
+                "type": "Value",
+                "identifier": {
+                  "label": "date",
+                  "type": "Identifier",
+                  "namespace": "primitive"
+                }
+              },
+              {
+                "label": "shr.core:Period",
+                "type": "Value",
+                "identifier": {
+                  "label": "Period",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Direct",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A flag indicating if this is a DIRECT email address",
+          "value": {
+            "label": "primitive:boolean",
+            "type": "Value",
+            "identifier": {
+              "label": "boolean",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "DriversLicense",
+          "isEntry": true,
+          "concepts": [],
+          "description": "Identifying information from a drivers license",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:DriversLicenseNumber",
+                "type": "Value",
+                "identifier": {
+                  "label": "DriversLicenseNumber",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:StateOfIssue",
+                "type": "Value",
+                "identifier": {
+                  "label": "StateOfIssue",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "DriversLicenseNumber",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Driver's license number",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "EmailAddress",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1705961",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1705961",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1705961"
+            }
+          ],
+          "description": "An email address xx@yy.zz",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "EmailContact",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1705961",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1705961",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1705961"
+            }
+          ],
+          "description": "An email address used to contact an individual",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:EmailAddress",
+                "type": "Value",
+                "identifier": {
+                  "label": "EmailAddress",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:EmailPriority",
+                "type": "Value",
+                "identifier": {
+                  "label": "EmailPriority",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:Direct",
+                "type": "Value",
+                "identifier": {
+                  "label": "Direct",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "EmailPriority",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Indicates the preferred order of use of email addresses",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/vs/ThreePriority",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/vs/ThreePriority"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Ethnicity",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0015031",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0015031",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0015031"
+            }
+          ],
+          "description": "A code classifying the person into a named category of humans sharing a common real or presumed heritage. (Source: HL7 FHIR)",
+          "value": {
+            "label": "code from http://hl7.org/fhir/v3/Ethnicity",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/v3/Ethnicity"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "FathersName",
+          "isEntry": true,
+          "concepts": [],
+          "description": "The name of the father as it was or likely to have been recorded on the birth certificate of the patient of record; most likely the name of the father at the time of birth of the person of record.",
+          "value": {
+            "label": "shr.core:HumanName",
+            "type": "Value",
+            "identifier": {
+              "label": "HumanName",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "IssuingOrganization",
+          "isEntry": false,
+          "concepts": [],
+          "description": "An organization acting as an issuing authority or trust source",
+          "value": {
+            "label": "shr.actors:Organization",
+            "type": "RefValue",
+            "identifier": {
+              "label": "Organization",
+              "type": "Identifier",
+              "namespace": "shr.actors"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "LeaveMessage",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Indicator whether it is ok to leave a voice message. This can be important when messages can be accessed by multiple people, such as on a home phone.",
+          "value": {
+            "label": "primitive:boolean",
+            "type": "Value",
+            "identifier": {
+              "label": "boolean",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "MaritalStatus",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0024819",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0024819",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0024819"
+            }
+          ],
+          "description": "The most recent marital status of a person.",
+          "value": {
+            "label": "code from http://hl7.org/fhir/ValueSet/marital-status",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/ValueSet/marital-status"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "MothersMaidenName",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0806887",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0806887",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0806887"
+            }
+          ],
+          "description": "The name of the mother as it was or likely to have been recorded on the birth certificate of the patient of record. This is most likely the name prior to marriage of the mother (aka the maiden name).",
+          "value": {
+            "label": "shr.core:HumanName",
+            "type": "Value",
+            "identifier": {
+              "label": "HumanName",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "MultipleBirth",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0026753",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0026753",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0026753"
+            }
+          ],
+          "description": "Birth of more than one child at the same time to the same parents.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:MultipleBirthBoolean",
+                "type": "Value",
+                "identifier": {
+                  "label": "MultipleBirthBoolean",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:MultipleBirthOrder",
+                "type": "Value",
+                "identifier": {
+                  "label": "MultipleBirthOrder",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "MultipleBirthBoolean",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0026753",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0026753",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0026753"
+            }
+          ],
+          "description": "Indication if a birth event was a multiple birth.",
+          "value": {
+            "label": "primitive:boolean",
+            "type": "Value",
+            "identifier": {
+              "label": "boolean",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "MultipleBirthOrder",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://loinc.org:73771-8",
+              "type": "Concept",
+              "codesystem": "http://loinc.org",
+              "code": "73771-8",
+              "url": "http://s.details.loinc.org/LOINC/73771-8.html"
+            }
+          ],
+          "description": "Order of birth in multiple birth event",
+          "value": {
+            "label": "primitive:positiveInt",
+            "type": "Value",
+            "identifier": {
+              "label": "positiveInt",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "OrganizationalIdentifier",
+          "isEntry": true,
+          "concepts": [],
+          "description": "Patient identifier at a healthcare provider, insurer, or other related organization.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:IssuingOrganization",
+                "type": "Value",
+                "identifier": {
+                  "label": "IssuingOrganization",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:HealthRecordID",
+                "type": "Value",
+                "identifier": {
+                  "label": "HealthRecordID",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Group",
+          "label": "OtherTelecomContact",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C2986441",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C2986441",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C2986441"
+            }
+          ],
+          "description": "A means of contacting an individual electronically, other than by telephone or email",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:TelecomMethod",
+                "type": "Value",
+                "identifier": {
+                  "label": "TelecomMethod",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:TelecomNumberOrID",
+                "type": "Value",
+                "identifier": {
+                  "label": "TelecomNumberOrID",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.demographics:TelecomUse",
+                "type": "Value",
+                "identifier": {
+                  "label": "TelecomUse",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Group",
+          "label": "Passport",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C3242633",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C3242633",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C3242633"
+            }
+          ],
+          "description": "Indicator of citizenship and identity",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:PassportNumber",
+                "type": "Value",
+                "identifier": {
+                  "label": "PassportNumber",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:CountryOfIssue",
+                "type": "Value",
+                "identifier": {
+                  "label": "CountryOfIssue",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:EffectiveDateRange",
+                "type": "Value",
+                "identifier": {
+                  "label": "EffectiveDateRange",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "PassportNumber",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1549737",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1549737",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1549737"
+            }
+          ],
+          "description": "Passport number",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "PersonOfRecordName",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1299487",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1299487",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1299487"
+            }
+          ],
+          "description": "A name for the person of record.",
+          "value": {
+            "label": "shr.core:HumanName",
+            "type": "Value",
+            "identifier": {
+              "label": "HumanName",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "PlaceOfBirth",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0032040",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0032040",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0032040"
+            }
+          ],
+          "description": "The location of a birth event. There may be multiple entries, but a person has only one place of birth.",
+          "value": {
+            "label": "shr.core:GeopoliticalLocation",
+            "type": "Value",
+            "identifier": {
+              "label": "GeopoliticalLocation",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Race",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0034510",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0034510",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0034510"
+            }
+          ],
+          "description": "A code classifying the person into a named category of humans sharing common history, traits, geographical origin or nationality. (Source: HL7 FHIR)",
+          "value": {
+            "type": "QuantifiedValue",
+            "min": 1,
+            "value": {
+              "label": "primitive:code",
+              "type": "Value",
+              "identifier": {
+                "label": "code",
+                "type": "Identifier",
+                "namespace": "primitive"
+              }
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "ResidenceAddressDescription",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The type of residence, for example a private house, a skilled nursing facility, or homeless shelter",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/identification/vs/ResidenceAddressDescription",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/identification/vs/ResidenceAddressDescription"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "ResidenceAddressUse",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Describes how the residence is used, in particular, as a primary, secondary, or former address",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/identification/vs/ResidenceAddressUse",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/identification/vs/ResidenceAddressUse"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "SocialSecurityNumber",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1301821",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1301821",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1301821"
+            }
+          ],
+          "description": "A US social security number (SSN)",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "StateOfIssue",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1547728",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1547728",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1547728"
+            }
+          ],
+          "description": "Issuing authority for a drivers license",
+          "value": {
+            "label": "shr.core:UnitedStatesState",
+            "type": "Value",
+            "identifier": {
+              "label": "UnitedStatesState",
+              "type": "Identifier",
+              "namespace": "shr.core"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "TelecomMethod",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The type or channel of the communication, such as Skype or WhatsApp",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "TelecomNumberOrID",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A telephone number, email address, user name or other identifier on a telecommunication network, such as a SkypeID",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "TelecomUse",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A purpose for which a particular telecommunication channel should be used.",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/identification/vs/TelecomUse",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/identification/vs/TelecomUse"
+          }
+        },
+        {
+          "type": "Group",
+          "label": "TelephoneContact",
+          "isEntry": true,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C298644",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C298644",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C298644"
+            }
+          ],
+          "description": "Information about a telephone that can be used to contact a person or organization.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:TelephoneNumber",
+                "type": "Value",
+                "identifier": {
+                  "label": "TelephoneNumber",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:TelephoneOrganizationName",
+                "type": "Value",
+                "identifier": {
+                  "label": "TelephoneOrganizationName",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.demographics:TelephonePriority",
+                "type": "Value",
+                "identifier": {
+                  "label": "TelephonePriority",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:TextCapable",
+                "type": "Value",
+                "identifier": {
+                  "label": "TextCapable",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.demographics:LeaveMessage",
+                "type": "Value",
+                "identifier": {
+                  "label": "LeaveMessage",
+                  "type": "Identifier",
+                  "namespace": "shr.demographics"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "TelephoneNumber",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1515258",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1515258",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1515258"
+            }
+          ],
+          "description": "A telephone number, including a country code and extension, if required",
+          "value": {
+            "label": "primitive:string",
+            "type": "Value",
+            "identifier": {
+              "label": "string",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "TelephoneOrganizationName",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Name of organization owning the phone number, if it belongs to an a company, group home, or other organization.",
+          "value": {
+            "label": "shr.actors:OrganizationName",
+            "type": "Value",
+            "identifier": {
+              "label": "OrganizationName",
+              "type": "Identifier",
+              "namespace": "shr.actors"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "TelephonePriority",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Describes how the residence is used, in particular, as a primary, secondary, or tertiary contact",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/vs/ThreePriority",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/vs/ThreePriority"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "TextCapable",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Whether a telephone accepts text messages",
+          "value": {
+            "label": "primitive:boolean",
+            "type": "Value",
+            "identifier": {
+              "label": "boolean",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "shr.lifehistory",
+      "type": "Namespace",
+      "children": [
+        {
+          "type": "DataElement",
+          "label": "Heritage",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C2986513",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C2986513",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C2986513"
+            }
+          ],
+          "description": "Subjective association with a tribe, racial group, place of family origin, or other inherited background",
+          "value": {
+            "label": "code from http://hl7.org/fhir/2016Sep/v3/Race/vs.html",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/2016Sep/v3/Race/vs.html"
+          }
+        }
+      ]
+    },
+    {
+      "label": "shr.metadata",
+      "type": "Namespace",
+      "children": [
+        {
+          "type": "DataElement",
+          "label": "Anonymized",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Flag indicating if this record has been anonymized",
+          "value": {
+            "label": "primitive:boolean",
+            "type": "Value",
+            "identifier": {
+              "label": "boolean",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "ContentAttribution",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0449416",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0449416",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0449416"
+            }
+          ],
+          "description": "From whom or what the information originates, as distinct from the actor creating the entry",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "shr.actors:MedicalProfessional",
+                "type": "Value",
+                "identifier": {
+                  "label": "MedicalProfessional",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              },
+              {
+                "label": "shr.actors:FamilyMember",
+                "type": "Value",
+                "identifier": {
+                  "label": "FamilyMember",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              },
+              {
+                "label": "shr.actors:UnrelatedThirdParty",
+                "type": "Value",
+                "identifier": {
+                  "label": "UnrelatedThirdParty",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              },
+              {
+                "label": "shr.actors:Organization",
+                "type": "Value",
+                "identifier": {
+                  "label": "Organization",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "ContentCreationDate",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C2347859",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C2347859",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C2347859"
+            }
+          ],
+          "description": "The date on which content was created, or content creation began",
+          "value": {
+            "label": "primitive:date",
+            "type": "Value",
+            "identifier": {
+              "label": "date",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "ContributingRecord",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A health record used to help populate the current health record",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:HealthRecordID",
+                "type": "Value",
+                "identifier": {
+                  "label": "HealthRecordID",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:ProvidingOrganization",
+                "type": "Value",
+                "identifier": {
+                  "label": "ProvidingOrganization",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:WhenAccessed",
+                "type": "Value",
+                "identifier": {
+                  "label": "WhenAccessed",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "EntryAction",
+          "isEntry": false,
+          "concepts": [],
+          "description": "A description of the action taken on this entry",
+          "value": {
+            "label": "code from http://standardhealthrecord.org/core/entryAction",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://standardhealthrecord.org/core/entryAction"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "EntryID",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0600091",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0600091",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0600091"
+            }
+          ],
+          "description": "A unique, persistent, permanent identifier for an entry in a health record",
+          "value": {
+            "label": "primitive:id",
+            "type": "Value",
+            "identifier": {
+              "label": "id",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "Group",
+          "label": "EntryMetadata",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1708992",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1708992",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1708992"
+            }
+          ],
+          "description": "Describes the identification, timing, attribution, and other circumstances involved in an SHR entry",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:EntryID",
+                "type": "Value",
+                "identifier": {
+                  "label": "EntryID",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:PersonOfRecordID",
+                "type": "Value",
+                "identifier": {
+                  "label": "PersonOfRecordID",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:ContentCreationDate",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContentCreationDate",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.metadata:ContentAttribution",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContentAttribution",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:WhenRecorded",
+                "type": "Value",
+                "identifier": {
+                  "label": "WhenRecorded",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:RecordedBy",
+                "type": "Value",
+                "identifier": {
+                  "label": "RecordedBy",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:Language",
+                "type": "Value",
+                "identifier": {
+                  "label": "Language",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Summary",
+                "type": "Value",
+                "identifier": {
+                  "label": "Summary",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:LastUpdated",
+                "type": "Value",
+                "identifier": {
+                  "label": "LastUpdated",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.metadata:EventLog",
+                "type": "Value",
+                "identifier": {
+                  "label": "EventLog",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "Group",
+          "label": "EventLog",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1708728",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1708728",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1708728"
+            }
+          ],
+          "description": "A record of changes to the entry, similar to a commit log.",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:ContentCreationDate",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContentCreationDate",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "value": {
+                "label": "shr.metadata:ContentAttribution",
+                "type": "Value",
+                "identifier": {
+                  "label": "ContentAttribution",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:WhenRecorded",
+                "type": "Value",
+                "identifier": {
+                  "label": "WhenRecorded",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 0,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:RecordedBy",
+                "type": "Value",
+                "identifier": {
+                  "label": "RecordedBy",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:EntryAction",
+                "type": "Value",
+                "identifier": {
+                  "label": "EntryAction",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.core:Comment",
+                "type": "Value",
+                "identifier": {
+                  "label": "Comment",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "FictionalPerson",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Flag indicating if this record represents a fictional (not real) person",
+          "value": {
+            "label": "primitive:boolean",
+            "type": "Value",
+            "identifier": {
+              "label": "boolean",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "HealthRecordID",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0600091",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0600091",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0600091"
+            }
+          ],
+          "description": "Identifier for a health record. Interpreted in the context of the providing organization.",
+          "value": {
+            "label": "primitive:id",
+            "type": "Value",
+            "identifier": {
+              "label": "id",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "Language",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C0023008",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C0023008",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C0023008"
+            }
+          ],
+          "description": "An identifier for a human language",
+          "value": {
+            "label": "code from http://hl7.org/fhir/ValueSet/languages",
+            "type": "CodeFromValueSetValue",
+            "valueset": "http://hl7.org/fhir/ValueSet/languages"
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "LastUpdated",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The time the entry was last updated (changed)",
+          "value": {
+            "label": "primitive:dateTime",
+            "type": "Value",
+            "identifier": {
+              "label": "dateTime",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "PersonOfRecordID",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The persistent, unique ID of the person described by and tracked by this record. This ID has no intrinsic meaning and should not contain any identifiable information, such a mashup of name and birth date.",
+          "value": {
+            "label": "primitive:id",
+            "type": "Value",
+            "identifier": {
+              "label": "id",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "ProvidingOrganization",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The organization providing information or resource",
+          "value": {
+            "label": "shr.actors:Organization",
+            "type": "RefValue",
+            "identifier": {
+              "label": "Organization",
+              "type": "Identifier",
+              "namespace": "shr.actors"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "RecordedBy",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C1707531",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C1707531",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C1707531"
+            }
+          ],
+          "description": "Indicates the person or authoritative body who brought the item into existence",
+          "value": {
+            "type": "OrValues",
+            "values": [
+              {
+                "label": "shr.actors:MedicalProfessional",
+                "type": "Value",
+                "identifier": {
+                  "label": "MedicalProfessional",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              },
+              {
+                "label": "shr.actors:Organization",
+                "type": "Value",
+                "identifier": {
+                  "label": "Organization",
+                  "type": "Identifier",
+                  "namespace": "shr.actors"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Group",
+          "label": "ShrInformation",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Basic information about the SHR and the Person of Record",
+          "children": [
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:StandardHealthRecordID",
+                "type": "Value",
+                "identifier": {
+                  "label": "StandardHealthRecordID",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:PersonOfRecordID",
+                "type": "Value",
+                "identifier": {
+                  "label": "PersonOfRecordID",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:Anonymized",
+                "type": "Value",
+                "identifier": {
+                  "label": "Anonymized",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            },
+            {
+              "type": "QuantifiedValue",
+              "min": 1,
+              "max": 1,
+              "value": {
+                "label": "shr.metadata:FictionalPerson",
+                "type": "Value",
+                "identifier": {
+                  "label": "FictionalPerson",
+                  "type": "Identifier",
+                  "namespace": "shr.metadata"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "DataElement",
+          "label": "StandardHealthRecordID",
+          "isEntry": false,
+          "concepts": [],
+          "description": "The persistent, unique ID of this standard health record",
+          "value": {
+            "label": "primitive:id",
+            "type": "Value",
+            "identifier": {
+              "label": "id",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "WhenAccessed",
+          "isEntry": false,
+          "concepts": [],
+          "description": "Point in time when data was last accessed",
+          "value": {
+            "label": "primitive:dateTime",
+            "type": "Value",
+            "identifier": {
+              "label": "dateTime",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        },
+        {
+          "type": "DataElement",
+          "label": "WhenRecorded",
+          "isEntry": false,
+          "concepts": [
+            {
+              "label": "http://uts.nlm.nih.gov/metathesaurus:C3669169",
+              "type": "Concept",
+              "codesystem": "http://uts.nlm.nih.gov/metathesaurus",
+              "code": "C3669169",
+              "url": "https://uts.nlm.nih.gov/metathesaurus.html?cui=C3669169"
+            }
+          ],
+          "description": "The point in time when a piece of information was recorded",
+          "value": {
+            "label": "primitive:dateTime",
+            "type": "Value",
+            "identifier": {
+              "label": "dateTime",
+              "type": "Identifier",
+              "namespace": "primitive"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

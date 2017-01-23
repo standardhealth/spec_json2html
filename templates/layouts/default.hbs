@@ -23,11 +23,12 @@
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
       $(document).ready(function() {
-        $.getJSON("hierarchy.json",function(data) {
+        $.getJSON("{{assets}}/hierarchy.json",function(data) {
           window.hierarchy = data;
           window.namespaces = _.indexBy(hierarchy.children,"label");
           window.de = _.map(hierarchy.children,function(namespace) {
             namespace.index = _.indexBy(namespace.children,"label");
+            return namespace;
           });
           hierarchy.index = namespaces;
         });
