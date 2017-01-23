@@ -19,37 +19,37 @@ module.exports = function(grunt) {
   if(!grunt.file.exists('vendor')) {
     grunt.fail.fatal('>> Please run "bower install" before continuing.');
   }
-      var addHierarchyIndex = function(children,hierarchy) {
-      //  console.log(children);
-      var hierarchy = hierarchy;
-        _.each(children,function(item) {
-          if (item && _.isObject(item)) {
-            if (item.type == "Identifier") {
-              if (item.namespace == "primitive") {
-                item.description = item.label.capitalize();
-              }
-              if (item.namespace.startsWith("shr.")) {
-                item.idref = hierarchy.index[item.namespace].index[item.label];
-              }
-            }
-            addHierarchyIndex(item,hierarchy);
-          } else {
-            if (item && _.isArray(item)) {
-              _.each(item,function(child) {
-                addHierarchyIndex(child,hierarchy);
-              });
-            }
+  var addHierarchyIndex = function(children,hierarchy) {
+  //  console.log(children);
+  var hierarchy = hierarchy;
+    _.each(children,function(item) {
+      if (item && _.isObject(item)) {
+        if (item.type == "Identifier") {
+          if (item.namespace == "primitive") {
+            item.description = item.label.capitalize();
           }
-        });
+          if (item.namespace.startsWith("shr.")) {
+            item.idref = hierarchy.index[item.namespace].index[item.label];
+          }
+        }
+        addHierarchyIndex(item,hierarchy);
+      } else {
+        if (item && _.isArray(item)) {
+          _.each(item,function(child) {
+            addHierarchyIndex(child,hierarchy);
+          });
+        }
       }
+    });
+  }
 
   // Set up the top-level pages for each namespace
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
   var data = grunt.file.readJSON('./data/hierarchy.json');
-  var namespaces = _.indexBy(data.children,"label");
+  var namespaces = _.keyBy(data.children,"label");
   _.map(data.children,function(namespace) {
-    namespace.index = _.indexBy(namespace.children,"label");
+    namespace.index = _.keyBy(namespace.children,"label");
   });
   data.index = namespaces;
   addHierarchyIndex(data.children,data);
