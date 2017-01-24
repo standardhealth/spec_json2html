@@ -47,9 +47,9 @@ module.exports = function(grunt) {
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
   var data = grunt.file.readJSON('./data/hierarchy.json');
-  var namespaces = _.keyBy(data.children,"label");
+  var namespaces = _.indexBy(data.children,"label");
   _.map(data.children,function(namespace) {
-    namespace.index = _.keyBy(namespace.children,"label");
+    namespace.index = _.indexBy(namespace.children,"label");
   });
   data.index = namespaces;
   addHierarchyIndex(data.children,data);
@@ -80,7 +80,8 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand:true, src: ['node_modules/handlebars-helpers/**'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets'}
+          {expand:true, flatten: true, src: ['templates/includes/**'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/templates'},
+          {expand:true, flatten: true, src: ['data/hierarchy.json'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/data'}
         ]
       }
     },
@@ -90,7 +91,7 @@ module.exports = function(grunt) {
         src: ['templates/includes/hb_shr.js'],
         dest: '<%= site.dest %>/<%= site.pages %>/shr/assets/app.js',
         options: {
-          require: ['handlebars','handlebars-helpers']
+          require: ['handlebars']
         }
       }
     },
@@ -127,5 +128,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-assemble');
-  grunt.registerTask('default',['browserify','assemble']);
+  grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
 }

@@ -15,6 +15,7 @@
     </div>
     <div id="dynamic_view" style="width:40%;display:inline-block">
       dynamic view
+      <button id="load_hierarchy">Click here to load hier</button>
     </div>
 
     <!-- Footer -->
@@ -28,8 +29,7 @@
       $(document).ready(function() {
 
         $("#load_hierarchy").click(function() {
-
-          $.getJSON("hierarchy.json",function(data) {
+          $.getJSON("{{assets}}/hierarchy.json",function(data) {
             window.hierarchy = data;
             window.namespaces = _.indexBy(hierarchy.children,"label");
             window.de = _.map(hierarchy.children,function(namespace) {

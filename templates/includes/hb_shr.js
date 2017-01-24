@@ -1,4 +1,5 @@
 (function() {
+  var Handlebars = require('Handlebars');
   var template = Handlebars.template, 
       templates = Handlebars.templates = Handlebars.templates || {};
       templates['schema_shr.hbs'] = template({
