@@ -80,7 +80,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand:true, flatten: true, src: ['templates/includes/**'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/templates'},
+          {expand:true, flatten: true, src: ['templates/includes/**.hbs'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/partials'},
           {expand:true, flatten: true, src: ['data/hierarchy.json'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/data'}
         ]
       }

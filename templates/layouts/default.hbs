@@ -22,57 +22,7 @@
     {{> footer }}
 
   </body>
-      <script>
-    String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-      $(document).ready(function() {
-
-        $("#load_hierarchy").click(function() {
-          $.getJSON("{{assets}}/hierarchy.json",function(data) {
-            window.hierarchy = data;
-            window.namespaces = _.indexBy(hierarchy.children,"label");
-            window.de = _.map(hierarchy.children,function(namespace) {
-              namespace.index = _.indexBy(namespace.children,"label");
-            });
-            hierarchy.index = namespaces;
-            addHierarchyIndex(hierarchy.children);
-
-            /* Call Handlebars.compile on the templates
-             and then call the template with hierarchy as the context */
-          });
-
-        });
-
-
-      });
-      /* Add an index to namespaces and idref member to each identifier to make it easy to show the description */
-      function addHierarchyIndex(h) {
-        _.each(h,function(item) {
-          if (item && _.isObject(item)) {
-            if (item.type == "Identifier") {
-              if (item.namespace == "primitive") {
-                item.description = item.label.capitalize();
-              }
-              if (item.namespace.startsWith("shr.")) {
-             //   console.log("SHR Namespace : " + item.namespace);
-                item.idref = hierarchy.index[item.namespace].index[item.label];
-              }
-              // console.log("Identifier = " + item);
-            }
-            addHierarchyIndex(item);
-          } else {
-            if (item && _.isArray(item)) {
-              _.each(item,function(child) {
-                addHierarchyIndex(child);
-              });
-            }
-            // not an object, not an array
-            // console.log(item);
-          }
-        });
-      }
-
+      <script src='assets/app.js'>
     </script>
 
 
