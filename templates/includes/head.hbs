@@ -26,23 +26,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="assets/app.js"></script>
 
-<script id="head_partial" src="assets/templates/head.hbs" type="text/x-handlebars-template"></script>
-<script id="nav-main_partial" src="assets/templates/nav-main.hbs" type="text/x-handlebars-template"></script>
-<script id="footer_partial" src="assets/templates/footer.hbs" type="text/x-handlebars-template"></script>
-
-<script id="schema_shr" src="assets/templates/schema_shr.hbs" type="text/x-handlebars-template"></script>
-
-<script id="schema_namespace_list" src="assets/templates/schema_namespace_list.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_group_children" src="assets/templates/schema_group_children.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_dataelement_list" src="assets/templates/schema_dataelement_list.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_concepts" src="assets/templates/schema_concepts.hbs" type="text/x-handlebars-template"></script>
-
-<script id="schema_namespace" src="assets/templates/schema_namespace.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_group" src="assets/templates/schema_group.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_dataelement" src="assets/templates/schema_dataelement.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_concept" src="assets/templates/schema_concept.hbs" type="text/x-handlebars-template"></script>
-
-<script id="schema_quantifiedvalue" src="assets/templates/schema_quantifiedvalue.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_value" src="assets/templates/schema_value.hbs" type="text/x-handlebars-template"></script>
-<script id="schema_identifier" src="assets/templates/schema_identifier.hbs" type="text/x-handlebars-template"></script>
-
+<div id="partials">
+{{#each site.partials}}
+    <script id="{{this}}" src="assets/partials/{{this}}.hbs" type="text/x-handlebars-template"></script>
+{{/each}}
+</div>  

@@ -15,13 +15,7 @@ String.prototype.capitalize = function() {
 module.exports = function(grunt) {
 'use strict';
 
-  // Delete after first run
-  if(!grunt.file.exists('vendor')) {
-    grunt.fail.fatal('>> Please run "bower install" before continuing.');
-  }
   var addHierarchyIndex = function(children,hierarchy) {
-  //  console.log(children);
-  var hierarchy = hierarchy;
     _.each(children,function(item) {
       if (item && _.isObject(item)) {
         if (item.type == "Identifier") {
@@ -46,6 +40,7 @@ module.exports = function(grunt) {
   // Set up the top-level pages for each namespace
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
+
   var data = grunt.file.readJSON('./data/hierarchy.json');
   var namespaces = _.indexBy(data.children,"label");
   _.map(data.children,function(namespace) {
@@ -53,7 +48,6 @@ module.exports = function(grunt) {
   });
   data.index = namespaces;
   addHierarchyIndex(data.children,data);
- // console.log(JSON.stringify(data.index))
 
   var namespace_pages = _.map(data.children,function(item) {
     item.follow=true;
@@ -71,7 +65,6 @@ module.exports = function(grunt) {
     // Project metadata
     pkg:    grunt.file.readJSON('package.json'),
     site:   grunt.file.readYAML('_config.yml'),
-    vendor: grunt.file.readJSON('.bowerrc').directory,
 
     // Before generation, remove files from previous build
     clean: {
@@ -80,8 +73,8 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand:true, flatten: true, src: ['templates/includes/**.hbs'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/partials'},
-          {expand:true, flatten: true, src: ['data/hierarchy.json'], dest:'<%= site.dest %>/<%= site.pages %>/shr/assets/data'}
+          {expand:true, flatten: true, src: ['templates/includes/**.hbs'], dest:'<%= site.dest %>/<%= site.assets %>/partials'},
+          {expand:true, flatten: true, src: ['data/hierarchy.json'], dest:'<%= site.dest %>/<%= site.assets %>/data'}
         ]
       }
     },
@@ -89,7 +82,7 @@ module.exports = function(grunt) {
     browserify: {
       vendor: {
         src: ['templates/includes/hb_shr.js'],
-        dest: '<%= site.dest %>/<%= site.pages %>/shr/assets/app.js',
+        dest: '<%= site.dest %>/<%= site.assets %>/app.js',
         options: {
           require: ['handlebars']
         }
@@ -114,19 +107,36 @@ module.exports = function(grunt) {
         options : {
           pages:namespace_pages
         },
-        files :[
-          {dest: '<%= site.dest %>/<%= site.pages %>/shr/',src:'!*'}
-        ]
+        files :[{
+          dest: '<%= site.dest %>',
+          src:'!*'
+        }]
       },
       example: {
-        files: {'<%= site.dest %>/': ['<%= site.pages %>/shr/*.hbs']}
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>/shr',
+        src: '*.hbs',
+        dest: '<%= site.dest %>'
       }
-    }
+    },
+    watch: {
+      scripts: {
+        files: ['**/*.js'],
+        tasks: ['assemble'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-assemble');
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
+  grunt.registerTask('js', ['browserify'])
+
 }
