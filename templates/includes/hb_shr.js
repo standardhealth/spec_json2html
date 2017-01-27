@@ -54,7 +54,6 @@
 
   });
 
-
     $("#load_hierarchy").click(function() {
       $.getJSON("assets/data/hierarchy.json",function(data) {
         window.hierarchy = data;
@@ -78,16 +77,20 @@
         var tempScript = Handlebars.compile(template.responseText);
         console.log(Handlebars.partials);
         var html = tempScript({hierarchy: hierarchy});
-        console.log(html);
+        $("#dynamic_content").append(html); 
       });
     });
-  // function addPartials() {
-  //   $.load('/assets/templates', function (data) {
-  //     console.log(data)
-  //   })
-  // }
+
+
   /* Add an index to namespaces and idref member to each identifier to make it easy to show the description */
   function addHierarchyIndex(h) {
+    // For IE functionality 
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function(searchString, position){
+          position = position || 0;
+          return this.substr(position, searchString.length) === searchString;
+      };
+    }
     _.each(h,function(item) {
       if (item && _.isObject(item)) {
         if (item.type == "Identifier") {
@@ -113,6 +116,7 @@
     });
   }
 
+  // Register all the partials that have been referenced on the clientside page
   function registerPartials(templates, hierarchy) { 
     var dfd = $.Deferred(); 
     
@@ -136,12 +140,16 @@
     dfd.resolve();
   }
 
+  // (Manually) register the heleprs used in generating the Handlebars templates. 
   function registerHelpers () { 
-    
-    Handlebars.registerHelper('getNamespaceFilename', function(name,context) {
+    Handlebars.registerHelper('getNamespaceFilename', function(nStatic, nDynamic, context) {
+      // Clientside and Serverside compilation understand scope differently, leading to a disparity 
+      // in referencing parent scope (which is where we get our namespace name from) 
+      // Solution: offer two namespace definitions, default to static unless undefined.
+      var name = nStatic !== undefined ? nStatic : nDynamic;
       return new Handlebars.SafeString(name.split('.')[1]+'.html');
     });
-
+    // Basic conditional checking.
     Handlebars.registerHelper('eq', function(a, b, opts) {
         if (a == b) {
             return opts.fn(this);
