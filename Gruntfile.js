@@ -37,6 +37,7 @@ module.exports = function(grunt) {
     });
   }
 
+
   // Set up the top-level pages for each namespace
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
@@ -68,7 +69,7 @@ module.exports = function(grunt) {
 
     // Before generation, remove files from previous build
     clean: {
-      example: ['<%= site.dest %>']
+      example: ['<%= site.dest %>/<%= site.pages %>']
     },
     copy: {
       main: {
@@ -96,6 +97,7 @@ module.exports = function(grunt) {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
         data: ['<%= site.data %>/*.{json,yml}'],
+
 
         // Templates
         partials: '<%= site.includes %>',
