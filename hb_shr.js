@@ -1,5 +1,5 @@
 (function() {
-  var Handlebars = require('Handlebars');
+  var Handlebars = require('handlebars');
 
   String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
