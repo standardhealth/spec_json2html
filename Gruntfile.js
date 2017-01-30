@@ -81,7 +81,7 @@ module.exports = function(grunt) {
     /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
     browserify: {
       vendor: {
-        src: ['templates/includes/hb_shr.js'],
+        src: ['hb_shr.js'],
         dest: '<%= site.dest %>/<%= site.assets %>/app.js'
       }
     },
