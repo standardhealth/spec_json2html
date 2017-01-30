@@ -82,10 +82,7 @@ module.exports = function(grunt) {
     browserify: {
       vendor: {
         src: ['templates/includes/hb_shr.js'],
-        dest: '<%= site.dest %>/<%= site.assets %>/app.js',
-        options: {
-          require: ['handlebars']
-        }
+        dest: '<%= site.dest %>/<%= site.assets %>/app.js'
       }
     },
     assemble: {
