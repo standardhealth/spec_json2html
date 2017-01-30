@@ -6,7 +6,8 @@ root:       public
 dest:       dist
 assets:     assets
 pages:      pages
-data:       data/*.{json,yml}
+data:       data
+
 
 templates:  templates
 includes:   <%= site.templates %>/includes/*.hbs

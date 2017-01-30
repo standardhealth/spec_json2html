@@ -42,9 +42,9 @@ module.exports = function(grunt) {
   console.log("spec_template = " + JSON.stringify(spec_template));
 
   var data = grunt.file.readJSON('./data/hierarchy.json');
-  var namespaces = _.indexBy(data.children,"label");
+  var namespaces = _.keyBy(data.children,"label");
   _.map(data.children,function(namespace) {
-    namespace.index = _.indexBy(namespace.children,"label");
+    namespace.index = _.keyBy(namespace.children,"label");
   });
   data.index = namespaces;
   addHierarchyIndex(data.children,data);
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
       options: {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
-        data: ['<%= site.data %>'],
+        data: ['<%= site.data %>/*.{json,yml}'],
 
         // Templates
         partials: '<%= site.includes %>',
@@ -120,23 +120,26 @@ module.exports = function(grunt) {
         dest: '<%= site.dest %>'
       }
     },
-    watch: {
-      scripts: {
-        files: ['**/*.js'],
-        tasks: ['assemble'],
+    mochaTest: {
+      test: {
         options: {
-          spawn: false,
+          reporter: 'spec',
+          captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+          quiet: false,               // Optionally suppress output to standard out (defaults to false) 
+          clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false) 
+          noFail: false              // Optionally set to not fail on failed tests (will still fail on other errors) 
         },
-      },
-    },
+        src: ['test.js']
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-assemble');
-  grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('js', ['browserify'])
+  grunt.loadNpmTasks('grunt-mocha-test');
 
+  grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
+  grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
