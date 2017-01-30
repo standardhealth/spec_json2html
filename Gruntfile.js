@@ -144,5 +144,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
+  grunt.registerTask('test', ['clean', 'copy', 'assemble', 'mochaTest']);
 }
