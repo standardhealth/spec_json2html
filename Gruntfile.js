@@ -80,15 +80,15 @@ module.exports = function(grunt) {
     },
     /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
     browserify: {
-      options: {
-        browserifyOptions: {
-          require: ['handlebars'],
-          paths: ['./node_modules']
-        }
-      },
       vendor: {
         src: ['hb_shr.js'],
-        dest: '<%= site.dest %>/<%= site.assets %>/app.js'
+        dest: '<%= site.dest %>/<%= site.assets %>/app.js',
+        options: {
+          browserifyOptions: {
+            require: ['handlebars'],
+            paths: ['./node_modules']
+          }
+        }
       }
     },
     assemble: {
@@ -144,5 +144,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('test', ['clean', 'copy', 'assemble', 'mochaTest']);
+  grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
