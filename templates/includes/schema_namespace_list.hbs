@@ -1,10 +1,10 @@
 <div class="row">
-  <a href="{{getNamespaceFilename label}}">{{label}}</a>
+  <a href="{{{getNamespaceFilename label}}}">{{label}}</a>
   <ul class="spec-data-element-list">
     {{#each children as |child|}}
       {{#if child}}
         {{!-- > (shr_partial child.type) --}}
-        {{> schema_dataelement_list namespace=../../label }}
+        {{> schema_dataelement_list namespaceStatic=../../label namespaceDynamic=../label}}
       {{/if}}
     {{/each}}
   </ul>

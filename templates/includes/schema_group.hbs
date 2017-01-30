@@ -1,4 +1,13 @@
-<li>
-  <a href="#">{{label}}</a><br>
-  {{!-- > schema_value value --}}
-</li>
+<h3>
+    <a id="{{label}}"></a>
+    {{label}} 
+    {{#if isEntry}}
+        [Entry]
+    {{/if}}
+</h3>
+<p>
+    {{description}} 
+    {{> schema_concepts concepts=concepts}}
+</p>
+
+{{> schema_group_children children=children }}

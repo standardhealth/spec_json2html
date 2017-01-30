@@ -4,9 +4,10 @@
 
 root:       public
 dest:       dist
-assets:     <%= site.dest %>/assets
+assets:     assets
 pages:      pages
-data:       data/*.{json,yml}
+data:       data
+
 
 templates:  templates
 includes:   <%= site.templates %>/includes/*.hbs
@@ -22,3 +23,16 @@ helpers:
 # =============================================
 
 description:      <%= pkg.description %>
+partials: 
+  - schema_shr
+  - schema_namespace_list
+  - schema_group_children
+  - schema_dataelement_list
+  - schema_concepts
+  - schema_namespace
+  - schema_group
+  - schema_dataelement
+  - schema_concept
+  - schema_quantifiedvalue
+  - schema_value
+  - schema_identifier
