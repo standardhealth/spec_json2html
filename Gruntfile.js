@@ -1,11 +1,11 @@
 /*
  * shr-assemble-spec
  *
- * Michael Nosal
- * https://github.com/mrnosal/shr-assemble-spec
+ * Michael Nosal and Dylan Phelan
+ * https://github.com/standardhealth/spec_json2html
  *
  * Copyright (c) 2016
- * Licensed under the MIT license.
+ * Licensed under the Apache 2.0 license.
  */
 var helpers = require('handlebars-helpers')();
 var _ = require('lodash');
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
   var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
 
-  var data = grunt.file.readJSON('./data/hierarchy.json');
+  var data = grunt.file.readJSON('./assets/data/hierarchy.json');
   var namespaces = _.keyBy(data.children,"label");
   _.map(data.children,function(namespace) {
     namespace.index = _.keyBy(namespace.children,"label");
@@ -72,13 +72,47 @@ module.exports = function(grunt) {
       example: ['<%= site.dest %>/<%= site.pages %>']
     },
     copy: {
-      main: {
-        files: [
-          {expand:true, flatten: true, src: ['templates/includes/**.hbs'], dest:'<%= site.dest %>/<%= site.assets %>/partials'},
-          {expand:true, flatten: true, src: ['data/hierarchy.json'], dest:'<%= site.dest %>/<%= site.assets %>/data'}
-        ]
+      // js: {
+      //   files: [{
+      //     expand:true, 
+      //     flatten: false, 
+      //     cwd: '<%= site.assets %>', 
+      //     src: ['js/**'], 
+      //     dest:'<%= site.dest %>/<%= site.assets %>'
+      //   }]
+      // },
+      // img: {
+      //   files: [{
+      //     expand:true, 
+      //     flatten: false, 
+      //     cwd: '<%= site.assets %>', 
+      //     src: ['img/**'], 
+      //     dest:'<%= site.dest %>/<%= site.assets %>'
+      //   }]
+      // },
+      css: {
+        files: [{
+          expand:true, 
+          flatten: false, 
+          cwd: '<%= site.assets %>', 
+          src: ['css/*.css'], 
+          dest:'<%= site.dest %>/<%= site.assets %>'
+        }]
+      },
+      partials: {
+        expand:true, 
+        flatten: true, 
+        src: ['templates/includes/**.hbs'], 
+        dest:'<%= site.dest %>/<%= site.assets %>/partials'
+      },
+      data: { 
+        expand:true, 
+        flatten: true, 
+        src: ['<%= site.assets %>/<%= site.data %>/hierarchy.json'], 
+        dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
       }
     },
+
     /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
     browserify: {
       vendor: {
@@ -96,7 +130,7 @@ module.exports = function(grunt) {
       options: {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
-        data: ['<%= site.data %>/*.{json,yml}'],
+        data: ['<%= site.assets %>/<%= site.data %>/*.{json,yml}'],
 
 
         // Templates

@@ -29,7 +29,7 @@ To assemble the project, run the default grunt command:
 ```
 grunt
 ```
-
+and the full site will be built in the `/dist` directory.
 
 ##Testing the Project:
 To run tests on this project, run the following:

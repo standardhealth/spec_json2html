@@ -1,3 +1,5 @@
+
+
 <div id="partials">
 {{#each site.partials}}
     <script id="{{this}}" src="assets/partials/{{this}}.hbs" type="text/x-handlebars-template"></script>
@@ -7,8 +9,10 @@
 
 <h2>Parsing Specification Hierarchy for: {{hierarchy.label}}</h2>
 
-{{#each hierarchy.children as |child|}}
-  {{#if child}}
-    {{> schema_namespace_list }}
-  {{/if}}
-{{/each}}
+<div class="container">
+    {{#each hierarchy.children as |child|}}
+      {{#if child}}
+        {{> schema_namespace_list }}
+      {{/if}}
+    {{/each}}
+</div>
