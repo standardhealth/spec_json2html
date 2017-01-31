@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 
 
   // Set up the top-level pages for each namespace
-  var spec_template = grunt.file.read('./templates/pages/namespace.hbs');
+  var spec_template = grunt.file.read('./pages/namespace.hbs');
   console.log("spec_template = " + JSON.stringify(spec_template));
 
   var data = grunt.file.readJSON('./assets/data/hierarchy.json');
@@ -154,8 +154,8 @@ module.exports = function(grunt) {
       example: {
         flatten: true,
         expand: true,
-        cwd: '<%= site.pages %>/shr',
-        src: '*.hbs',
+        cwd: '<%= site.pages %>',
+        src: 'index.hbs',
         dest: '<%= site.dest %>'
       }
     },

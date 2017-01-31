@@ -1,0 +1,10 @@
+<div id="partials">
+{{#each site.partials}}
+    <script id="{{this}}" src="assets/partials/{{this}}.hbs" type="text/x-handlebars-template"></script>
+{{/each}}
+</div>  
+
+
+<p>This is templates/pages/Namespace.hbs</p>
+
+{{>schema_namespace}}
