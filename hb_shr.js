@@ -113,5 +113,8 @@
             return opts.inverse(this);
         }
     });
+    Handlebars.registerHelper("log", function(something) {
+      console.log(something);
+    });
   }
 })();

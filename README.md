@@ -42,12 +42,14 @@ Results from the test will pop up in your terminal, and will be recorded to the 
 ##Technologies Used:
 Below you will find a comprehensive list of the central technologies and tools the SSVE is built with, along with brief descriptions and links for learning more:
 
-- [Nodejs.org](https://nodejs.org/en/), the JavaScript Runtime we use.
-- [GruntJs](http://gruntjs.com/), the JavaScript task runner we use.
-- [Assemble.io](http://assemble.io/), a static site generator for Grunt.js and Node.js, building pages wiht HandlebarsJS.
-- [HandlebarsJs](http://handlebarsjs.com/), a logicless templating language we use to generate views for the website.
-- [Mocha](https://mochajs.org/), the Node.js testing framwork we use.
-- [jQuery](https://jquery.com/), a JavaScript library enabling quick navigation and manipulation of HTML.
+- [Nodejs.org](https://nodejs.org/en/), the JavaScript Runtime we use, providing a mechanism for downloading and running JavaScript tools for bundling, building and testing our site.
+- [NPM](https://www.npmjs.com/), a NodeJs package manager, used to download open source packages listed below.
+- [GruntJs](http://gruntjs.com/), a JavaScript task runner, used for automating and simplifying repetitive tasks.
+- [Assemble.io](http://assemble.io/), a static site generator for Grunt.js and Node.js, used to build our site using HandlebarsJS templates, partials and helpers.
+- [HandlebarsJs](http://handlebarsjs.com/), a logicless templating language, used to generate views for the website. On the server side, assemble uses Handlebars to build static assets for the SSVE. On the cilent side, we bundle  the Handlebars library with our javascript (using Browserify) and can dynamically generate views on the fly.
+- [Mocha](https://mochajs.org/), a Node.js testing framwork, used to build tests that not only affirm the functionality of our JavaScript but a subset of the content we expect on our webpages.
+- [Chai](http://chaijs.com/), a BDD / TDD assertion library for node, used to define the checks that mocha uses in its test cases.
+- [jQuery](https://jquery.com/), a JavaScript library enabling quick navigation and manipulation of HTML, used throughout to write efficient and capable JavaScript that can directly modify and alter the DOM.
 
 
 ##About the Team Behind the Standard Health Record

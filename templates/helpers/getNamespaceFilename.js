@@ -18,4 +18,7 @@ module.exports.register = function (Handlebars, options, params) {
           return opts.inverse(this);
       }
   });
+  Handlebars.registerHelper("log", function(something) {
+    console.log(something);
+  });
 };
