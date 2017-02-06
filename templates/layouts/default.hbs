@@ -9,15 +9,17 @@
     <!-- Navigation component -->
     {{> nav-main }}
 
-
-    <div style="width:40%;display:inline-block">
-      {{> body }}
+    <div class="container">
+      <section id="spec-viewer">
+        <div style="width:40%;display:inline-block">
+          {{> body }}
+        </div>
+        <div id="dynamic_view" style="width:40%;display:inline-block">
+          <div id="dynamic_content"></div>
+          <button id="load_hierarchy">Click here to load the dynamic view</button>
+        </div>
+      </section>
     </div>
-    <div id="dynamic_view" style="width:40%;display:inline-block">
-      <div id="dynamic_content"></div>
-      <button id="load_hierarchy">Click here to load the dynamic view</button>
-    </div>
-
     <!-- Footer -->
     {{> footer }}
     <script src='assets/app.js'></script>

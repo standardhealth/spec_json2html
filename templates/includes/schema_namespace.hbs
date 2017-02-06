@@ -1,11 +1,13 @@
-<div class="row">
-  <h1>{{label}}</h1>
-  <div class="spec-data-elements">
-    {{#each children as |child|}}
-      {{#if child}}
-        {{> (shr_partial child.type) namespace=../../label follow=../../follow }}
-        {{!-- > schema_dataelement namespace=../../label follow=../../follow --}}
-      {{/if}}
-    {{/each}}
-  </div>
+<div class="container markdown-body">
+    <div class="row">
+      <h1>{{label}}</h1>
+      <div class="spec-data-elements">
+        {{#each children as |child|}}
+          {{#if child}}
+            {{> (shr_partial child.type) namespace=../../label follow=../../follow }}
+            {{!-- > schema_dataelement namespace=../../label follow=../../follow --}}
+          {{/if}}
+        {{/each}}
+      </div>
+    </div>
 </div>
