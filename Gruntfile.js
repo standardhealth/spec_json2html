@@ -14,6 +14,7 @@ String.prototype.capitalize = function() {
 }
 module.exports = function(grunt) {
 'use strict';
+  const site = grunt.file.readYAML('_config.yml'),
 
   var addHierarchyIndex = function(children,hierarchy) {
     _.each(children,function(item) {
@@ -39,10 +40,9 @@ module.exports = function(grunt) {
 
 
   // Set up the top-level pages for each namespace
-  var spec_template = grunt.file.read('./pages/namespace.hbs');
-  console.log("spec_template = " + JSON.stringify(spec_template));
+  var spec_template = grunt.file.read(`./${site.pages}/namespace.hbs`);
 
-  var data = grunt.file.readJSON('./assets/data/hierarchy.json');
+  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/hierarchy.json`);
   var namespaces = _.keyBy(data.children,"label");
   _.map(data.children,function(namespace) {
     namespace.index = _.keyBy(namespace.children,"label");

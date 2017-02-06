@@ -2,8 +2,17 @@
 
 This project will convert hierarchical json output of the SHR specification into HTML. This will be used as the start of a SHR Spec Viewer tool.
 
+- [Downloading the Project](#downloading)
+- [Setting Up the Environment](#environment)
+- [Building the Project](#building)
+- [Testing the Project](#testing)
+- [Directory Structure](#directory)
+- [Technologies Used](#technologies)
+- [About the Team Behind The Standard Health Record ](#team)
 
-##Downloading the Project:
+
+<a id="downloading"> </a>
+## Downloading the Project
 Before getting started on any development, one will need to have the following installed:
 
 - [Git](https://git-scm.com/), our version controlling tool.
@@ -13,7 +22,8 @@ Before getting started on any development, one will need to have the following i
 - For Windows users, [Cmder](http://cmder.net/) is a powerful command line emulator to serve as alternative to powershell. This has been helpful for me.
 
 
-##Setting  Up the Environment:
+<a id="environment"> </a>
+##Setting Up the Environment
 This project has been developed and tested with Node.js 6.6, although other versions _may_ work.  If you do not have Node.js installed, go to  and download the appropriate version of Node.
 
 After installing Node.js, change to the central project directory and _npm install_ the command line interface for grunt (globally) and the project's dependencies:
@@ -24,14 +34,17 @@ $ npm install
 You may need to use sudo (for OSX, *nix, BSD etc) or run your command shell as Administrator (for Windows) for the grunt CLI.
 
 
-##Building the Project:
+<a id="building"> </a>
+##Building the Project
 To assemble the project, run the default grunt command:
 ```
 grunt
 ```
 and the full site will be built in the `/dist` directory.
 
-##Testing the Project:
+
+<a id="testing"> </a>
+##Testing the Project
 To run tests on this project, run the following:
 ```
 grunt test
@@ -39,7 +52,41 @@ grunt test
 Results from the test will pop up in your terminal, and will be recorded to the results.txt file in the central directory.
 
 
-##Technologies Used:
+<a id="directory"> </a>
+## Directory Structure
+Below you willl find the structure of folders, with a brief description of what they contain:
+```
+    SSVE
+    ├── node_modules/            # Node modules necessary for generation
+    ├── templates/               # Templates for each element in the hiearchy
+    |    ├── helpers             # All of the handlebars helpers
+    |    ├── includes            # All of the individual handlebars components
+    |    └── layouts             # Possible page layouts, built using partials found in 'includes'
+    ├── assets/
+    |    ├── data                # JSON hierarchy data used in generating the spec
+    |    └── css                 # Css used on the site
+    ├── dist/                    # Ouput from the site generation
+    |    ├── assets/
+    |        ├── css/
+    |        ├── data/
+    |        ├── partials/
+    |        └── app.js
+    |    ├── namespace.html
+    |    ... # one file per namespace
+    |    └── index.html
+    ├── README.md               # README for project construction
+    ├── _config.yml             # Configuration file, used in definining env variables
+    ├── .travis.yml             # Configuration for Travis, our Continuous Integration engine 
+    ├── hb_shr.js               # The javascript used to build the website dynamically
+    ├── Gruntfile.js            # Gruntfile that configures all tasks from testing to buildilng
+    ├── results.txt             # Output of the last test run
+    | ...                       # Other configuration files for Git/Node
+    └── test.js                 # Testing file
+```
+
+
+<a id="technologies"></a>
+##Technologies Used
 Below you will find a comprehensive list of the central technologies and tools the SSVE is built with, along with brief descriptions and links for learning more:
 
 - [Nodejs.org](https://nodejs.org/en/), the JavaScript Runtime we use, providing a mechanism for downloading and running JavaScript tools for bundling, building and testing our site.
@@ -50,16 +97,18 @@ Below you will find a comprehensive list of the central technologies and tools t
 - [Mocha](https://mochajs.org/), a Node.js testing framwork, used to build tests that not only affirm the functionality of our JavaScript but a subset of the content we expect on our webpages.
 - [Chai](http://chaijs.com/), a BDD / TDD assertion library for node, used to define the checks that mocha uses in its test cases.
 - [jQuery](https://jquery.com/), a JavaScript library enabling quick navigation and manipulation of HTML, used throughout to write efficient and capable JavaScript that can directly modify and alter the DOM.
+- [Travis](https://travis-ci.com/), a continuous integration service, used to continually run tests on any new pushes made to Github.
 
 
-##About the Team Behind the Standard Health Record
+<a id="team"></a>
+##About the Team Behind The Standard Health Record
 
 ###[The MITRE Corporation](https://www.mitre.org/)
 
 The MITRE Corporation is a not-for-profit organization working in the public interest that operates federally funded research and development centers to provide innovative solutions to national problems.
 
 
-## License
+### License
 
 Copyright 2016 The MITRE Corporation
 

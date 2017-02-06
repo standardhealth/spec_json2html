@@ -1,13 +1,13 @@
 
 [0m[0m
 [0m  htmlValidation[0m
-  [32m  √[0m[90m should validate file actors.html[0m[31m (142ms)[0m
-  [32m  √[0m[90m should validate file allergy.html[0m[31m (90ms)[0m
-  [32m  √[0m[90m should validate file core.html[0m[31m (103ms)[0m
-  [32m  √[0m[90m should validate file demographics.html[0m[31m (106ms)[0m
-  [32m  √[0m[90m should validate file index.html[0m[31m (86ms)[0m
-  [32m  √[0m[90m should validate file lifehistory.html[0m[33m (50ms)[0m
-  [32m  √[0m[90m should validate file metadata.html[0m[31m (86ms)[0m
+  [32m  √[0m[90m should validate file actors.html[0m[31m (149ms)[0m
+  [32m  √[0m[90m should validate file allergy.html[0m[31m (93ms)[0m
+  [32m  √[0m[90m should validate file core.html[0m[31m (106ms)[0m
+  [32m  √[0m[90m should validate file demographics.html[0m[31m (121ms)[0m
+  [32m  √[0m[90m should validate file index.html[0m[31m (132ms)[0m
+  [32m  √[0m[90m should validate file lifehistory.html[0m[33m (58ms)[0m
+  [32m  √[0m[90m should validate file metadata.html[0m[31m (89ms)[0m
 
 [0m  homePage[0m
   [32m  √[0m[90m should exist as file titled index.html in the dist folder[0m
@@ -37,5 +37,5 @@
     [32m  √[0m[90m should contain all namespace defined elements[0m
 
 
-[92m [0m[32m 24 passing[0m[90m (815ms)[0m
+[92m [0m[32m 24 passing[0m[90m (928ms)[0m
 
