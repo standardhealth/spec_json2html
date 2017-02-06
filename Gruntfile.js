@@ -14,7 +14,7 @@ String.prototype.capitalize = function() {
 }
 module.exports = function(grunt) {
 'use strict';
-  const site = grunt.file.readYAML('_config.yml'),
+  const site = grunt.file.readYAML('_config.yml');
 
   var addHierarchyIndex = function(children,hierarchy) {
     _.each(children,function(item) {
