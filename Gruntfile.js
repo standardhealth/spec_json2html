@@ -7,7 +7,6 @@
  * Copyright (c) 2016
  * Licensed under the Apache 2.0 license.
  */
-var helpers = require('handlebars-helpers')();
 var _ = require('lodash');
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -69,7 +68,7 @@ module.exports = function(grunt) {
 
     // Before generation, remove files from previous build
     clean: {
-      example: ['<%= site.dest %>/<%= site.pages %>']
+      example: ['<%= site.dest %>']
     },
     copy: {
       // js: {
@@ -102,7 +101,7 @@ module.exports = function(grunt) {
       partials: {
         expand:true, 
         flatten: true, 
-        src: ['templates/includes/**.hbs'], 
+        src: ['<%= site.includes %>'], 
         dest:'<%= site.dest %>/<%= site.assets %>/partials'
       },
       data: { 

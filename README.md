@@ -26,7 +26,7 @@ Before getting started on any development, one will need to have the following i
 ##Setting Up the Environment
 This project has been developed and tested with Node.js 6.6, although other versions _may_ work.  If you do not have Node.js installed, go to  and download the appropriate version of Node.
 
-After installing Node.js, change to the central project directory and _npm install_ the command line interface for grunt (globally) and the project's dependencies:
+After installing Node.js, change to the central project directory, `spec_json2html/`, and _npm install_ the command line interface for grunt (globally) and the project's dependencies:
 ```
 $ npm install -g grunt-cli
 $ npm install
@@ -36,27 +36,49 @@ You may need to use sudo (for OSX, *nix, BSD etc) or run your command shell as A
 
 <a id="building"> </a>
 ##Building the Project
-To assemble the project, run the default grunt command:
+To assemble the project, run the default grunt command in `spec_json2html/`:
 ```
 grunt
 ```
-and the full site will be built in the `/dist` directory.
+and the full site will be built in `spec_json2html/dist`.
+
+
+### Static Generation
+On running the `grunt` command, the Assemble plugin runs builds the website using the JSON specification hierarchy located in `spec_json2html/assets/data` and the handlebars layouts, pages , partials and helpers. Specifically:
+
+- Assemble reads the hierarchy as the JSON object `hierarchy` which is navigated to determine the content of the page being generated.
+- The handlebars files in `spec_json2html/templates/layouts/` describe the parent-level HTML layouts of all pages, independent of their content.
+- The handlebars files in `spec_json2html/pages/` describe the content of the individual pages. That file almost immediately references handlebars partials to dictate the content of children elements.
+- The handlebars partials in `spec_json2html/templates/partials` define how each child element of the SHR hierarchy should be presented in the HTML. The context of these partials is dictated by where we are in our navigation of the JSON hierarchy. Often these partials will call on children partials, located in the same directory; these calls often result in a context shift from the current element (.e.g a Namespace) to one of it's children (e.g. a specific entry).
+- The handlebars helpers in `spec_json2html/templates/helpers` are used when logic that is not inherent in Handlebars is needed such as equality checking, console logging, so on.
+
+To get a feel for the navigation, start from the file `namespace.hbs` in `spec_json2html/pages/` and open up partials as they are referenced hierarchically.
+
+### Dynamic Generation
+When dynamically generating our pages, the same logic is used as is refernced above. Since this generation is clientside, assets are loaded to the client through the following work-arounds:
+
+- Handlebars is bundled as a library using browserify, which means we can access the Handlebars object as we normally would in out JavaScript code.
+- Any handlebars templates that are used in generation are stored in the assets folder.
+- Any handlebars templates that are used have identifying `div`'s located in the head of the HTML file, along with src links that refernce their location in the assets folder.
+- Helpers are loaded manually via a function included in `hb_shr.js`. Moving forward this should be done dynamically using the `_config.yml` file at the build time of the static site.
+
+Providing these references to all of the component Handlebars templates and partials, as well as the definition of all necessary Handlebars helpers, allows us to dynamically generate any page clientside.
 
 
 <a id="testing"> </a>
 ##Testing the Project
-To run tests on this project, run the following:
+To run tests on this project, run the following in `spec_json2html/`:
 ```
 grunt test
 ```
-Results from the test will pop up in your terminal, and will be recorded to the results.txt file in the central directory.
+Results from the test will pop up in your terminal, and will be recorded to the results.txt file in your current directory.
 
 
 <a id="directory"> </a>
 ## Directory Structure
 Below you willl find the structure of folders, with a brief description of what they contain:
 ```
-    SSVE
+    spec_json2html/
     ├── node_modules/            # Node modules necessary for generation
     ├── templates/               # Templates for each element in the hiearchy
     |    ├── helpers             # All of the handlebars helpers
@@ -110,7 +132,7 @@ The MITRE Corporation is a not-for-profit organization working in the public int
 
 ### License
 
-Copyright 2016 The MITRE Corporation
+Copyright 2017 The MITRE Corporation
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

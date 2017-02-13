@@ -28,10 +28,10 @@
             type: "GET", 
             async: false
           });
-        console.log(template.responseText)
+        // console.log(template.responseText)
 
         var tempScript = Handlebars.compile(template.responseText);
-        console.log(Handlebars.partials);
+        // console.log(Handlebars.partials);
         var html = tempScript({hierarchy: hierarchy});
         $("#dynamic_content").append(html); 
       });
@@ -71,29 +71,29 @@
       }
     });
   }
-
+  
   // Register all the partials that have been referenced on the clientside page
-  function registerPartials(templates, hierarchy) { 
-    var dfd = $.Deferred(); 
-    
-    dfd.done(function () { 
-      $.each($('#partials script').get(), function(index, value) {
-        var partial = $('#partials script').get(index)
-        if (partial != 'schema_shr') { 
-          var id = $(partial).attr('id')
-          $.get($(partial).attr('src'), function(data, status) {
-            if (status == "success") { 
-              Handlebars.registerPartial(id, data);
-            } else { 
-              console.log('Error loading partial with ID: ' + id + "\nError: " + err);
-            }
-          })
+  function registerPartials(templates, hierarchy) {     
+    $.each($('#partials script').get(), function(index, value) {
+      var partial = $('#partials script').get(index)
+      if (partial != 'schema_shr') { 
+        var id = $(partial).attr('id')
+        var data = $.ajax({
+          url: $(partial).attr('src'),
+          type: "GET", 
+          async: false
+        })
+        // console.log(data)
+        if (data.status == 200) { 
+          // console.log('registered ' + id);
+          Handlebars.registerPartial(id, data.responseText);
+        } else { 
+          // console.log('registered ' + id);
+          console.error('Error loading partial with ID: ' + id + "\nError: " + data.statusText);
         }
-      });
-    }).done(function () {
-      console.log('finished registering partials')
-    }) 
-    dfd.resolve();
+      }
+    });
+    console.log('finished registering partials'); 
   }
 
   // (Manually) register the heleprs used in generating the Handlebars templates. 

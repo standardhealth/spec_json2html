@@ -10,7 +10,7 @@ data:       data
 
 
 templates:  templates
-includes:   <%= site.templates %>/includes/*.hbs
+includes:   <%= site.templates %>/partials/**.hbs
 layouts:    <%= site.templates %>/layouts
 layout:     default.hbs
 
