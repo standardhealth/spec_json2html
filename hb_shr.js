@@ -1,5 +1,10 @@
 (function() {
   var Handlebars = require('handlebars');
+  var page = require('page');
+
+  var App = window.App = {
+      // No variables to be stored about the application now. 
+  };
 
   String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -7,9 +12,16 @@
   $(document).ready(function() {
     registerPartials();
     registerHelpers();
-
   });
 
+  // TODO: Use page.js in our single page application to 
+  //       enable backspacing on dynamically generated content.
+  //
+  // page('/', function (a) {
+  //   console.log("pages works ");
+  // })
+  // page();
+  
     $("#load_hierarchy").click(function() {
       $.getJSON("assets/data/hierarchy.json",function(data) {
         window.hierarchy = data;
@@ -19,7 +31,7 @@
         });
         hierarchy.index = namespaces;
         addHierarchyIndex(hierarchy.children);
-    console.log('fin addhier')
+        console.log('fin addhier')
 
         /* Call Handlebars.compile on the templates
          and then call the template with hierarchy as the context */
@@ -118,3 +130,8 @@
     });
   }
 })();
+
+App.loadDataElement = (namespace) => {
+  console.log('actually was called');
+  $("#dynamic_content").empty();
+}

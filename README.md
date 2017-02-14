@@ -55,7 +55,7 @@ On running the `grunt` command, the Assemble plugin runs builds the website usin
 To get a feel for the navigation, start from the file `namespace.hbs` in `spec_json2html/pages/` and open up partials as they are referenced hierarchically.
 
 ### Dynamic Generation
-When dynamically generating our pages, the same logic is used as is refernced above. Since this generation is clientside, assets are loaded to the client through the following work-arounds:
+When dynamically generating our pages, the same logic is used as is refernced above. Since this generation is clientside, assets are loaded to the client through the following workarounds:
 
 - Handlebars is bundled as a library using browserify, which means we can access the Handlebars object as we normally would in out JavaScript code.
 - Any handlebars templates that are used in generation are stored in the assets folder.
