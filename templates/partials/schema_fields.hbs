@@ -10,9 +10,6 @@
     {{#each children as |child| }}
       {{#if child}}
         <tr>
-          {{log child}}
-          {{log identifier}}
-          {{log identifier.namespace}}
           {{#if identifier}}
             <td><a href="{{getNamespaceFilename identifier.namespace}}#{{identifier.label}}">{{identifier.label}}</a></td>
             <td>{{min}} - {{max}}</td>
