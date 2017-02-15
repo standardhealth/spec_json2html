@@ -36,3 +36,5 @@ partials:
   - schema_quantifiedvalue
   - schema_value
   - schema_identifier
+  - schema_version
+  - schema_fields

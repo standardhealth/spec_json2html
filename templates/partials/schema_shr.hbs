@@ -1,9 +1,14 @@
-<h2>Parsing Specification Hierarchy for: {{hierarchy.label}}</h2>
+<h2>Parsing Specification shr_v4 for: {{shr_v4.label}}</h2>
 
 <div class="container">
-    {{#each hierarchy.children as |child|}}
-      {{#if child}}
-        {{> schema_namespace_list }}
-      {{/if}}
+    {{log shr_v4}}
+    {{#each shr_v4.children}}
+      {{#eq this.label "Namespaces"}}
+        {{#each this.children as |child|}}
+          {{#if child}}
+            {{> schema_namespace_list }}
+          {{/if}}
+        {{/each}}
+      {{/eq}}
     {{/each}}
 </div>

@@ -10,8 +10,8 @@ module.exports.register = function (Handlebars, options, params) {
     String.prototype.capitalize = function() {
       return this.charAt(0).toUpperCase() + this.slice(1);
     }
-    Handlebars.registerHelper('getNamespaceFilename', function(nStatic, nDynamic, context) {
+    Handlebars.registerHelper('getNamespaceName', function(nStatic, nDynamic, context) {
       var name = nStatic !== undefined ? nStatic : nDynamic;
-      return new Handlebars.SafeString(name.split('.')[1].capitalize() + '.html');
+      return new Handlebars.SafeString(name.split('.')[1].capitalize());
     });
 };

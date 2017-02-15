@@ -3,8 +3,20 @@
   var page = require('page');
 
   var App = window.App = {
+    hierarchy: {},
+    namespaces: {},
+    valueset: {}
       // No variables to be stored about the application now. 
   };
+
+  App.loadDataElement = (namespace) => {
+    console.log('actually was called');
+    $("#dynamic_content").empty();
+  }
+
+  App.mapToElement = (namespace, label) => { 
+    console.log('Mapping from current page to namespace: ' + namespace + ' and element: ' + label);
+  }
 
   String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -23,14 +35,15 @@
   // page();
   
     $("#load_hierarchy").click(function() {
-      $.getJSON("assets/data/hierarchy.json",function(data) {
-        window.hierarchy = data;
-        window.namespaces = _.indexBy(hierarchy.children,"label");
-        window.de = _.map(hierarchy.children,function(namespace) {
+      $.getJSON("assets/data/shr_v4.json",function(data) {
+        App.hierarchy = data;
+        App.namespaces = _.indexBy(App.hierarchy.children,"label");
+
+        App.de = _.map(App.hierarchy.children,function(namespace) {
           namespace.index = _.indexBy(namespace.children,"label");
         });
-        hierarchy.index = namespaces;
-        addHierarchyIndex(hierarchy.children);
+        App.hierarchy.index = namespaces;
+        // addHierarchyIndex(hierarchy.children);
         console.log('fin addhier')
 
         /* Call Handlebars.compile on the templates
@@ -40,10 +53,8 @@
             type: "GET", 
             async: false
           });
-        // console.log(template.responseText)
 
         var tempScript = Handlebars.compile(template.responseText);
-        // console.log(Handlebars.partials);
         var html = tempScript({hierarchy: hierarchy});
         $("#dynamic_content").append(html); 
       });
@@ -66,10 +77,8 @@
             item.description = item.label.capitalize();
           }
           if (item.namespace.startsWith("shr.")) {
-         //   console.log("SHR Namespace : " + item.namespace);
             item.idref = hierarchy.index[item.namespace].index[item.label];
           }
-          // console.log("Identifier = " + item);
         }
         addHierarchyIndex(item);
       } else {
@@ -79,7 +88,6 @@
           });
         }
         // not an object, not an array
-        // console.log(item);
       }
     });
   }
@@ -95,12 +103,9 @@
           type: "GET", 
           async: false
         })
-        // console.log(data)
         if (data.status == 200) { 
-          // console.log('registered ' + id);
           Handlebars.registerPartial(id, data.responseText);
         } else { 
-          // console.log('registered ' + id);
           console.error('Error loading partial with ID: ' + id + "\nError: " + data.statusText);
         }
       }
@@ -117,6 +122,11 @@
       var name = nStatic !== undefined ? nStatic : nDynamic;
       return new Handlebars.SafeString(name.split('.')[1]+'.html');
     });
+
+    Handlebars.registerHelper('getNamespaceName', function(nStatic, nDynamic, context) {
+      var name = nStatic !== undefined ? nStatic : nDynamic;
+      return new Handlebars.SafeString(name.split('.')[1]);
+    });
     // Basic conditional checking.
     Handlebars.registerHelper('eq', function(a, b, opts) {
         if (a == b) {
@@ -130,8 +140,3 @@
     });
   }
 })();
-
-App.loadDataElement = (namespace) => {
-  console.log('actually was called');
-  $("#dynamic_content").empty();
-}

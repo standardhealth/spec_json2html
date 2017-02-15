@@ -1,5 +1,39 @@
-<h3><a id="{{label}}"></a>{{label}}</h3>
 
-<p>{{description}} {{> schema_concepts concepts=concepts}}</p>
-
-{{> schema_value value }}
+<h3>
+    <a id="{{label}}"></a>{{label}}
+    {{#if isEntry}}
+        [Entry]
+    {{/if}}
+</h3>
+<p>
+    {{#if description}}
+        {{description}}
+    {{else}}
+        TBD 
+    {{/if}}
+    {{> schema_concepts}}
+</p>
+{{#if basedOn }}
+{{!--     {{log "Begin basedon"}} --}}
+{{!--     {{> schema_basedon origvalue=value fields=children}} --}}
+{{!--     {{log basedOn}}
+    {{log value}}
+    {{log children}}
+    {{log "End basedon
+    "}} --}}
+{{else}}
+    {{#if value}}
+        {{!-- {{log "Begin Value"}}
+        {{log value}}
+        {{log "End Value
+        "}} --}}
+        {{> schema_value}}
+    {{else}}
+{{!--         {{log "Begin molecular element."}}
+        {{log children}}
+        {{log "End molecular element?
+        "}} --}}
+        {{> schema_fields }}
+    {{/if}}
+    {{!--     {{> schema_value value }} --}}
+{{/if}}
