@@ -15,12 +15,17 @@ This project will convert hierarchical json output of the SHR specification into
 ## Downloading the Project
 Before getting started on any development, one will need to have the following installed:
 
-- [Git](https://git-scm.com/), our version controlling tool.
+- [Git](https://git-scm.com/), our version control tool.
     - If you have never used git or github before, you should check out [this tutorial](https://try.github.io/levels/1/challenges/1) and/or [this reference sheet](http://gitref.org/index.html).
 - [Nodejs.org](https://nodejs.org/en/), the JavaScript Runtime we use.
 - [GruntJs](http://gruntjs.com/), the JavaScript task runner we use.
 - For Windows users, [Cmder](http://cmder.net/) is a powerful command line emulator to serve as alternative to powershell. This has been helpful for me.
 
+From the command line, execute the following command in the directory where you want the spec_json2html directory to be put:
+
+git clone https://github.com/standardhealth/spec_json2html.git
+
+that will create a directory called spec_json2html within the current working directory. Future instructions below will reference the spec_json2html directory. 
 
 <a id="environment"> </a>
 ##Setting Up the Environment
@@ -44,11 +49,11 @@ and the full site will be built in `spec_json2html/dist`.
 
 
 ### Static Generation
-On running the `grunt` command, the Assemble plugin runs builds the website using the JSON specification hierarchy located in `spec_json2html/assets/data` and the handlebars layouts, pages , partials and helpers. Specifically:
+On running the `grunt` command, the Assemble plugin builds the website using the JSON specification hierarchy located in `spec_json2html/assets/data` and the handlebars layouts, pages , partials and helpers. Specifically:
 
 - Assemble reads the hierarchy as the JSON object `hierarchy` which is navigated to determine the content of the page being generated.
 - The handlebars files in `spec_json2html/templates/layouts/` describe the parent-level HTML layouts of all pages, independent of their content.
-- The handlebars files in `spec_json2html/pages/` describe the content of the individual pages. That file almost immediately references handlebars partials to dictate the content of children elements.
+- The handlebars files in `spec_json2html/pages/` describe the content of the individual pages. That file almost immediately references handlebars partials to dictate the content of child elements.
 - The handlebars partials in `spec_json2html/templates/partials` define how each child element of the SHR hierarchy should be presented in the HTML. The context of these partials is dictated by where we are in our navigation of the JSON hierarchy. Often these partials will call on children partials, located in the same directory; these calls often result in a context shift from the current element (.e.g a Namespace) to one of it's children (e.g. a specific entry).
 - The handlebars helpers in `spec_json2html/templates/helpers` are used when logic that is not inherent in Handlebars is needed such as equality checking, console logging, so on.
 
@@ -76,7 +81,7 @@ Results from the test will pop up in your terminal, and will be recorded to the 
 
 <a id="directory"> </a>
 ## Directory Structure
-Below you willl find the structure of folders, with a brief description of what they contain:
+Below you will find the structure of folders, with a brief description of what they contain:
 ```
     spec_json2html/
     ├── node_modules/            # Node modules necessary for generation
@@ -120,6 +125,7 @@ Below you will find a comprehensive list of the central technologies and tools t
 - [Chai](http://chaijs.com/), a BDD / TDD assertion library for node, used to define the checks that mocha uses in its test cases.
 - [jQuery](https://jquery.com/), a JavaScript library enabling quick navigation and manipulation of HTML, used throughout to write efficient and capable JavaScript that can directly modify and alter the DOM.
 - [Travis](https://travis-ci.com/), a continuous integration service, used to continually run tests on any new pushes made to Github.
+- [Browserify] (http://browserify.org/), lets you require('modules') in the browser by bundling up all of your dependencies much like you can do in Node.js
 
 
 <a id="team"></a>
