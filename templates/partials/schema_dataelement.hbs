@@ -9,31 +9,37 @@
     {{#if description}}
         {{description}}
     {{else}}
-        TBD 
+        Description is still in progress. 
     {{/if}}
     {{> schema_concepts}}
 </p>
-{{#if basedOn }}
-{{!--     {{log "Begin basedon"}} --}}
-{{!--     {{> schema_basedon origvalue=value fields=children}} --}}
-{{!--     {{log basedOn}}
-    {{log value}}
-    {{log children}}
-    {{log "End basedon
-    "}} --}}
-{{else}}
-    {{#if value}}
-        {{!-- {{log "Begin Value"}}
+<table>
+  <thead>
+    <tr>
+{{!--       <th>Value</th>
+      <th>Count</th>
+      <th>Description</th> --}}
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {{#if basedOn }}
+    {{!--     {{log "Begin basedon"}} --}}
+    {{!--     {{> schema_basedon origvalue=value fields=children}} --}}
+    {{!--     {{log basedOn}}
         {{log value}}
-        {{log "End Value
-        "}} --}}
-        
-    {{else}}
-{{!--         {{log "Begin molecular element."}}
         {{log children}}
-        {{log "End molecular element?
+        {{log "End basedon
         "}} --}}
+    {{else}}
+        {{#if value}}
+            {{> schema_value value }}
+        {{/if}}
         {{> schema_fields }}
     {{/if}}
-    {{!--     {{> schema_value value }} --}}
-{{/if}}
+
+  </tbody>
+</table>

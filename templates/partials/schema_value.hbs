@@ -1,22 +1,25 @@
-<table>
-  <thead>
+{{#eq type "IdentifiableValue"}}  
+  {{>schema_field isValue=true isChoice=isChoice}}
+{{else}}
+  {{#eq type "ChoiceValue"}}
     <tr>
-      <th>value</th>
-      <th>count</th>
-      <th>description</th>
-    </tr>
-  </thead>
-  <tbody>
-  {{#if valueset}}
-    <tr>
-      <td>{{valueset}}</td>
+      <td>Value: Choice</td>
       <td></td>
       <td></td>
     </tr>
-  {{/if}}
-  {{#if identifier}}
-      {{> schema_identifier identifier}}
-  {{/if}}
-  </tbody>
-  </table>
+    {{#each value as |val|}}
+      <tr>
+        {{>schema_value val isChoice='true'}}
+      </tr>
+    {{/each}} 
+  {{else}}
+  {{/eq}}
 {{/eq}}
+{{!--  <tr>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr> --}}
+{{!--   {{#if identifier}}
+    {{> schema_identifier identifier}}
+{{/if}} --}}

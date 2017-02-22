@@ -1,26 +1,7 @@
-<table>
-  <thead>
+{{#each children as |child| }}
+  {{#if child}}
     <tr>
-      <th>Value</th>
-      <th>Count</th>
-      <th>Description</th>
+      {{>schema_field isChoice=isChoice val=val}}
     </tr>
-  </thead>
-  <tbody>
-    {{#each children as |child| }}
-      {{#if child}}
-        <tr>
-          {{#if identifier}}
-            <td><a href="{{getNamespaceFilename identifier.namespace}}#{{identifier.label}}">{{identifier.label}}</a></td>
-            <td>{{min}} - {{max}}</td>
-            <td>{{ getElementDescription @root.shr_v4 identifier.namespace identifier.label }}</td>
-          {{else}}
-            <td><a href="#">{{identifier.text}}</a></td>
-            <td>{{min}} - {{max}}</td>
-            <td>TBD</td>
-          {{/if}}
-        </tr>
-      {{/if}}
-    {{/each}}
-  </tbody>
-</table>
+  {{/if}}
+{{/each}}

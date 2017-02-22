@@ -1,0 +1,13 @@
+{{#unless max}}
+    {{min}} or more
+{{else}}
+    {{#eq min 0}}
+        {{#eq max 1}}
+            Optional
+        {{else}}
+            {{min}} - {{max}}
+        {{/eq}}
+    {{else}}
+        {{min}} - {{max}}
+    {{/eq}}
+{{/unless}}
