@@ -1,11 +1,11 @@
 <div class="container markdown-body">
     <div class="row">
-      <h1>{{getNamespaceName label}}{{> schema_version version=grammarVersion}}</h1> 
+      <h1>{{getNamespaceName label}}{{> shr_version version=grammarVersion}}</h1> 
       <h2 style="border: none;">{{description}}</h2>
       <div class="spec-data-elements">
         {{#each children as |child|}}
           {{#if child}}
-            {{> schema_dataelement curNamespace=../../label follow=../../follow }}
+            {{> shr_dataelement curNamespace=../../label follow=../../follow }}
           {{/if}}
         {{/each}}
       </div>

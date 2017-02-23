@@ -1,7 +1,7 @@
 {{#each children as |child| }}
   {{#if child}}
     <tr>
-      {{>schema_field isChoice=isChoice val=val}}
+      {{>shr_field child isChoice=isChoice val=val}}
     </tr>
   {{/if}}
 {{/each}}

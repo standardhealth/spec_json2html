@@ -1,0 +1,27 @@
+{{#eq type "BooleanConstraint"}}
+	is {{this.value}}
+{{else}}
+	{{#eq type "CodeConstraint"}}
+		is {{> shr_concept code}}
+	{{else}}
+		{{#eq type "ValueSetConstraint"}}
+			{{#if valueset}}
+			  from <a href="{{valueset}}"><code>{{valueset}}</code></a>
+			{{else}}
+			  from valueset <code>TBD</code>
+			{{/if}}								
+		{{else}}
+			{{#eq type "IncludesCodeConstraint"}}
+				includes {{> shr_concept code}} 
+			{{else}}
+				{{#eq type "TypeConstraint"}}
+					is of type {{> shr_label namespace=isA._namespace label=isA._name }}
+				{{else}}
+					{{log "unkown constraint type"}}
+					{{log type}}
+					{{type}}
+				{{/eq}}
+			{{/eq}}
+		{{/eq}}
+	{{/eq}}
+{{/eq}}

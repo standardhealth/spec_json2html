@@ -1,0 +1,28 @@
+
+<h3>
+    <a id="{{label}}"></a>{{label}}
+    {{#if isEntry}}
+        [Entry]
+    {{/if}}
+</h3>
+<p>
+    {{#if description}}
+        {{description}}
+    {{else}}
+        No Description 
+    {{/if}}
+    {{> shr_concepts}}
+</p>
+{{#if basedOn}}
+	{{#each basedOn as |basedon|}}
+		<p>{{> shr_basedon basedon obj=../this }}</p>
+	{{/each}}
+{{/if}}
+<table>
+  <tbody>
+        {{#if value}}
+            {{> shr_value value }}
+        {{/if}}
+		{{> shr_fields }}
+  </tbody>
+</table>

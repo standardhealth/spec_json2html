@@ -1,0 +1,25 @@
+{{#unless max includeZero=true}}
+    {{min}} or more
+{{else}}
+    {{#eq min 0}}
+        {{#eq max 1}}
+            Optional
+        {{else}}
+			{{#eq max 0}}
+				Not Used
+			{{else}}
+				{{min}} - {{max}}
+			{{/eq}}
+        {{/eq}}
+    {{else}}
+		{{#eq min 1}}
+			{{#eq max 1}}
+				Required
+			{{else}}
+				{{min}} - {{max}}
+			{{/eq}}
+		{{else}}
+        {{min}} - {{max}}
+		{{/eq}}
+    {{/eq}}
+{{/unless}}

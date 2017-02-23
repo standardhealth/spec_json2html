@@ -1,0 +1,11 @@
+{{!-- {{#if this}} --}}
+	{{#if namespace}}
+		{{#eq namespace "primitive"}}
+			<a href="#"><code>{{label}}</code></a>    
+		{{else}}
+			<a href="{{getNamespaceFilename namespace}}#{{label}}"> <code>{{label}}</code></a>
+		{{/eq}}
+	{{/if}}
+{{!-- {{else}}
+    <a href="#">{{text}}</a>
+{{/if}} --}}

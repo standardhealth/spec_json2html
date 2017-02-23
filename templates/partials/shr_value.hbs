@@ -1,5 +1,5 @@
 {{#eq type "IdentifiableValue"}}  
-  {{>schema_field isValue=true isChoice=isChoice}}
+  {{>shr_field isValue=true isChoice=isChoice}}
 {{else}}
   {{#eq type "ChoiceValue"}}
     <tr>
@@ -9,17 +9,9 @@
     </tr>
     {{#each value as |val|}}
       <tr>
-        {{>schema_value val isChoice='true'}}
+        {{>shr_value val isChoice='true'}}
       </tr>
     {{/each}} 
   {{else}}
   {{/eq}}
 {{/eq}}
-{{!--  <tr>
-  <td></td>
-  <td></td>
-  <td></td>
-</tr> --}}
-{{!--   {{#if identifier}}
-    {{> schema_identifier identifier}}
-{{/if}} --}}

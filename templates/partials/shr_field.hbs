@@ -1,0 +1,15 @@
+<TD>{{#if isChoice}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;{{else}}{{#if isValue }}Value:&nbsp;{{/if}}{{/if}}{{#if this.identifier }}{{> shr_label this.identifier }}{{/if}}</TD>
+<TD>
+	{{> shr_basedon_constraints }}
+</TD>
+<TD>{{#if this.min includeZero=true}}{{> shr_cardinality this }}{{/if}}</TD>
+<TD>
+	{{#eq this.min 0}}
+		{{#eq this.max 0}}
+		{{else}}
+			{{> shr_field_description}}
+		{{/eq}}
+	{{else}}
+		{{> shr_field_description }}
+	{{/eq}}
+</TD>
