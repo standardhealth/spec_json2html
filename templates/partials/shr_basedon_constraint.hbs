@@ -2,7 +2,11 @@
 	is {{this.value}}
 {{else}}
 	{{#eq type "CodeConstraint"}}
-		is {{> shr_concept code}}
+		{{#if path}}
+			{{pathtodisplay path}} is {{> shr_concept code}}
+		{{else}}
+			is {{> shr_concept code}}
+		{{/if}}
 	{{else}}
 		{{#eq type "ValueSetConstraint"}}
 			{{#if valueset}}
@@ -15,7 +19,7 @@
 				includes {{> shr_concept code}} 
 			{{else}}
 				{{#eq type "TypeConstraint"}}
-					is of type {{> shr_label namespace=isA._namespace label=isA._name }}
+					is a {{> shr_label namespace=isA._namespace label=isA._name }}
 				{{else}}
 					{{log "unkown constraint type"}}
 					{{log type}}

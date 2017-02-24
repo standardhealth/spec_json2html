@@ -1,8 +1,8 @@
 
 <h3>
     <a id="{{label}}"></a>{{label}}
-    {{#if isEntry}}
-        [Entry]
+	{{#if isEntry}}
+		[<a href="Base.html#Entry">Entry</a>]
     {{/if}}
 </h3>
 <p>
@@ -22,6 +22,14 @@
   <tbody>
         {{#if value}}
             {{> shr_value value }}
+		{{else}}
+			{{#if basedOn}}
+				{{#each basedOn as |basedon|}}
+					{{#elementvalue @root.shr_v4 namespace label }}
+						{{>shr_field isValue=true isChoice=isChoice isFromBase=true base=@base}}
+					{{/elementvalue}}
+				{{/each}}
+			{{/if}}
         {{/if}}
 		{{> shr_fields }}
   </tbody>

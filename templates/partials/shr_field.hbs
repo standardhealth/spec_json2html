@@ -1,4 +1,4 @@
-<TD>{{#if isChoice}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;{{else}}{{#if isValue }}Value:&nbsp;{{/if}}{{/if}}{{#if this.identifier }}{{> shr_label this.identifier }}{{/if}}</TD>
+<TD>{{#if isFromBase}}[{{base}}]{{/if}}{{#if isChoice}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;{{else}}{{#if isValue }}Value:&nbsp;{{/if}}{{/if}}{{#if this.identifier }}{{> shr_label this.identifier }}{{else}}<code>&nbsp;{{text}}</code> (TBD){{/if}}</TD>
 <TD>
 	{{> shr_basedon_constraints }}
 </TD>
