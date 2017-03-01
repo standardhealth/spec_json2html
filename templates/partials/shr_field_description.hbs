@@ -1,9 +1,0 @@
-{{#if this.identifier}}
-	{{#eq this.identifier.namespace "primitive"}}
-		{{!-- Nothing as of now --}}
-	{{else}}
-		{{ getElementDescription @root.shr_v4 this.identifier.namespace this.identifier.label }}
-	{{/eq}}
-{{else}}
-	TBD
-{{/if}}

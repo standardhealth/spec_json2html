@@ -21,9 +21,15 @@
 				{{#eq type "TypeConstraint"}}
 					is a {{> shr_label namespace=isA._namespace label=isA._name }}
 				{{else}}
-					{{log "unkown constraint type"}}
-					{{log type}}
-					{{type}}
+					{{#eq type "CardConstraint"}}
+					{{else}}
+						{{#eq type undefined}}
+						{{else}}
+							{{log "unkown constraint type"}}
+							{{log type}}
+							{{type}}
+						{{/eq}}
+					{{/eq}}
 				{{/eq}}
 			{{/eq}}
 		{{/eq}}

@@ -1,16 +1,16 @@
-{{#each children as |child| }}
+{{#each fieldList as |child| }}
   {{#if child}}
     <tr>
-      {{>shr_field child isChoice=isChoice val=val isFromBase=false}}
+      {{>shr_field child childValue=false}}
     </tr>
+	{{#if child.values}}
+		{{#each child.values as |subvalue|}}
+			{{#if subvalue}}
+				<tr>
+				  {{>shr_field subvalue childValue=true}}
+				</tr>			
+			{{/if}}
+		{{/each}}
+	{{/if}}
   {{/if}}
 {{/each}}
-{{#if basedOn}}
-	{{#each basedOn as |basedon|}}
-		{{#eachelementchild @root.shr_v4 basedon.namespace basedon.label ../children getparent=true }}
-			<tr>
-			  {{>shr_field this isChoice=isChoice val=val isFromBase=true base=@base}}
-			</tr>
-		{{/eachelementchild}}
-	{{/each}}
-{{/if}}

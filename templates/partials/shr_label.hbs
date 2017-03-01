@@ -6,7 +6,15 @@
 			<a href="{{getNamespaceFilename namespace}}#{{label}}"> <code>{{label}}</code></a>
 		{{/eq}}
 	{{else}}
-		<I>TBD</I>
+		{{#if label}}
+			{{label}}
+		{{else}}
+			{{#if text}}
+			<code>{{text}}</code> (<I>TBD</I>)
+			{{else}}
+			<I>TBD</I>
+			{{/if}}
+		{{/if}}
 	{{/if}}
 {{!-- {{else}}
     <a href="#">{{text}}</a>

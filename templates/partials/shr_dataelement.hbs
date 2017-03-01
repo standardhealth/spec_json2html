@@ -15,21 +15,22 @@
 </p>
 {{#if basedOn}}
 	{{#each basedOn as |basedon|}}
-		<p>{{> shr_basedon basedon obj=../this }}</p>
+		<p>{{> shr_basedon basedon }}</p>
 	{{/each}}
 {{/if}}
 <table>
   <tbody>
-        {{#if value}}
-            {{> shr_value value }}
-		{{else}}
-			{{#if basedOn}}
-				{{#each basedOn as |basedon|}}
-					{{#elementvalue @root.shr_v4 namespace label }}
-						{{>shr_field isValue=true isChoice=isChoice isFromBase=true base=@base}}
-					{{/elementvalue}}
+        {{#if valueRecord }}
+            {{>shr_field valueRecord childValue=false }}
+			{{#if valueRecord.values}}
+				{{#each valueRecord.values as |subvalue|}}
+					{{#if subvalue}}
+						<tr>
+						  {{>shr_field subvalue childValue=true}}
+						</tr>			
+					{{/if}}
 				{{/each}}
-			{{/if}}
+			{{/if}}			
         {{/if}}
 		{{> shr_fields }}
   </tbody>

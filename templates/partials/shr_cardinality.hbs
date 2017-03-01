@@ -1,12 +1,15 @@
 {{#unless max includeZero=true}}
-    {{min}} or more
+	{{#unless min includeZero=true}}
+	{{else}}
+		{{min}} or more
+	{{/unless}}
 {{else}}
     {{#eq min 0}}
         {{#eq max 1}}
-            Optional
+            optional
         {{else}}
 			{{#eq max 0}}
-				Not Used
+				not used
 			{{else}}
 				{{min}} - {{max}}
 			{{/eq}}
@@ -14,7 +17,7 @@
     {{else}}
 		{{#eq min 1}}
 			{{#eq max 1}}
-				Required
+				required
 			{{else}}
 				{{min}} - {{max}}
 			{{/eq}}
