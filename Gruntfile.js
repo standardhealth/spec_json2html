@@ -329,7 +329,7 @@ module.exports = function(grunt) {
 			  }
 		  });
 		  if (dataelement.valueRecord) {
-			  index = dataelement.valueRecord.cardinality.length - 1;
+			  /*index = dataelement.valueRecord.cardinality.length - 1;
 			  while (index >= 0 && dataelement.valueRecord.cardinality[index].min === undefined && dataelement.valueRecord.cardinality[index].max === undefined) {
 				  index--;
 			  }
@@ -341,7 +341,7 @@ module.exports = function(grunt) {
 				  dataelement.valueRecord.effectivecardinality = {};
 				  dataelement.valueRecord.effectivecardinality.min = dataelement.valueRecord.cardinality[index].min;
 				  dataelement.valueRecord.effectivecardinality.max = dataelement.valueRecord.cardinality[index].max;
-			  }
+			  }*/
 			  if (dataelement.valueRecord.values) {
 				  //console.log(record.values);
 				  _.forEach(dataelement.valueRecord.values, function (subrecord) {
