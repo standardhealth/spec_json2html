@@ -1,4 +1,3 @@
-
 <h3>
     <a id="{{label}}"></a>{{label}}
 	{{#if isEntry}}
@@ -22,6 +21,7 @@
   <tbody>
         {{#if valueRecord }}
             {{>shr_field valueRecord childValue=false }}
+
 			{{#if valueRecord.values}}
 				{{#each valueRecord.values as |subvalue|}}
 					{{#if subvalue}}

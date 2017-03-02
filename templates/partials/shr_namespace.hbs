@@ -3,7 +3,8 @@
       <h1>{{getNamespaceName label}}{{> shr_version version=grammarVersion}}</h1> 
       <h2 style="border: none;">{{description}}</h2>
       <div class="spec-data-elements">
-        {{#each children as |child|}}
+        
+        {{#each children as |child|}}         
           {{#if child}}
             {{> shr_dataelement }}
           {{/if}}
