@@ -9,10 +9,12 @@ pages:      pages
 data:       data
 
 
-templates:  templates
-includes:   <%= site.templates %>/partials/**.hbs
-layouts:    <%= site.templates %>/layouts
-layout:     default.hbs
+templates:        templates
+includes:         <%= site.templates %>/partials/**.hbs
+layouts:          <%= site.templates %>/layouts
+layout:           default.hbs
+shrlayoutstatic:  shrstatic.hbs
+shrdir:           shr
 
 # Extensions
 helpers:

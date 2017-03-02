@@ -463,6 +463,31 @@ module.exports = function(grunt) {
         cwd: '<%= site.pages %>',
         src: 'index.hbs',
         dest: '<%= site.dest %>'
+      }, 
+      contentOnlyPages: { 
+        options : {
+          pages:namespace_pages,
+          layout: '<%= site.shrlayoutstatic %>'
+        },
+        expand: true,
+        files :[{
+          dest: '<%= site.dest %>/<%= site.shrdir %>',
+          src:'!*'
+        }], 
+        rename: function (dest, src) { 
+            msgLog('destination is ... and src is ...', dest, src);
+            return dest + src;
+        }
+      },
+      contentOnlyIndex: {
+        options: {
+          layout: '<%= site.shrlayoutstatic %>' 
+        }, 
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'index.hbs',
+        dest: '<%= site.dest %>/<%= site.shrdir %>'
       }
     },
     mochaTest: {
