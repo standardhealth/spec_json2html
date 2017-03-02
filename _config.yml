@@ -8,7 +8,6 @@ assets:     assets
 pages:      pages
 data:       data
 
-
 templates:        templates
 includes:         <%= site.templates %>/partials/**.hbs
 layouts:          <%= site.templates %>/layouts

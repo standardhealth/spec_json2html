@@ -9,11 +9,11 @@
  */
 var _ = require('lodash');
 function msgLog (msg, ...vars) { 
-    console.log(msg);
-    _.forEach(vars, function(elem) {
-      console.log(elem); 
-    });   
-    console.log('');
+  console.log(msg);
+  _.forEach(vars, function(elem) {
+    console.log(elem); 
+  });   
+  console.log('');
 };
 
 String.prototype.capitalize = function() {
@@ -252,8 +252,6 @@ module.exports = function(grunt) {
     });
   }
   // end GQ created
-  
-  var spec_template = grunt.file.read(`./${site.pages}/namespace.hbs`);
 
   var data = grunt.file.readJSON(`./${site.assets}/${site.data}/shr_v4_fixes.json`);
   var namespacesIndex = _.findIndex(data.children, {label: "Namespaces"})
@@ -340,10 +338,18 @@ module.exports = function(grunt) {
 
   // grunt.file.write('./assets/data/modified-hier.json', JSON.stringify(data))
   
+  var spec_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
   var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
-    item.follow=true;
     return {
       filename:item.label.split('.')[1],  // labels are shr.namespace so we name the page based on the name of the namespace
+      data:item,
+      content:spec_template
+    }
+  });
+
+  var static_namespace_pages =  _.map(data.children[namespacesIndex].children,function(item) {
+    return {
+      filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
       data:item,
       content:spec_template
     }
@@ -429,7 +435,6 @@ module.exports = function(grunt) {
         site: '<%= site %>',
         data: ['<%= site.assets %>/<%= site.data %>/*.{json,yml}'],
 
-
         // Templates
         partials: '<%= site.includes %>',
         layoutdir: '<%= site.layouts %>',
@@ -439,7 +444,7 @@ module.exports = function(grunt) {
         helpers: '<%= site.helpers %>',
         plugins: '<%= site.plugins %>'
       },
-      pages: {
+      namespacePages: {
         options : {
           pages:namespace_pages
         },
@@ -457,37 +462,30 @@ module.exports = function(grunt) {
           src:'!*'
         }]
       },
-      example: {
+      shrStaticNamespacePages: { 
+        options : {
+          layout: '<%= site.shrlayoutstatic %>', 
+          pages: static_namespace_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.shrdir %>/': ['!*']
+        }
+      },
+      index: {
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index.hbs',
         dest: '<%= site.dest %>'
       }, 
-      contentOnlyPages: { 
-        options : {
-          pages:namespace_pages,
-          layout: '<%= site.shrlayoutstatic %>'
-        },
-        expand: true,
-        files :[{
-          dest: '<%= site.dest %>/<%= site.shrdir %>',
-          src:'!*'
-        }], 
-        rename: function (dest, src) { 
-            msgLog('destination is ... and src is ...', dest, src);
-            return dest + src;
-        }
-      },
-      contentOnlyIndex: {
-        options: {
-          layout: '<%= site.shrlayoutstatic %>' 
-        }, 
+      shrStaticIndex: {
+        layout: '<%= site.shrlayoutstatic %>', 
+
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index.hbs',
-        dest: '<%= site.dest %>/<%= site.shrdir %>'
+        dest: '<%= site.dest %>/<%= site.shrdir %>'  
       }
     },
     mochaTest: {
