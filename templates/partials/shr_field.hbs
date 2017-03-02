@@ -9,6 +9,9 @@
 {{/each}}
 {{/if}}
 {{> shr_label }}
+{{#if isTBD}}
+(TBD)
+{{/if}}
 {{#if this.foundin.length }}
 {{#ne this.foundin.[0] this.concretedataelement}}
     {{#if this.foundin.[0]}}
@@ -24,9 +27,6 @@
         {{/eq}} --}}
     {{/if}}
 {{/ne}}
-{{/if}}
-{{#if isTBD}}
-(TBD)
 {{/if}}
 </td>
 <td>
