@@ -94,19 +94,15 @@ module.exports = function(grunt) {
         concreteDataelement.valueRecord.cardinality.unshift({min : dataelement.value.min, max: dataelement.value.max});
       } else {
       if (dataelement.value.type == "ChoiceValue") {
-        //console.log("choice");
         concreteDataelement.valueRecord = newRecord("Choice", "", dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
         concreteDataelement.valueRecord.values = [];
         _.forEach(dataelement.value.value, function(item) {
           //console.log(item);
           if (item.identifier) {
-            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, "", false, true, false, concreteDataelement.label);
+            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
           } else {
-            subrecord = newRecord(item.text, undefined, item, "", false, true, false, concreteDataelement.label);
+            subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
           }
-          //subrecord.effectivecardinality = {};
-          //subrecord.effectivecardinality.min = subrecord.cardinality.min;
-          //subrecord.effectivecardinality.max = subrecord.cardinality.max;
           concreteDataelement.valueRecord.values.push(subrecord);
         });
         //console.log(concreteDataelement.valueRecord);
@@ -123,16 +119,24 @@ module.exports = function(grunt) {
   var createFieldList = function(concreteDataelement, namespace, dataelement) {
     var fieldName, fieldNamespace;
     //if (concreteDataelement.fieldList) { // if the data element we're building field list for has a field list already, add to it
-      var record;
+      var record, subrecord;
+	  var index = 0;
       _.forEach(dataelement.children, function(field) {
-        if (field.type != "Incomplete") {
+		index = index + 1;
+		if (field.type != "Incomplete") {
           var fieldValues = [];
-          if (field.identifier) { fieldName = field.identifier.label ; fieldNamespace = field.identifier.namespace } else { fieldName = field.text; }
-          if (concreteDataelement.fieldMap) {
-            record = concreteDataelement.fieldMap[fieldName];  
-          } else {
-            record = undefined;
-          }
+  		  if (field.type === "ChoiceValue") {
+			  fieldName = "Choice";
+			  fieldNamespace = "";
+			  record = undefined;
+		  } else {
+			  if (field.identifier) { fieldName = field.identifier.label ; fieldNamespace = field.identifier.namespace } else { fieldName = field.text; fieldNamespace = ""; }
+			  if (concreteDataelement.fieldMap) {
+				record = concreteDataelement.fieldMap[fieldName];  
+			  } else {
+				record = undefined;
+			  }
+		  }
           if (record) { // found existing record for field so update it
             // msgLog("Changing the foundin of ... to include ...", record.concretedataelement, dataelement);
             record.foundin.unshift(dataelement.label);
@@ -143,7 +147,17 @@ module.exports = function(grunt) {
             if (concreteDataelement.fieldList === undefined) concreteDataelement.fieldList = [];
             concreteDataelement.fieldList.push(record);
           }
-          
+		  
+  		  if (field.type === "ChoiceValue") {
+			_.forEach(field.value, function(item) {
+			  if (item.identifier) {
+				subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
+			  } else {
+				subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
+			  }
+			  fieldValues.push(subrecord);
+			});
+		  }
           if (field.constraints && field.constraints.length > 0) {
             _.forEach(field.constraints, function (c) {
               if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
@@ -151,6 +165,8 @@ module.exports = function(grunt) {
                   var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA._name});
                   var isafield = concreteDataelement.fieldList[isafieldindex];
                   concreteDataelement.fieldList.splice(isafieldindex, 1); // remove is a field from concrete data element's field list
+				  //console.log(isafield);
+				  isafield.isSubElement = true;
                   fieldValues.push(isafield); // put it as a subfield to current field instead
                 }
               }
@@ -159,17 +175,17 @@ module.exports = function(grunt) {
                 } else {
                 //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
                 
-                var pieces, name, namespace, subfield, subrecord;
+                var pieces, pname, pnamespace, subfield, subrecord;
                 var elementPieces = c.path.split(':');
                 // need a list of name and namespace and then use last subfield as field in newRecord
                 var nameList = [], namespaceList = [];
                 _.forEach(elementPieces, function(elementPiece) {
                   pieces = elementPiece.split('.');
-                  name = pieces.pop();
-                  namespace = pieces.join('.');
-                  nameList.push(name);
-                  namespaceList.push(namespace);
-                  subfield = namespaces[namespace].index[name];
+                  pname = pieces.pop();
+                  pnamespace = pieces.join('.');
+                  nameList.push(pname);
+                  namespaceList.push(pnamespace);
+                  subfield = namespaces[pnamespace].index[pname];
                   if (subfield.constraints === undefined) {
                     subfield.constraints = [];
                   }
@@ -181,9 +197,9 @@ module.exports = function(grunt) {
                   }
                 });
                 if (nameList.length == 1) {
-                  subrecord = newRecord(name, namespace, subfield, field.label, false, false, true, record.concretedataelement);
+                  subrecord = newRecord(pname, pnamespace, subfield, dataelement.label, false, false, true, record.concretedataelement);
                 } else {
-                  subrecord = newRecord(nameList, namespaceList, subfield, field.label, false, false, true, record.concretedataelement);
+                  subrecord = newRecord(nameList, namespaceList, subfield, dataelement.label, false, false, true, record.concretedataelement);
                 }
                 if (c.type === 'CardConstraint') {
                   subrecord.effectivecardinality = {};
@@ -200,10 +216,6 @@ module.exports = function(grunt) {
               }
             });
           }
-
-          
-          
-          
           if (fieldValues.length > 0) {
             record.values = fieldValues;
           }
@@ -212,17 +224,6 @@ module.exports = function(grunt) {
           console.log(field);
         }
       });
-/*    } else { // create the initial field list for this data element
-      dataelement.fieldList = _.map(dataelement.children, function(field) {
-        if (field.type != "Incomplete") {
-        if (field.identifier) { fieldName = field.identifier.label ; fieldNamespace = field.identifier.namespace } else { fieldName = field.text; }
-        return newRecord(fieldName, fieldNamespace, field, dataelement.label, false, false, false, concreteDataelement.label);
-        } else {
-          console.log("ERROR 5: Incomplete type for " + dataelement.label + ": ");
-          console.log(field);
-        }
-      });
-    }*/
     // build or add to record for value of data element
     createValueRecord(concreteDataelement, namespace, dataelement);
     // rebuild the map of fields for the element from the field list
@@ -254,7 +255,7 @@ module.exports = function(grunt) {
   
   var spec_template = grunt.file.read(`./${site.pages}/namespace.hbs`);
 
-  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/shr_v4.json`);
+  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/shr_v4_fixes.json`);
   var namespacesIndex = _.findIndex(data.children, {label: "Namespaces"})
   // for each namespace:
   var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
