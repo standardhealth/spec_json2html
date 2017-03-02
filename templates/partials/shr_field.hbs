@@ -1,9 +1,16 @@
 <td>
-{{#if childValue}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
-{{#if childValue}}where{{/if}}
-{{#if isChoice}}|&nbsp;{{else}}{{#if isValue }}Value:&nbsp;{{/if}}{{/if}}
-{{#if childValue}}{{else}}
+{{#if childValue}}
+    {{!-- If it's a child value and a choice... --}}
+    {{#eq childValue isChoice }}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {{!-- Else its a stipulation about the parent --}}
+    {{else}}
+        where
+    {{/eq}}
 {{/if}}
+{{#if isChoice}}|&nbsp;{{else}}{{#if isValue }}Value:&nbsp;{{/if}}{{/if}}
+{{!-- {{#if childValue}}{{else}}
+{{/if}} --}}
 {{#if isSubElement}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with{{/if}}
 {{#if identifierList }}
 {{#each identifierList as |i|}}
