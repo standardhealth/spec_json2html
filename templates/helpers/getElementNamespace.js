@@ -21,8 +21,7 @@ module.exports.register = function (Handlebars, options, params) {
         if (namespaceContainingElement) { 
             return namespaceContainingElement.label;
         } else { 
-            console.log('failed to find in ns')
-            console.log(elemLabel)
+            console.log('failed to find ' + elemLabel + ' in ns')
             console.log('putting actor as a placeholder for now')
             return "shr.actor"
         }
