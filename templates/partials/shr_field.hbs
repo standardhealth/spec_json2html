@@ -14,11 +14,14 @@
     {{#if this.foundin.[0]}}
         <sup><a data-toggle="tooltip" data-placement="right" title="Found in {{this.foundin.[0]}}" data-original-title="Found in {{this.foundin.[0]}}" href="/{{getNamespaceFilename (getElementNamespace @root.shr_v4 this.foundin.[0])}}#{{this.foundin.[0]}}" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a></sup>
     {{else}}
+        {{log "In foundin corner case"}}
+{{!--         {{log this}}
         {{#eq this.namespace "primitive"}}
             <sup><a data-toggle="tooltip" data-placement="right" title="Is primitive type" data-original-title="Is primitive type" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a></sup>
         {{else}}
+            {{log 'in this else case'}}
 			<sup><a data-toggle="tooltip" data-placement="right" title="Found in {{this.label}}" data-original-title="Found in {{this.label}}" href="/{{getNamespaceFilename (getElementNamespace @root.shr_v4 this.label)}}#{{this.label}}" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a></sup>
-        {{/eq}}
+        {{/eq}} --}}
     {{/if}}
 {{/ne}}
 {{/if}}

@@ -337,9 +337,9 @@ module.exports = function(grunt) {
     });
   });
   // end GQ created
-  
-  // addHierarchyIndex(data.children[namespacesIndex].children,data);
 
+  // grunt.file.write('./assets/data/modified-hier.json', JSON.stringify(data))
+  
   var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
     item.follow=true;
     return {
@@ -348,7 +348,6 @@ module.exports = function(grunt) {
       content:spec_template
     }
   });
-
 
   // Project Configuration
   grunt.initConfig({
