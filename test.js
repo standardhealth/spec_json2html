@@ -8,7 +8,7 @@ const validator = require('html-validator');
 
 const ymlFile   = '_config.yml';
 const homepage  = 'index.html';
-const linkPatternNamespace = function(name) { return `href="/${name}/index.html"`};
+const linkPatternNamespace = function(name) { return `href="/shr/${name}/index.html"`};
 const linkPatternElem = function(elem) {return `#${elem}`}
 const namePatternElem = function(elem) {return `id="${elem}"`}
 
@@ -253,7 +253,7 @@ function getYMLFile(name) {
 // Returns the namespace file corresponding to named html file
 function getNamespaceFile(name) {
     const config = getYMLFile(ymlFile);
-    return fs.readFileSync(`${__dirname}/${config.dest}/${name}/index.html`,'utf8')
+    return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/${name}/index.html`,'utf8')
 }
 
 // Returns the namespace in processed form so it appears as it is in rendered html,=
