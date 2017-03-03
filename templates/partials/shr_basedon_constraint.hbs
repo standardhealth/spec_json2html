@@ -11,7 +11,7 @@
 		{{#eq type "ValueSetConstraint"}}
 			{{#if valueset}}
 				{{#if (isSHRValueSet valueset)}}
-					from <a><code data-toggle="tooltip" data-placement="top" title="Valueset not yet defined" data-original-title="Valueset not yet available">{{valueset}}</code></a>
+					from <a><code data-toggle="tooltip" data-placement="top" title="Valueset not yet available" data-original-title="Valueset not yet available">{{valueset}}</code></a>
 				{{else}}
 					from <a href="{{valueset}}"><code>{{valueset}}</code></a>
 				{{/if}}
