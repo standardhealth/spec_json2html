@@ -349,7 +349,7 @@ module.exports = function(grunt) {
 
   var static_namespace_pages =  _.map(data.children[namespacesIndex].children,function(item) {
     return {
-      filename: 'shr/' + item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      filename: item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
       data:item,
       content:spec_template
     }
@@ -453,24 +453,6 @@ module.exports = function(grunt) {
           src:'!*'
         }]
       },
-      actor: {
-        options : {
-          pages:[_.find(namespace_pages, function(namespace) {return namespace.data.label=="shr.actor"})]
-        },
-        files :[{
-          dest: '<%= site.dest %>',
-          src:'!*'
-        }]
-      },
-      shrStaticNamespacePages: { 
-        options : {
-          layout: '<%= site.shrlayoutstatic %>', 
-          pages: static_namespace_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.shrdir %>/': ['!*']
-        }
-      },
       index: {
         flatten: true,
         expand: true,
@@ -478,6 +460,25 @@ module.exports = function(grunt) {
         src: 'index.hbs',
         dest: '<%= site.dest %>'
       }, 
+      // Can be enabled or used as a template for quick testing on indiv. NameSpaces
+      // actor: {
+      //   options : {
+      //     pages:[_.find(namespace_pages, function(namespace) {return namespace.data.label=="shr.actor"})]
+      //   },
+      //   files :[{
+      //     dest: '<%= site.dest %>',
+      //     src:'!*'
+      //   }]
+      // },
+      shrStaticNamespacePages: { 
+        options : {
+          layout: '<%= site.shrlayoutstatic %>', 
+          pages: static_namespace_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
+        }
+      },
       shrStaticIndex: {
         options: {
           layout: '<%= site.shrlayoutstatic %>',  
@@ -486,7 +487,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index.hbs',
-        dest: '<%= site.dest %>/<%= site.shrdir %>'  
+        dest: '<%= site.dest %>/<%= site.dirstaticInd %>'  
       }
     },
     mochaTest: {

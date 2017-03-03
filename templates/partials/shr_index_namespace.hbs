@@ -1,10 +1,14 @@
 <div class="row">
   <h2>{{> shr_namespace_reference }}</h2>
-  <ul class="spec-data-element-list">
-    {{#each children as |child|}}
-      {{#if child}}
-		{{> shr_index_entry_reference namespaceStatic=../../label namespaceDynamic=../label}}
-      {{/if}}
-    {{/each}}
-  </ul>
+    {{#each (divideOnlyEntries children) as |subsection|}}
+        <div class="col-md-4"> 
+            <ul class="spec-data-element-list">
+                {{#each subsection as |child|}}
+                  {{#if child}}
+            		{{> shr_index_entry_reference namespaceStatic=../../label namespaceDynamic=../label}}
+                  {{/if}}
+                {{/each}}
+            </ul>
+        </div>
+    {{/each}}   
 </div>

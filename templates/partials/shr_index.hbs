@@ -8,13 +8,13 @@
 </div>
 <div class="section-content">
   <div class="container">
-      {{#each shr_v4.children}}
+      {{#each shr_v4_fixes.children}}
         {{#eq this.label "Namespaces"}}
           {{#each this.children as |child|}}
             {{#if child}}
             	{{#if (containsEntry child)}}
               	{{> shr_index_namespace }}
-          	{{/if}}
+            	{{/if}}
             {{/if}}
           {{/each}}
         {{/eq}}

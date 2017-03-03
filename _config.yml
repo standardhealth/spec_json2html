@@ -8,12 +8,13 @@ assets:     assets
 pages:      pages
 data:       data
 
-templates:        templates
-includes:         <%= site.templates %>/partials/**.hbs
-layouts:          <%= site.templates %>/layouts
-layout:           default.hbs
-shrlayoutstatic:  shrstatic.hbs
-shrdir:           spec
+templates:    templates
+includes:     <%= site.templates %>/partials/**.hbs
+layouts:      <%= site.templates %>/layouts
+layout:       default.hbs
+layoutstatic: shrstatic.hbs
+dirstaticInd: spec
+dirstaticNS:  spec/shr
 
 # Extensions
 helpers:

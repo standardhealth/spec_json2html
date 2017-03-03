@@ -23,6 +23,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "html-validator": "^2.2.0",
+    "js-yaml": "^3.8.2",
     "jsonpath": "^0.2.9",
     "mocha": "^3.2.0"
   }
