@@ -10,7 +10,11 @@
 	{{else}}
 		{{#eq type "ValueSetConstraint"}}
 			{{#if valueset}}
-			  from <a href="{{valueset}}"><code>{{valueset}}</code></a>
+				{{#if (isSHRValueSet valueset)}}
+					from <a><code data-toggle="tooltip" data-placement="top" title="Valueset not yet defined" data-original-title="Valueset not yet defined">{{valueset}}</code></a>
+				{{else}}
+					from <a href="{{valueset}}"><code>{{valueset}}</code></a>
+				{{/if}}
 			{{else}}
 			  from valueset <code>TBD</code>
 			{{/if}}								

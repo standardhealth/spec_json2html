@@ -341,7 +341,7 @@ module.exports = function(grunt) {
   var spec_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
   var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
     return {
-      filename:item.label.split('.')[1],  // labels are shr.namespace so we name the page based on the name of the namespace
+      filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
       data:item,
       content:spec_template
     }
@@ -349,7 +349,7 @@ module.exports = function(grunt) {
 
   var static_namespace_pages =  _.map(data.children[namespacesIndex].children,function(item) {
     return {
-      filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      filename: 'shr/' + item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
       data:item,
       content:spec_template
     }
@@ -479,8 +479,9 @@ module.exports = function(grunt) {
         dest: '<%= site.dest %>'
       }, 
       shrStaticIndex: {
-        layout: '<%= site.shrlayoutstatic %>', 
-
+        options: {
+          layout: '<%= site.shrlayoutstatic %>',  
+        },
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',

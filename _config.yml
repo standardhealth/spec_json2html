@@ -13,7 +13,7 @@ includes:         <%= site.templates %>/partials/**.hbs
 layouts:          <%= site.templates %>/layouts
 layout:           default.hbs
 shrlayoutstatic:  shrstatic.hbs
-shrdir:           shr
+shrdir:           spec
 
 # Extensions
 helpers:

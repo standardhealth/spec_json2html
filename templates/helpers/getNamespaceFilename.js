@@ -12,6 +12,6 @@ module.exports.register = function (Handlebars, options, params) {
     }
     Handlebars.registerHelper('getNamespaceFilename', function(nStatic, nDynamic, context) {
       var name = nStatic !== undefined ? nStatic : nDynamic;
-      return new Handlebars.SafeString(name.split('.')[1].capitalize() + '.html');
+      return new Handlebars.SafeString(name.split('.')[1] + '/index.html');
     });
 };
