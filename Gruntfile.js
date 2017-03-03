@@ -438,7 +438,7 @@ module.exports = function(grunt) {
         // Templates
         partials: '<%= site.includes %>',
         layoutdir: '<%= site.layouts %>',
-        layout: '<%= site.layout %>',
+        layout: '<%= site.layoutdefault %>',
 
         // Extensions
         helpers: '<%= site.helpers %>',
@@ -446,12 +446,12 @@ module.exports = function(grunt) {
       },
       namespacePages: {
         options : {
+          layout: '<%= site.layoutdefault %>',
           pages:namespace_pages
         },
-        files :[{
-          dest: '<%= site.dest %>',
-          src:'!*'
-        }]
+        files: {
+          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+        }
       },
       index: {
         flatten: true,
@@ -472,7 +472,7 @@ module.exports = function(grunt) {
       // },
       shrStaticNamespacePages: { 
         options : {
-          layout: '<%= site.shrlayoutstatic %>', 
+          layout: '<%= site.layoutstatic %>', 
           pages: static_namespace_pages
         },
         files: {
@@ -481,7 +481,7 @@ module.exports = function(grunt) {
       },
       shrStaticIndex: {
         options: {
-          layout: '<%= site.shrlayoutstatic %>',  
+          layout: '<%= site.layoutstatic %>',  
         },
         flatten: true,
         expand: true,
