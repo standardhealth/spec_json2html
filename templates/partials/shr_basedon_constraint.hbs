@@ -23,7 +23,7 @@
 				includes {{> shr_concept code}} 
 			{{else}}
 				{{#eq type "TypeConstraint"}}
-					is a {{> shr_label namespace=isA._namespace label=isA._name }}
+					must be a {{> shr_label namespace=isA._namespace label=isA._name }}
 				{{else}}
 					{{#eq type "CardConstraint"}}
 					{{else}}
