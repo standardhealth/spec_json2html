@@ -12,9 +12,7 @@
         {{#eq this.label "Namespaces"}}
           {{#each this.children as |child|}}
             {{#if child}}
-            	{{#if (containsEntry child)}}
-              	{{> shr_index_namespace entryOnly=true}}
-            	{{/if}}
+                {{> shr_index_namespace entryOnly=false}}
             {{/if}}
           {{/each}}
         {{/eq}}

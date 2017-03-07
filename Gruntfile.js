@@ -37,7 +37,7 @@ module.exports = function(grunt) {
       }
     } else {
       msgLog('Corner case for getDescription', field);
-      return "";
+      return "Description TBD";
     }
   }
   
@@ -451,7 +451,17 @@ module.exports = function(grunt) {
       //     pages:[_.find(namespace_pages, function(namespace) {return namespace.data.label=="shr.actor"})]
       //   },
       //   files :[{
-      //     dest: '<%= site.dest %>',
+      //     dest: '<%= site.dest %>/<%= site.dirNS %>/',
+      //     src:'!*'
+      //   }]
+      // },
+      // Can be enabled or used as a template for quick testing on indiv. NameSpaces
+      // vital: {
+      //   options : {
+      //     pages:[_.find(namespace_pages, function(namespace) { return namespace.data.label=="shr.vital"})]
+      //   },
+      //   files :[{
+      //     dest: '<%= site.dest %>/<%= site.dirNS %>/',
       //     src:'!*'
       //   }]
       // },
@@ -471,12 +481,19 @@ module.exports = function(grunt) {
         src: 'index.hbs',
         dest: '<%= site.dest %>'
       }, 
+      staticIndexIncludingElements: {
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'index_all_elements.hbs',
+        dest: '<%= site.dest %>'
+      },
       staticSHRIndex: {
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index.hbs',
-        dest: '<%= site.dest %>/shr'
+        dest: '<%= site.dest %>/<%= site.dirNS %>/'
       }, 
       shrNamespacePages: { 
         options : {

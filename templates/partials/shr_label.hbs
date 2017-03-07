@@ -7,12 +7,12 @@
 		{{/eq}}
 	{{else}}
 		{{#if label}}
-			{{label}}
+			<a><code>{{label}}</code></a>
 		{{else}}
 			{{#if text}}
-			<code>{{text}}</code> (<i>TBD</i>)
+			<a><code>{{text}}</code></a>(TBD)
 			{{else}}
-			<i>TBD</i>
+			TBD
 			{{/if}}
 		{{/if}}
 	{{/if}}
