@@ -108,6 +108,13 @@ section:before {
     color: #f9f9f9
 }
 
+#snackbar-container .snackbar-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 5px
+}
+
 .buffer {
     display: block;
     height: 125px;
@@ -185,6 +192,10 @@ header nav.navbar #site-menu {
 header nav.navbar #site-menu li {
     font-size: 18.48px;
     margin: 10px 5px 5px 5px
+}
+
+header nav.navbar .dropdown-menu li>a:hover {
+    color: #000
 }
 
 header nav #site-menu li a:after {
@@ -326,12 +337,7 @@ header nav #site-menu li.active a:after {
 
 #spec h1,
 #spec-viewer h1 {
-    margin-top: 60px
-}
-
-#spec h3,
-#spec-viewer h3 {
-    margin-top: 30px
+    margin-top: 75px
 }
 
 #spec .pane,
@@ -419,21 +425,32 @@ header nav #site-menu li.active a:after {
     padding: 0
 }
 
-#spec-viewer h2,
-#spec-viewer a {
+#spec-viewer .section-content h2,
+#spec-viewer .section-content a {
     padding: 0 10px 0 10px
 }
 
+#spec-viewer h3 {
+    margin-top: 30px
+}
+
+/*#spec-viewer h3 a.paddedId {
+    display: block;
+    position: relative;
+    top: -100px;
+    visibility: hidden
+}
+*/
+#spec-viewer h2>a {
+    font-size: 29.52px
+}
+
 #spec-viewer td a {
-    padding: 0;
+    padding: 0
 }
 
 #spec-viewer td i {
-    font-size: 12px;
-}
-
-#spec-viewer h2>a {
-    font-size: 29.52px
+    font-size: 12px
 }
 
 #evid .section-heading {
@@ -445,11 +462,11 @@ header nav #site-menu li.active a:after {
 }
 
 #evid li.evid-link p.citation {
-    font-size: 15.6px
+    font-size: 16.8px
 }
 
 #evid li.evid-link p.citation a {
-    font-size: 15.6px
+    font-size: 16.8px
 }
 
 #contact p,
@@ -571,7 +588,7 @@ header nav #site-menu li.active a:after {
 #faq ul li,
 #evid ul li {
     font-weight: 300;
-    padding: 0px 20px 20px 20px;
+    padding: 0px 35px 20px 35px;
     border-bottom: 1px solid #ccc
 }
 
@@ -685,17 +702,32 @@ header nav #site-menu li.active a:after {
 }
 
 #collaborative .section-heading {
-    padding-bottom: 0
+    padding-bottom: 0px
 }
 
 #collaborative .section-heading h1 {
-    margin-top: 60px
+    margin-top: 75px;
+    margin-bottom: 0px
 }
 
 #collaborative .section-content {
     padding: 20px 30px;
     margin-top: 40px;
     margin-bottom: 40px
+}
+
+#collaborative .panel .section-heading {
+    padding-bottom: 0px
+}
+
+#collaborative .panel .section-heading h1 {
+    text-align: left;
+    padding: 20px 30px;
+    margin-top: 0px
+}
+
+#collaborative .panel .section-content {
+    margin-top: 10px
 }
 
 #collaborative li {
@@ -709,7 +741,7 @@ footer {
 footer p.copyright {
     padding-top: 0px;
     margin: -50px 15px 20px 15px;
-    font-size: 15.6px;
+    font-size: 16.8px;
     color: #fff;
     text-align: left;
     float: left
@@ -721,7 +753,7 @@ footer ul {
 
 footer a {
     padding-left: 0px;
-    font-size: 15.6px;
+    font-size: 16.8px;
     color: #fff
 }
 
@@ -738,9 +770,24 @@ footer p.logo {
     #collaborative .side_img {
         width: 176.5px
     }
+    footer a {
+        font-size: 14.88px
+    }
 }
 
 @media (max-width: 992px) {
+    .buffer {
+        display: block;
+        height: 115px;
+        margin-top: -115px;
+        visibility: hidden
+    }
+    #about .section-heading {
+        padding-bottom: 45px
+    }
+    #about .section-heading h1 {
+        font-size: 51.6px
+    }
     #about h1 {
         margin: 0 60px
     }
@@ -774,11 +821,21 @@ footer p.logo {
     #about .img-card.img-collab img {
         max-height: 400px
     }
+    #contact .section-heading {
+        padding-bottom: 25px
+    }
+    #contact .section-heading h1 {
+        font-size: 51.6px
+    }
     #spec h1,
     #spec h2,
     #spec-viewer h1,
     #spec-viewer h2 {
         padding: 0 8px
+    }
+    #spec h2,
+    #spec-viewer h2 {
+        font-size: 35.04px
     }
     #spec .pane.ec h2,
     #spec .pane.pc h2,
@@ -789,6 +846,11 @@ footer p.logo {
     #spec .pane.sv h2,
     #spec-viewer .pane.sv h2 {
         padding: 0 20px 0 20px
+    }
+    #faq section,
+    #evid section {
+        padding-top: 100px;
+        margin-bottom: 0px
     }
     #faq .side-nav,
     #evid .side-nav {
@@ -802,7 +864,7 @@ footer p.logo {
         text-align: center
     }
     #collaborative #first-section {
-        padding-top: 40
+        padding-top: 40px
     }
     #collaborative .side_img {
         margin-left: auto;
@@ -812,11 +874,14 @@ footer p.logo {
         max-width: 225px;
         text-align: center
     }
+    #spec-viewer h2 {
+        font-size: 24px
+    }
     #spec-viewer .section-heading {
         padding-bottom: 5px
     }
     #spec-viewer .section-heading h1 {
-        font-size: 35.04px
+        font-size: 42.48px
     }
     #spec-viewer .section-heading h2,
     #spec-viewer .section-heading a {
@@ -834,6 +899,9 @@ footer p.logo {
     }
     h2 {
         font-size: 35.04px
+    }
+    h3 {
+        font-size: 29.52px
     }
     header nav.navbar {
         background-color: rgba(255, 255, 255, 0.90196);
@@ -872,16 +940,12 @@ footer p.logo {
     }
     header nav.navbar.affix #site-menu li a,
     header nav.navbar.affix-top #site-menu li a {
-        font-size: 15.6px
+        font-size: 16.8px
     }
     #home .centered {
-        width: 100%
-    }
-    #home .centered h1 {
-        font-size: 42.48px
-    }
-    #home .centered h2 {
-        font-size: 35.04px
+        width: 100%;
+        padding-left: 33px;
+        padding-right: 33px
     }
     #about h1 {
         margin: 0 12px
@@ -995,6 +1059,7 @@ footer p.logo {
     footer .links {
         width: 300px;
         display: block;
+        padding: 0;
         margin-right: auto;
         margin-left: auto
     }
@@ -1015,17 +1080,21 @@ footer p.logo {
 }
 
 @media (max-width: 480px) {
-    h1 {
+    #about .section-heading h1 {
         font-size: 42.48px
-    }
-    h2 {
-        font-size: 35.04px
-    }
-    h3 {
-        font-size: 29.52px
     }
     p {
         font-size: 18.48px
+    }
+    #home .centered {
+        padding-left: 10px;
+        padding-right: 10px
+    }
+    #about h1 {
+        font-size: 42.48px
+    }
+    #about h2 {
+        font-size: 35.04px
     }
     #evid h3 {
         margin: 0 20px
@@ -1044,20 +1113,8 @@ footer p.logo {
         color: white;
         background-color: #295677
     }
-    #spec-viewer .section-heading {
-        padding-bottom: 10px
+    #snackbar-container p,
+    #snackbar-container a {
+        font-size: 16.8px
     }
-    #spec-viewer .section-heading h2,
-    #spec-viewer .section-heading a {
-        text-align: left;
-        font-size: 24px
-    }
-    #spec-viewer h2,
-    #spec-viewer a {
-        padding: 0 10px 0 10px
-    }
-}
-
-h3 a {
-    visibility: "visible"
 }

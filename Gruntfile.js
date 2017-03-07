@@ -402,12 +402,12 @@ module.exports = function(grunt) {
           dest:'<%= site.dest %>/<%= site.assets %>'
         }] 
       },
-      partials: {
-        expand:true, 
-        flatten: true, 
-        src: ['<%= site.includes %>'], 
-        dest:'<%= site.dest %>/<%= site.assets %>/partials'
-      },
+      // partials: {
+      //   expand:true, 
+      //   flatten: true, 
+      //   src: ['<%= site.includes %>'], 
+      //   dest:'<%= site.dest %>/<%= site.assets %>/partials'
+      // },
       data: { 
         expand:true, 
         flatten: true, 
@@ -434,6 +434,7 @@ module.exports = function(grunt) {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
         data: ['<%= site.assets %>/<%= site.data %>/*.{json,yml}'],
+        assets: '<%= site.assets %>',
 
         // Templates
         partials: '<%= site.includes %>',
@@ -444,22 +445,6 @@ module.exports = function(grunt) {
         helpers: '<%= site.helpers %>',
         plugins: '<%= site.plugins %>'
       },
-      namespacePages: {
-        options : {
-          layout: '<%= site.layoutdefault %>',
-          pages:namespace_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
-        }
-      },
-      index: {
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'index.hbs',
-        dest: '<%= site.dest %>'
-      }, 
       // Can be enabled or used as a template for quick testing on indiv. NameSpaces
       // actor: {
       //   options : {
@@ -470,7 +455,30 @@ module.exports = function(grunt) {
       //     src:'!*'
       //   }]
       // },
-      shrStaticNamespacePages: { 
+      staticNamespacePages: {
+        options : {
+          layout: '<%= site.layoutdefault %>',
+          pages:namespace_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+        }
+      },
+      staticIndex: {
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'index.hbs',
+        dest: '<%= site.dest %>'
+      }, 
+      staticSHRIndex: {
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'index.hbs',
+        dest: '<%= site.dest %>/shr'
+      }, 
+      shrNamespacePages: { 
         options : {
           layout: '<%= site.layoutstatic %>', 
           pages: static_namespace_pages
@@ -479,7 +487,7 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
         }
       },
-      shrStaticIndex: {
+      shrIndex: {
         options: {
           layout: '<%= site.layoutstatic %>',  
         },
@@ -511,5 +519,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
+  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticNamespacePages']);
+  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrNamespacePages']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }

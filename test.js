@@ -209,7 +209,6 @@ function getNamespaceNames() {
             continue;
         }
     }
-    console.log(namesWithEntries);
     return namesWithEntries;
 }
 
