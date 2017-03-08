@@ -7,7 +7,11 @@
 		{{/eq}}
 	{{else}}
 		{{#if label}}
-			<a><code>{{label}}</code></a>
+			{{#eq label "Choice"}}
+				{{label}}
+			{{else}}
+				<a><code>{{label}}</code></a>
+			{{/eq}}
 		{{else}}
 			{{#if text}}
 			<a><code>{{text}}</code></a>(TBD)

@@ -36,8 +36,12 @@ module.exports = function(grunt) {
         return "no description";
       }
     } else {
-      msgLog('Corner case for getDescription', field);
-      return "Description TBD";
+      if (field.type == 'ChoiceValue') { 
+        return "";
+      } else { 
+        msgLog('Corner case for getDescription', field);
+        return "Description TBD";
+      }
     }
   }
   
