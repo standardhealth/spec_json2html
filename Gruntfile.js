@@ -124,23 +124,23 @@ module.exports = function(grunt) {
     var fieldName, fieldNamespace;
     //if (concreteDataelement.fieldList) { // if the data element we're building field list for has a field list already, add to it
       var record, subrecord;
-	  var index = 0;
+      var index = 0;
       _.forEach(dataelement.children, function(field) {
-		index = index + 1;
-		if (field.type != "Incomplete") {
+        index = index + 1;
+        if (field.type != "Incomplete") {
           var fieldValues = [];
-  		  if (field.type === "ChoiceValue") {
-			  fieldName = "Choice";
-			  fieldNamespace = "";
-			  record = undefined;
-		  } else {
-			  if (field.identifier) { fieldName = field.identifier.label ; fieldNamespace = field.identifier.namespace } else { fieldName = field.text; fieldNamespace = ""; }
-			  if (concreteDataelement.fieldMap) {
-				record = concreteDataelement.fieldMap[fieldName];  
-			  } else {
-				record = undefined;
-			  }
-		  }
+          if (field.type === "ChoiceValue") {
+              fieldName = "Choice";
+              fieldNamespace = "";
+              record = undefined;
+          } else {
+              if (field.identifier) { fieldName = field.identifier.label ; fieldNamespace = field.identifier.namespace } else { fieldName = field.text; fieldNamespace = ""; }
+              if (concreteDataelement.fieldMap) {
+                record = concreteDataelement.fieldMap[fieldName];  
+              } else {
+                record = undefined;
+              }
+          }
           if (record) { // found existing record for field so update it
             // msgLog("Changing the foundin of ... to include ...", record.concretedataelement, dataelement);
             record.foundin.unshift(dataelement.label);
@@ -151,17 +151,17 @@ module.exports = function(grunt) {
             if (concreteDataelement.fieldList === undefined) concreteDataelement.fieldList = [];
             concreteDataelement.fieldList.push(record);
           }
-		  
-  		  if (field.type === "ChoiceValue") {
-			_.forEach(field.value, function(item) {
-			  if (item.identifier) {
-				subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
-			  } else {
-				subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
-			  }
-			  fieldValues.push(subrecord);
-			});
-		  }
+          
+          if (field.type === "ChoiceValue") {
+            _.forEach(field.value, function(item) {
+              if (item.identifier) {
+                subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
+              } else {
+                subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
+              }
+              fieldValues.push(subrecord);
+            });
+          }
           if (field.constraints && field.constraints.length > 0) {
             _.forEach(field.constraints, function (c) {
               if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
@@ -169,13 +169,13 @@ module.exports = function(grunt) {
                   var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA._name});
                   var isafield = concreteDataelement.fieldList[isafieldindex];
                   concreteDataelement.fieldList.splice(isafieldindex, 1); // remove is a field from concrete data element's field list
-				  //console.log(isafield);
-				  isafield.isSubElement = true;
+                  //console.log(isafield);
+                  isafield.isSubElement = true;
                   fieldValues.push(isafield); // put it as a subfield to current field instead
                 }
               }
               if (c.path && c.path.length > 0) {
-                if (c.path === 'shr.core.Coding') {               
+                if (c.path === 'shr.core.Coding' || c.path ==='code') {               
                 } else {
                 //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
                 
@@ -257,8 +257,9 @@ module.exports = function(grunt) {
   }
   // end GQ created
 
-  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/shr_v4_fixes.json`);
-  var namespacesIndex = _.findIndex(data.children, {label: "Namespaces"})
+  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/shr-vs.json`);
+  var namespacesIndex = _.findIndex(data.children, {type: "Namespaces"})
+  var valuesetIndex = _.findIndex(data.children, {type: "ValueSets"})
   // for each namespace:
   var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
   _.map(data.children[namespacesIndex].children,function(namespace) {
@@ -342,20 +343,47 @@ module.exports = function(grunt) {
 
   // grunt.file.write('./assets/data/modified-hier.json', JSON.stringify(data))
   
-  var spec_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+  var ns_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+  var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
+  var vs_template = grunt.file.read(`./${site.pages}/valueset.hbs`);  
   var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
     return {
       filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
       data:item,
-      content:spec_template
+      content:ns_template
     }
   });
 
-  var static_namespace_pages =  _.map(data.children[namespacesIndex].children,function(item) {
+  var valuesets = data.children[valuesetIndex].children;
+  var namespacesInValuesets = _.map(valuesets, function(vs) { 
+      return vs.namespace;
+  }); 
+  var uniqueNamespacesInValuesets = _.uniq(namespacesInValuesets);
+  var mapValuesetToNamespace = _.reduce(uniqueNamespacesInValuesets, function(map, ns) { 
+    map[ns] = [];
+    return map;
+  }, {})
+
+  _.map(data.children[valuesetIndex].children,function(vs) {
+    if(vs.namespace) { 
+      mapValuesetToNamespace[vs.namespace].push(vs);
+    } else { 
+    }
+  });
+
+  var valueset_ns_pages = _.map(mapValuesetToNamespace, function(valuesets, ns) {
     return {
-      filename: item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:item,
-      content:spec_template
+      filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      data:{ namespace: ns, children: valuesets},
+      content:vs_by_ns_template 
+    }
+  });
+
+  var valueset_pages = _.map(valuesets, function(vs) {
+    return {
+      filename:vs.namespace.split('.')[1] + '/vs/' + vs.label + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      data:vs,
+      content:vs_template
     }
   });
 
@@ -415,7 +443,7 @@ module.exports = function(grunt) {
       data: { 
         expand:true, 
         flatten: true, 
-        src: ['<%= site.assets %>/<%= site.data %>/shr_v4.json'], 
+        src: ['<%= site.assets %>/<%= site.data %>/shr-vs.json'], 
         dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
       }
     },
@@ -469,6 +497,31 @@ module.exports = function(grunt) {
       //     src:'!*'
       //   }]
       // },
+      valuesetIndex: { 
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'index_valueset.hbs',
+        dest: '<%= site.dest %>/vs'
+      },
+      valuesetByNamespace: {
+        options : {
+          layout: '<%= site.layoutdefault %>',
+          pages:valueset_ns_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+        }
+      }, 
+      // valuesetByVSPages: {
+      //   options : {
+      //     layout: '<%= site.layoutdefault %>',
+      //     pages:valueset_pages
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+      //   }
+      // }, 
       staticNamespacePages: {
         options : {
           layout: '<%= site.layoutdefault %>',
@@ -502,7 +555,7 @@ module.exports = function(grunt) {
       shrNamespacePages: { 
         options : {
           layout: '<%= site.layoutstatic %>', 
-          pages: static_namespace_pages
+          pages: namespace_pages
         },
         files: {
           '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
@@ -523,6 +576,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           reporter: 'spec',
+          timeout: 10000,
           captureFile: 'results.txt', // Optionally capture the reporter output to a file 
           quiet: false,               // Optionally suppress output to standard out (defaults to false) 
           clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false) 

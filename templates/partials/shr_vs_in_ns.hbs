@@ -1,0 +1,32 @@
+<h3>
+    <a class='paddedId' id="{{label}}"></a>{{label}}
+    {{!-- {{#if namespace}}
+        [<a href="/shr/{{getNamespaceFilename namespace}}">From {{getNamespaceName namespace}}</a>]
+    {{/if}} --}}
+</h3>
+<p>
+    {{#if description}}
+        {{description}} 
+    {{else}}
+        Description TBD 
+    {{/if}}
+    {{> shr_concepts}}
+</p>
+<table>
+  <tbody>
+    {{#if children}}
+    <tr>
+      <th>Code</th>
+      <th>Display</th>
+      <th>CodeSystem</th>
+    </tr>
+    {{#each children as |child|}}         
+      {{#if child}}
+        <tr>
+          {{> shr_vs_element }}
+        </tr>
+      {{/if}}
+    {{/each}}
+  {{/if}}
+  </tbody>
+</table>

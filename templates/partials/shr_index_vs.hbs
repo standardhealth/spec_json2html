@@ -1,0 +1,14 @@
+<div class="section-content">
+  <div class="container">
+      {{#each shr-vs.children}}
+        {{#eq this.label "ValueSets"}}
+          {{#each (getAllNamespaces children) as |ns|}}
+            <div class="row">
+            <h2>{{> shr_namespace_reference label=ns}}</h2>  
+            {{> shr_index_vs_element vsets=(filterByNamespace ../children ns) namespace=ns entryOnly=false}}
+            </div>
+          {{/each}}
+        {{/eq}}
+      {{/each}}
+  </div>
+</div>

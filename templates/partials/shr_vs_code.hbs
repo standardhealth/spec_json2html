@@ -1,0 +1,21 @@
+{{#eq type "ValueSetIncludesCodeRule"}}
+    <a href="{{code.url}}"><code>{{code.code}}</code></a>
+{{else}}
+    {{#eq type "ValueSetIncludesDescendentsRule"}}
+        All codes descending from <a href="{{code.url}}"><code>{{code.code}}</code></a>
+    {{else}} 
+        {{#eq type "ValueSetIncludesFromCodeRule"}}
+            All codes included in <a href="{{code.url}}"><code>{{code.code}}</code></a>
+        {{else}}
+            {{ log "ERROR: This valueset's code type is not yet handled "}}
+            {{ log type }}
+            This is a new type of code and doesn't yet have defined code-parsing
+        {{/eq}}
+    {{/eq}}
+{{/eq}}
+
+
+{{!-- Three different valueset types --}}
+{{!-- [ 'ValueSetIncludesCodeRule',
+  'ValueSetIncludesDescendentsRule',
+  'ValueSetIncludesFromCodeRule' ] --}}

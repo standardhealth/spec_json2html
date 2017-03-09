@@ -15,7 +15,7 @@
 {{#if this.foundin.length }}
 {{#ne this.foundin.[0] this.concretedataelement}}
     {{#if this.foundin.[0]}}
-        <a data-toggle="tooltip" data-placement="right" title="Found in {{this.foundin.[0]}}" data-original-title="Found in {{this.foundin.[0]}}" href="/shr/{{getNamespaceFilename (getElementNamespace @root.shr_v4 this.foundin.[0])}}#{{this.foundin.[0]}}" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a>
+        <a data-toggle="tooltip" data-placement="right" title="Found in {{this.foundin.[0]}}" data-original-title="Found in {{this.foundin.[0]}}" href="/shr/{{getNamespaceFilename (getElementNamespace @root.shr-vs this.foundin.[0])}}#{{this.foundin.[0]}}" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a>
     {{else}}
         {{log "In foundin corner case"}}
 {{!--         {{log this}}
@@ -23,7 +23,7 @@
             <sup><a data-toggle="tooltip" data-placement="right" title="Is primitive type" data-original-title="Is primitive type" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a></sup>
         {{else}}
             {{log 'in this else case'}}
-			<sup><a data-toggle="tooltip" data-placement="right" title="Found in {{this.label}}" data-original-title="Found in {{this.label}}" href="/shr/{{getNamespaceFilename (getElementNamespace @root.shr_v4 this.label)}}#{{this.label}}" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a></sup>
+			<sup><a data-toggle="tooltip" data-placement="right" title="Found in {{this.label}}" data-original-title="Found in {{this.label}}" href="/shr/{{getNamespaceFilename (getElementNamespace @root.shr-vs this.label)}}#{{this.label}}" aria-label='Visit this dataelement'><i class="fa fa-external-link" aria-hidden="true"></i></a></sup>
         {{/eq}} --}}
     {{/if}}
 {{/ne}}

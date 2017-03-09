@@ -13,7 +13,8 @@ module.exports.register = function (Handlebars, options, params) {
         var namespaceContainingElement = undefined; 
         _.forEach(hier.children[namespacesIndex].children, function(namespace) {
             if (!namespaceContainingElement) { 
-                namespaceContainingElement = (_.find(namespace.children, function(element) { 
+                namespaceContainingElement = (_.find(namespace.children, function(element) {
+                     
                     return element.label == elemLabel;
                 })) != undefined ? namespace : undefined;
             }
@@ -26,4 +27,4 @@ module.exports.register = function (Handlebars, options, params) {
             return "shr.actor"
         }
     });
-};
+};0

@@ -1,0 +1,12 @@
+  {{#each (divideChildren vsets entryOnly) as |subsection|}}
+    <div class="col-md-4"> 
+        <ul class="spec-data-element-list">
+            {{#each subsection as |child|}}
+              {{#if child}}
+                {{!-- {{log child}} --}}
+                {{> shr_index_vs_reference}}
+              {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+  {{/each}}   

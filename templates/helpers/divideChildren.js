@@ -9,6 +9,7 @@ module.exports.register = function (Handlebars, options, params) {
   'use strict';
   var _ = require('lodash');
   Handlebars.registerHelper('divideChildren', function(elements, entryOnly, opts) {
+    
     if (entryOnly) {
         elements = _.filter(elements, function(element) { 
             return element.isEntry;
@@ -21,7 +22,6 @@ module.exports.register = function (Handlebars, options, params) {
     // We want an array of three subsections. 
     var subsections = [];
     var tail = maxColLength;
-
     // Four is a weird case -- we don't want two 2-elem columns. 
     if (total==4) { 
         subsections.push(elements.slice(0,2))
