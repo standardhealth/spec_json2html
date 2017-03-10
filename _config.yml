@@ -7,6 +7,7 @@ dest:           dist
 assets:         assets
 pages:          pages
 data:           data
+dataFile:       data.json
 
 templates:      templates
 includes:       <%= site.templates %>/partials/**.hbs
@@ -16,6 +17,7 @@ layoutstatic:   shrstatic.hbs
 dirNS:          shr
 dirstaticInd:   spec
 dirstaticNS:    spec/shr
+
 
 # Extensions
 helpers:

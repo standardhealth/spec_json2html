@@ -39,7 +39,7 @@ module.exports = function(grunt) {
       if (field.type == 'ChoiceValue') { 
         return "";
       } else { 
-        msgLog('Corner case for getDescription', field);
+        // msgLog('Corner case for getDescription', field);
         return "Description TBD";
       }
     }
@@ -142,7 +142,6 @@ module.exports = function(grunt) {
               }
           }
           if (record) { // found existing record for field so update it
-            // msgLog("Changing the foundin of ... to include ...", record.concretedataelement, dataelement);
             record.foundin.unshift(dataelement.label);
             if (field.constraints) { record.constraints.unshift(field.constraints); } else { record.constraints.unshift([]); }
             record.cardinality.unshift({min: field.min, max:field.max});
@@ -175,7 +174,7 @@ module.exports = function(grunt) {
                 }
               }
               if (c.path && c.path.length > 0) {
-                if (c.path === 'shr.core.Coding' || c.path ==='code') {               
+                if (c.path === 'shr.core.Coding' || c.path ==='code' || c.path === 'shr.core.CodeableConcept') {               
                 } else {
                 //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
                 
@@ -257,7 +256,7 @@ module.exports = function(grunt) {
   }
   // end GQ created
 
-  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/shr-vs.json`);
+  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/${site.dataFile}`);
   var namespacesIndex = _.findIndex(data.children, {type: "Namespaces"})
   var valuesetIndex = _.findIndex(data.children, {type: "ValueSets"})
   // for each namespace:
@@ -340,9 +339,6 @@ module.exports = function(grunt) {
     });
   });
   // end GQ created
-
-  // grunt.file.write('./assets/data/modified-hier.json', JSON.stringify(data))
-  
   var ns_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
   var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
   var vs_template = grunt.file.read(`./${site.pages}/valueset.hbs`);  
@@ -386,6 +382,10 @@ module.exports = function(grunt) {
       content:vs_template
     }
   });
+
+
+  // grunt.file.write('./assets/data/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
+
 
   // Project Configuration
   grunt.initConfig({
@@ -443,7 +443,7 @@ module.exports = function(grunt) {
       data: { 
         expand:true, 
         flatten: true, 
-        src: ['<%= site.assets %>/<%= site.data %>/shr-vs.json'], 
+        src: ['<%= site.assets %>/<%= site.data %>/<%= site.dataFile %>'], 
         dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
       }
     },
@@ -576,7 +576,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           reporter: 'spec',
-          timeout: 10000,
+          timeout: 10000, 
           captureFile: 'results.txt', // Optionally capture the reporter output to a file 
           quiet: false,               // Optionally suppress output to standard out (defaults to false) 
           clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false) 

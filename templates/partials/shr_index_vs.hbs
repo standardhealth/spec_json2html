@@ -1,6 +1,6 @@
 <div class="section-content">
   <div class="container">
-      {{#each shr-vs.children}}
+      {{#each children}}
         {{#eq this.label "ValueSets"}}
           {{#each (getAllNamespaces children) as |ns|}}
             <div class="row">

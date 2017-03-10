@@ -236,7 +236,7 @@ function getElements() {
 // Returns a JSON object corresponding to the SHR Hierarchy 
 function getHierarchy() { 
     config = getYMLFile(ymlFile);
-    return JSON.parse(fs.readFileSync(`${__dirname}/${config.assets}/${config.data}/shr-vs.json`, 'utf8'));
+    return JSON.parse(fs.readFileSync(`${__dirname}/${config.assets}/${config.data}/${config.dataFile}`, 'utf8'));
 }
 
 // Returns the YML file corresponding to the config file -- assumes the config is in the same dir
