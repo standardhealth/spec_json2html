@@ -1,7 +1,12 @@
+<div class="section-heading">
+  <h1> 
+      The SHR Specification Valuesets
+  </h1> 
+</div>
 <div class="section-content">
   <div class="container">
       {{#each children}}
-        {{#eq this.label "ValueSets"}}
+        {{#eq this.type "ValueSets"}}
           {{#each (getAllNamespaces children) as |ns|}}
             <div class="row">
             <h2>{{> shr_namespace_reference label=ns}}</h2>  

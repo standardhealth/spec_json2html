@@ -339,6 +339,30 @@ module.exports = function(grunt) {
     });
   });
   // end GQ created
+
+  //
+  /// Making Valueset maps
+  // 
+  // 1. mapNamespacetoValuesets - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+  //      an array of all of that namespace's associated valuesets
+  // 2. mapURLtoValueset - lookup table mapping, for every FHIR IG url for a valueset, the valueset it uniquely identifies
+  var valuesets               = data.children[valuesetIndex].children,
+      mapURLtoValueset        = {},
+      mapValuesetToNamespace  = {}; 
+  _.forEach(valuesets, function(vs) {
+    // Get url and namespace
+    var ns  = vs.namespace,
+        url = vs.url;
+    // map valuest to url  
+    mapURLtoValueset[url] = vs;
+    // add vs to namespace array if the array exists; else construct the array and add vs to it.
+    if (mapValuesetToNamespace[ns] != undefined) { 
+      mapValuesetToNamespace[ns].push(vs)
+    } else { 
+      mapValuesetToNamespace[ns] = [vs]      
+    }
+  });
+
   var ns_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
   var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
   var vs_template = grunt.file.read(`./${site.pages}/valueset.hbs`);  
@@ -347,23 +371,6 @@ module.exports = function(grunt) {
       filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
       data:item,
       content:ns_template
-    }
-  });
-
-  var valuesets = data.children[valuesetIndex].children;
-  var namespacesInValuesets = _.map(valuesets, function(vs) { 
-      return vs.namespace;
-  }); 
-  var uniqueNamespacesInValuesets = _.uniq(namespacesInValuesets);
-  var mapValuesetToNamespace = _.reduce(uniqueNamespacesInValuesets, function(map, ns) { 
-    map[ns] = [];
-    return map;
-  }, {})
-
-  _.map(data.children[valuesetIndex].children,function(vs) {
-    if(vs.namespace) { 
-      mapValuesetToNamespace[vs.namespace].push(vs);
-    } else { 
     }
   });
 
@@ -500,9 +507,12 @@ module.exports = function(grunt) {
       valuesetIndex: { 
         flatten: true,
         expand: true,
+        rename: function(dest, src) { 
+          return dest + 'index';
+        },
         cwd: '<%= site.pages %>',
         src: 'index_valueset.hbs',
-        dest: '<%= site.dest %>/vs'
+        dest: '<%= site.dest %>/vs/'
       },
       valuesetByNamespace: {
         options : {
