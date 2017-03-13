@@ -1,0 +1,7 @@
+{{#eq type "Concept"}}
+    <a class="paddedId" id="{{code}}"><code>{{code}}</code></a>
+{{else}}
+    {{ log "ERROR: This codesystems's code type is not yet handled "}}
+    {{ log type }}
+    This is a new type of code and doesn't yet have defined code-parsing
+{{/eq}}

@@ -1,0 +1,11 @@
+  {{#each (divideChildren csys entryOnly) as |subsection|}}
+    <div class="col-md-4"> 
+        <ul class="spec-data-element-list">
+            {{#each subsection as |child|}}
+              {{#if child}}
+                {{> shr_index_cs_reference}}
+              {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+  {{/each}}   

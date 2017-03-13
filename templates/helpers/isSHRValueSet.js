@@ -17,6 +17,6 @@ module.exports.register = function (Handlebars, options, params) {
   Handlebars.registerHelper('isSHRValueSet', function(vs, opts) {
     // If it starts with http://standardhealthrecord.org or doesn't start with http 
     // then it's an SHR ValueSet
-    return (vs.startsWith('http://standardhealthrecord.org')) || !(vs.startsWith('http:'))
+    return (vs.startsWith('http://standardhealthrecord.org')) || !(vs.startsWith('http'))
   });
 };

@@ -1,5 +1,5 @@
 {{#eq type "ValueSetIncludesCodeRule"}}
-    <a href="{{code.url}}"><code>{{code.code}}</code></a>
+    <a href="{{getCodeLink code.url @root code.code}}"><code>{{code.code}}</code></a>
 {{else}}
     {{#eq type "ValueSetIncludesDescendentsRule"}}
         All codes descending from <a href="{{code.url}}"><code>{{code.code}}</code></a>

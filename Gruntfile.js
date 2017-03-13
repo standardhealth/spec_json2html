@@ -22,6 +22,8 @@ String.prototype.capitalize = function() {
 module.exports = function(grunt) {
   'use strict';
   const site = grunt.file.readYAML('_config.yml');
+  // For timing tasks
+  require('time-grunt')(grunt);   
 
 // start GQ created
   var getDescription = function(field) {
@@ -258,7 +260,9 @@ module.exports = function(grunt) {
 
   var data = grunt.file.readJSON(`./${site.assets}/${site.data}/${site.dataFile}`);
   var namespacesIndex = _.findIndex(data.children, {type: "Namespaces"})
-  var valuesetIndex = _.findIndex(data.children, {type: "ValueSets"})
+  var valuesetIndex   = _.findIndex(data.children, {type: "ValueSets"})
+  var codesystemIndex = _.findIndex(data.children, {type: "CodeSystems"})
+  
   // for each namespace:
   var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
   _.map(data.children[namespacesIndex].children,function(namespace) {
@@ -341,31 +345,67 @@ module.exports = function(grunt) {
   // end GQ created
 
   //
-  /// Making Valueset maps
+  /// Making Valueset and Codesystem maps
   // 
-  // 1. mapNamespacetoValuesets - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+  // 1. mapNamespaceToValuesets - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
   //      an array of all of that namespace's associated valuesets
   // 2. mapURLtoValueset - lookup table mapping, for every FHIR IG url for a valueset, the valueset it uniquely identifies
-  var valuesets               = data.children[valuesetIndex].children,
-      mapURLtoValueset        = {},
-      mapValuesetToNamespace  = {}; 
+  // 3. mapNamespaceToValuesets - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+  //      an array of all of that namespace's associated codesystems
+  var valuesets                 = data.children[valuesetIndex].children,
+      mapURLtoValueset          = {},
+      mapNamespaceToValuesets   = {},
+      codesystems               = data.children[codesystemIndex].children,
+      mapNamespaceToCodesystems = {},
+      mapURLtoCodesystem        = {}; 
+  // For valuesets
   _.forEach(valuesets, function(vs) {
-    // Get url and namespace
     var ns  = vs.namespace,
-        url = vs.url;
-    // map valuest to url  
+        url = vs.url; 
+    vs.shrLink = '/shr/' + ns.split('.')[1] + '/vs/#' + vs.label
     mapURLtoValueset[url] = vs;
     // add vs to namespace array if the array exists; else construct the array and add vs to it.
-    if (mapValuesetToNamespace[ns] != undefined) { 
-      mapValuesetToNamespace[ns].push(vs)
+    if (mapNamespaceToValuesets[ns] != undefined) { 
+      mapNamespaceToValuesets[ns].push(vs)
     } else { 
-      mapValuesetToNamespace[ns] = [vs]      
+      mapNamespaceToValuesets[ns] = [vs]      
     }
   });
+  // For codesystems
+  _.forEach(codesystems, function(cs) {
+    var ns  = cs.namespace,
+        url = cs.url; 
+    cs.shrLink = '/shr/' + ns.split('.')[1] + '/cs/#' + cs.label
+    mapURLtoCodesystem[url] = cs;
+    // add vs to namespace array if the array exists; else construct the array and add vs to it.
+    if (mapNamespaceToCodesystems[ns] != undefined) { 
+      mapNamespaceToCodesystems[ns].push(cs)
+    } else { 
+      mapNamespaceToCodesystems[ns] = [cs]      
+    }
+  });
+  // Store mappings in data object
+  data.children[valuesetIndex].index_by_url         = mapURLtoValueset;
+  data.children[valuesetIndex].index_by_namespace   = mapNamespaceToValuesets;
+  data.children[codesystemIndex].index_by_url       = mapURLtoCodesystem;
+  data.children[codesystemIndex].index_by_namespace = mapNamespaceToCodesystems;
 
-  var ns_template = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+  //
+  // Making Valueset and Namespace pages
+  // 
+  //   Create the assemble pages needed for generating namespace pages, valueset_by_namespace pages, and 
+  // valueset pages.
+  var ns_template       = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+  
+  var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
   var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
-  var vs_template = grunt.file.read(`./${site.pages}/valueset.hbs`);  
+  var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
+  
+  var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
+  var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
+  var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);  
+  // Namespace page construction
+  //
   var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
     return {
       filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
@@ -373,25 +413,42 @@ module.exports = function(grunt) {
       content:ns_template
     }
   });
-
-  var valueset_ns_pages = _.map(mapValuesetToNamespace, function(valuesets, ns) {
+  // Valueset page construction 
+  //
+  // var valueset_pages = _.map(valuesets, function(vs) {
+  //   return {
+  //     filename:vs.namespace.split('.')[1] + '/vs/' + vs.label + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+  //     data:vs,
+  //     content:vs_template
+  //   }
+  // });
+  var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
     return {
       filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:{ namespace: ns, children: valuesets},
+      data:{ namespace: ns, vsets: valuesets},
       content:vs_by_ns_template 
     }
   });
-
-  var valueset_pages = _.map(valuesets, function(vs) {
+  var valueset_index = [{
+      filename:'index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      content:vs_index_template
+    }];
+  // Codesystem page construction
+  //
+  var codesystem_ns_pages = _.map(mapNamespaceToCodesystems, function(codesystems, ns) {
     return {
-      filename:vs.namespace.split('.')[1] + '/vs/' + vs.label + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:vs,
-      content:vs_template
+      filename:ns.split('.')[1] + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      data:{ namespace: ns, csys: codesystems},
+      content:cs_by_ns_template 
     }
   });
+  var codesystem_index = [{
+    filename:'index',
+    content:cs_index_template
+  }]
 
-
-  // grunt.file.write('./assets/data/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
+  // For writing to disk any of the output files
+  // grunt.file.write('./assets/availDataFiles/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
 
 
   // Project Configuration
@@ -472,7 +529,7 @@ module.exports = function(grunt) {
       options: {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
-        data: ['<%= site.assets %>/<%= site.data %>/*.{json,yml}'],
+        data: data,
         assets: '<%= site.assets %>',
 
         // Templates
@@ -484,35 +541,14 @@ module.exports = function(grunt) {
         helpers: '<%= site.helpers %>',
         plugins: '<%= site.plugins %>'
       },
-      // Can be enabled or used as a template for quick testing on indiv. NameSpaces
-      // actor: {
-      //   options : {
-      //     pages:[_.find(namespace_pages, function(namespace) {return namespace.data.label=="shr.actor"})]
-      //   },
-      //   files :[{
-      //     dest: '<%= site.dest %>/<%= site.dirNS %>/',
-      //     src:'!*'
-      //   }]
-      // },
-      // Can be enabled or used as a template for quick testing on indiv. NameSpaces
-      // vital: {
-      //   options : {
-      //     pages:[_.find(namespace_pages, function(namespace) { return namespace.data.label=="shr.vital"})]
-      //   },
-      //   files :[{
-      //     dest: '<%= site.dest %>/<%= site.dirNS %>/',
-      //     src:'!*'
-      //   }]
-      // },
       valuesetIndex: { 
-        flatten: true,
-        expand: true,
-        rename: function(dest, src) { 
-          return dest + 'index';
+        options: { 
+          layout: '<%= site.layoutdefault %>',
+          pages:valueset_index
         },
-        cwd: '<%= site.pages %>',
-        src: 'index_valueset.hbs',
-        dest: '<%= site.dest %>/vs/'
+        files: {
+          '<%= site.dest %>/vs/': ['!*']
+        }
       },
       valuesetByNamespace: {
         options : {
@@ -532,6 +568,33 @@ module.exports = function(grunt) {
       //     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
       //   }
       // }, 
+      codesystemIndex: { 
+        options: { 
+          layout: '<%= site.layoutdefault %>',
+          pages:codesystem_index
+        },
+        files: {
+          '<%= site.dest %>/cs/': ['!*']
+        }
+      },
+      codesystemByNamespace: {
+        options : {
+          layout: '<%= site.layoutdefault %>',
+          pages:codesystem_ns_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+        }
+      }, 
+      // valuesetByVSPages: {
+      //   options : {
+      //     layout: '<%= site.layoutdefault %>',
+      //     pages:valueset_pages
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+      //   }
+      // },
       staticNamespacePages: {
         options : {
           layout: '<%= site.layoutdefault %>',
