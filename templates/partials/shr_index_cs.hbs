@@ -10,7 +10,7 @@
           {{#each index_by_namespace as |codesystems|}}
             {{#if codesystems}}
               <div class="row">
-              <h2>{{> shr_namespace_reference label=@key}}</h2>
+              <h2>{{> shr_namespace_reference label=@key suffix="/cs"}}</h2>
               {{!-- {{log @root}} --}}
              {{> shr_index_cs_element csys=this namespace=@key entryOnly=false}}
               </div>

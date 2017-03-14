@@ -1,5 +1,5 @@
 {{#if code.system}}
-    <a href="{{getCodesystemLink code.system @root}}"><code>{{code.system}}</code></a>
+    <a href="{{getCodesystemLink code.system @root}}"><code>{{getCodesystemLabel code.system @root}}</code></a>
 {{else}}
     No defined code system
 {{/if}}

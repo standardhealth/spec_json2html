@@ -10,7 +10,7 @@
           {{#each index_by_namespace as |valuesets|}}
             {{#if valuesets}}
               <div class="row">
-              <h2>{{> shr_namespace_reference label=@key}}</h2>
+              <h2>{{> shr_namespace_reference label=@key suffix="/vs"}}</h2>
               {{!-- {{log @root}} --}}
               {{> shr_index_vs_element vsets=this namespace=@key entryOnly=false}}
               </div>
