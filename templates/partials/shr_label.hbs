@@ -1,0 +1,25 @@
+{{!-- {{#if this}} --}}
+	{{#if namespace}}
+		{{#eq namespace "primitive"}}
+			<a><code data-toggle="tooltip" data-placement="right" title="Primitive dataelement" data-original-title="Primitive dataelement">{{label}}</code></a>
+		{{else}}
+			<a href="/shr/{{getNamespaceFilename namespace}}#{{label}}"> <code>{{label}}</code></a>
+		{{/eq}}
+	{{else}}
+		{{#if label}}
+			{{#eq label "Choice"}}
+				{{label}}
+			{{else}}
+				<a><code>{{label}}</code></a>
+			{{/eq}}
+		{{else}}
+			{{#if text}}
+			<a><code>{{text}}</code></a>(TBD)
+			{{else}}
+			TBD
+			{{/if}}
+		{{/if}}
+	{{/if}}
+{{!-- {{else}}
+    <a href="#">{{text}}</a>
+{{/if}} --}}

@@ -1,0 +1,22 @@
+<div class="section-heading">
+  <h1> 
+      The Standard Health Record Codesystems
+  </h1> 
+</div>
+<div class="section-content">
+  <div class="container">
+      {{#each children}}
+        {{#eq type "CodeSystems"}}
+          {{#each index_by_namespace as |codesystems|}}
+            {{#if codesystems}}
+              <div class="row">
+              <h2>{{> shr_namespace_reference label=@key suffix="/cs"}}</h2>
+              {{!-- {{log @root}} --}}
+             {{> shr_index_cs_element csys=this namespace=@key entryOnly=false}}
+              </div>
+            {{/if}}
+          {{/each}}
+        {{/eq}}
+      {{/each}}
+  </div>
+</div>

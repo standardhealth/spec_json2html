@@ -1,9 +1,0 @@
-{{#if identifier}}
-    {{#eq identifier.namespace "primitive"}}
-        <a href="#"><code>{{identifier.label}}</code></a>    
-    {{else}}
-        <a href="{{getNamespaceFilename identifier.namespace}}#{{identifier.label}}"> <code>{{identifier.label}}</code></a>
-    {{/eq}}
-{{else}}
-    <a href="#">{{identifier.text}}</a>
-{{/if}}

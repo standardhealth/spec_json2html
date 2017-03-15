@@ -1,0 +1,16 @@
+<div class="container markdown-body">
+    <div class="row">
+      <h1>{{getNamespaceName label @root}}</h1> 
+      {{!-- Switch below with above if namespace version is desired --}}
+{{!--      <h1>{{getNamespaceName label}}{{> shr_version version=grammarVersion}}</h1> --}}
+      <h2 style="border: none;">{{description}}</h2>
+      <div class="spec-data-elements">
+        
+        {{#each children as |child|}}         
+          {{#if child}}
+            {{> shr_dataelement }}
+          {{/if}}
+        {{/each}}
+      </div>
+    </div>
+</div>

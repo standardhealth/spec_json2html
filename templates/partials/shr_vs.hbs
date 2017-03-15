@@ -1,0 +1,33 @@
+<div class="container markdown-body">
+  <div class="row">
+    <h3>
+        <a class='paddedId' id="{{label}}"></a>{{label}}
+        {{#if namespace}}
+            [<a href="/shr/{{getNamespaceFilename namespace}}">From {{getNamespaceName namespace}}</a>]
+        {{/if}}
+    </h3>
+    <p>
+        {{#if description}}
+            {{description}}
+        {{else}}
+            No Description 
+        {{/if}}
+    </p>
+    <table>
+      <tbody>
+        {{#each children as |child|}}         
+          {{#if child}}
+            <tr>
+              {{> shr_vs_element }}
+            </tr>
+          {{/if}}
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{!-- Three different valueset types --}}
+{{!-- [ 'ValueSetIncludesCodeRule',
+  'ValueSetIncludesDescendentsRule',
+  'ValueSetIncludesFromCodeRule' ] --}}

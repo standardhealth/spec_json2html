@@ -1,0 +1,45 @@
+{{#eq type "BooleanConstraint"}}
+	is {{this.value}}
+{{else}}
+	{{#eq type "CodeConstraint"}}
+		{{#if path}}
+			{{pathtodisplay path}} is {{> shr_concept code}}
+		{{else}}
+			is {{> shr_concept code}}
+		{{/if}}
+	{{else}}
+		{{#eq type "ValueSetConstraint"}}
+			{{#if valueset}}
+				{{#if (isSHRValueSet valueset)}}
+					{{#eq (getValuesetLink valueset @root.data) "TBD"}}
+            			from <a><code data-toggle="tooltip" data-placement="top" title="Valueset not yet available" data-original-title="Valueset not yet available">{{valueset}}</code></a>
+					{{else}}
+						from <a href="{{getValuesetLink valueset @root.data}}"><code>{{getValuesetLabel valueset @root.data}}</code></a>
+					{{/eq}}
+				{{else}}
+					from <a href="{{valueset}}"><code>{{valueset}}</code></a>
+				{{/if}}
+			{{else}}
+			  from valueset <code>TBD</code>
+			{{/if}}								
+		{{else}}
+			{{#eq type "IncludesCodeConstraint"}}
+				includes {{> shr_concept code}} 
+			{{else}}
+				{{#eq type "TypeConstraint"}}
+					must be a {{> shr_label namespace=isA._namespace label=isA._name }}
+				{{else}}
+					{{#eq type "CardConstraint"}}
+					{{else}}
+						{{#eq type undefined}}
+						{{else}}
+							{{log "unknown constraint type"}}
+							{{log type}}
+							{{type}}
+						{{/eq}}
+					{{/eq}}
+				{{/eq}}
+			{{/eq}}
+		{{/eq}}
+	{{/eq}}
+{{/eq}}

@@ -1,0 +1,14 @@
+<div class="container markdown-body">
+    <div class="row">
+      <h1>{{getNamespaceName namespace}} Value Sets</h1> 
+      {{!-- Switch below with above if namespace version is desired --}}
+{{!--      <h1>{{getNamespaceName label}}{{> shr_version version=grammarVersion}}</h1> --}}
+      <div class="spec-data-elements">
+        {{#each vsets as |child|}}         
+          {{#if child}}
+            {{> shr_vs_in_ns }}
+          {{/if}}
+        {{/each}}
+      </div>
+    </div>
+</div>

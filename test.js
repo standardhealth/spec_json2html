@@ -8,7 +8,7 @@ const validator = require('html-validator');
 
 const ymlFile   = '_config.yml';
 const homepage  = 'index.html';
-const linkPatternNamespace = function(name) { return `href="${name}.html"`};
+const linkPatternNamespace = function(name) { return `href="/shr/${name}"`};
 const linkPatternElem = function(elem) {return `#${elem}`}
 const namePatternElem = function(elem) {return `id="${elem}"`}
 
@@ -22,7 +22,7 @@ const namePatternElem = function(elem) {return `id="${elem}"`}
 //     }
 // };
 
-// Validate HTML -- CURRENTLY DISABLED
+// Validate HTML 
 describe('htmlValidation', function() {
     files = getHTMLFiles();
     for (ind in files) { 
@@ -41,21 +41,24 @@ describe('homePage', function(){
         getHomePage.should.not.throw();
     });
 
-    it('should display all namespaces in the hierarchy', function() { 
+    it('should display all namespaces in the hierarchy that contain entries', function() { 
         // Use jsonpath to aggregate all of the namespaces within the hierarchy
-        const allNs = getNamespaceNames();
+        const allNsWithEntries = getNamespaceNames();
         const home = getHomePage();
         let allFound = true;
-        for (ind in allNs) { 
-            let namespace = allNs[ind];
+        for (ind in allNsWithEntries) { 
+            let namespace = allNsWithEntries[ind];
             namespace = processNamespace(namespace);
             const myRe = new RegExp(namespace, 'i');
             allFound = allFound && myRe.test(home);
+            if (!allFound) { 
+                console.log(namespace)
+            }
         }
         allFound.should.be.true;
     });
 
-    it('should contain all elements contained in namespaces', function() { 
+    it('should contain all elements that are entries contained in namespaces', function() { 
         // Use jsonpath to aggregate all the dataElements and Groups
         const elems = getElements();
         const home = getHomePage();
@@ -84,13 +87,13 @@ describe('homePage', function(){
     //     // Check that, for each namespace, it contains all the proper dataElements/Groups
     // });
 
-    it('should contain links to namespaces', function() { 
+    it('should contain links to namespaces that contain entries', function() { 
         // Check that, for each namespace, there is an anchor tag with an href to the relevant 
-        const allNs = getNamespaceNames();
+        const allNsWithEntries = getNamespaceNames();
         const home = getHomePage();
         let allFound = true
-        for (ind in allNs) { 
-            let namespace = allNs[ind];
+        for (ind in allNsWithEntries) { 
+            let namespace = allNsWithEntries[ind];
             const link = linkPatternNamespace(namespace.split('.')[1])
             const myRe = new RegExp(link, 'i');
             allFound = allFound && myRe.test(home);
@@ -98,7 +101,7 @@ describe('homePage', function(){
         allFound.should.be.true;
     });
 
-    it('should contain links to each dataElement', function() { 
+    it('should contain links to each dataElement that is an entry', function() { 
         // Use jsonpath to aggregate all the dataelements and groups 
         const elems = getElements();
         const home = getHomePage();
@@ -192,8 +195,21 @@ function getHomePage() {
 // SHR Hierarchy
 function getNamespaceNames() {
     const nsPattern = '$..[?(@.type=="Namespace")].label';
-    hierarchy = getHierarchy();
-    return jp.query(hierarchy, nsPattern);
+    const childrenPattern = '$..[?(@.type=="Namespace")].children'; // returns array of all ns's elements
+    const hierarchy = getHierarchy();
+    let names = jp.query(hierarchy, nsPattern);
+    let entries = _.map(jp.query(hierarchy, childrenPattern), function(elements) { 
+        return (undefined == _.find(elements, (elem) => { return elem.isEntry; })) ? [] : elements;
+    })
+    let namesWithEntries = [];
+    for (let i = 0; i < names.length; i++) { 
+        if (entries[i].length > 0) {
+            namesWithEntries.push(names[i]);
+        } else { 
+            continue;
+        }
+    }
+    return namesWithEntries;
 }
 
 // Returns an zipped array where each element contains both the
@@ -201,16 +217,18 @@ function getNamespaceNames() {
 function getNamespaces() { 
     const nsPattern = '$..[?(@.type=="Namespace")].label';
     const childrenPattern = '$..[?(@.type=="Namespace")].children';
-    hierarchy = getHierarchy();
+    const elemPattern = '$..[?(@.label && (@.type=="DataElement" && @.isEntry))].label';
+    let hierarchy = getHierarchy();
     let names = jp.query(hierarchy, nsPattern);
     let elements = jp.query(hierarchy, childrenPattern);
+    // console.log(elements)
     return _.zip(names, elements);
 }
 
 // Returns all the dataelements in the hierarchy
 function getElements() {
-    const elemPattern = '$..[?(@.label && (@.type == "Group" || @.type=="DataElement"))].label';
-    hierarchy = getHierarchy();
+    const elemPattern = '$..[?(@.label && (@.type=="DataElement" && @.isEntry))].label';
+    let hierarchy = getHierarchy();
     return jp.query(hierarchy, elemPattern);
 
 }
@@ -218,7 +236,7 @@ function getElements() {
 // Returns a JSON object corresponding to the SHR Hierarchy 
 function getHierarchy() { 
     config = getYMLFile(ymlFile);
-    return JSON.parse(fs.readFileSync(`${__dirname}/${config.assets}/${config.data}/hierarchy.json`, 'utf8'));
+    return JSON.parse(fs.readFileSync(`${__dirname}/${config.assets}/${config.data}/${config.dataFile}`, 'utf8'));
 }
 
 // Returns the YML file corresponding to the config file -- assumes the config is in the same dir
@@ -234,10 +252,10 @@ function getYMLFile(name) {
 // Returns the namespace file corresponding to named html file
 function getNamespaceFile(name) {
     const config = getYMLFile(ymlFile);
-    return fs.readFileSync(`${__dirname}/${config.dest}/${name}.html`,'utf8')
+    return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/${name}/index.html`,'utf8')
 }
 
 // Returns the namespace in processed form so it appears as it is in rendered html,=
 function processNamespace(ns) { 
-    return ns;
+    return ns.split('.')[1];
 }

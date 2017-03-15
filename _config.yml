@@ -2,17 +2,22 @@
 # Build config
 # =============================================
 
-root:       public
-dest:       dist
-assets:     assets
-pages:      pages
-data:       data
+root:           public
+dest:           dist
+assets:         assets
+pages:          pages
+data:           data
+dataFile:       data.json
 
+templates:      templates
+includes:       <%= site.templates %>/partials/**.hbs
+layouts:        <%= site.templates %>/layouts
+layoutdefault:  default.hbs
+layoutstatic:   shrstatic.hbs
+dirNS:          shr
+dirstaticInd:   spec
+dirstaticNS:    spec/shr
 
-templates:  templates
-includes:   <%= site.templates %>/partials/**.hbs
-layouts:    <%= site.templates %>/layouts
-layout:     default.hbs
 
 # Extensions
 helpers:
@@ -24,17 +29,17 @@ helpers:
 
 description:      <%= pkg.description %>
 partials: 
-  - schema_shr
-  - schema_namespace_list
-  - schema_group_children
-  - schema_dataelement_list
-  - schema_concepts
-  - schema_namespace
-  - schema_group
-  - schema_dataelement
-  - schema_concept
-  - schema_quantifiedvalue
-  - schema_value
-  - schema_identifier
-  - schema_version
-  - schema_fields
+  # - schema_shr
+  # - schema_namespace_list
+  # - schema_group_children
+  # - schema_dataelement_list
+  # - schema_concepts
+  # - schema_namespace
+  # - schema_group
+  # - schema_dataelement
+  # - schema_concept
+  # - schema_quantifiedvalue
+  # - schema_value
+  # - schema_identifier
+  # - schema_version
+  # - schema_fields

@@ -1,0 +1,37 @@
+<h3>
+    <a class='paddedId' id="{{label}}"></a>{{label}}
+	{{#if isEntry}}
+		[<a href="/shr/base/index.html#Entry">Entry</a>]
+    {{/if}}
+</h3>
+<p>
+    {{#if description}}
+        {{description}}
+    {{else}}
+        No Description 
+    {{/if}}
+    {{> shr_concepts}}
+</p>
+{{#if basedOn}}
+	{{#each basedOn as |basedon|}}
+		<p>{{> shr_basedon basedon }}</p>
+	{{/each}}
+{{/if}}
+<table>
+  <tbody>
+        {{#if valueRecord }}
+            {{>shr_field valueRecord childValue=false }}
+
+			{{#if valueRecord.values}}
+				{{#each valueRecord.values as |subvalue|}}
+					{{#if subvalue}}
+						<tr>
+						  {{>shr_field subvalue childValue=true}}
+						</tr>			
+					{{/if}}
+				{{/each}}
+			{{/if}}			
+        {{/if}}
+		{{> shr_fields }}
+  </tbody>
+</table>

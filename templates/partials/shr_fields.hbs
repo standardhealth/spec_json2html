@@ -1,0 +1,16 @@
+{{#each fieldList as |child| }}
+  {{#if child}}
+    <tr>
+      {{>shr_field child childValue=false}}
+    </tr>
+	{{#if child.values}}
+		{{#each child.values as |subvalue|}}
+			{{#if subvalue}}
+				<tr>
+				  {{>shr_field subvalue childValue=true}}
+				</tr>			
+			{{/if}}
+		{{/each}}
+	{{/if}}
+  {{/if}}
+{{/each}}

@@ -4,25 +4,46 @@
     {{> head }}
   </head>
   <body>
-
+{{!-- 
+    <div id="partials">
+    {{#each site.partials}}
+        <script id="{{this}}" src="assets/partials/{{this}}.hbs" type="text/x-handlebars-template"></script>
+    {{/each}}
+    </div>  
+ --}}
     <a class="sr-only" href="#content">Skip to main content</a>
+{{!--     
     <!-- Navigation component -->
     {{> nav-main }}
-
+ --}}
+    
     <div class="container">
       <section id="spec-viewer">
-        <div style="width:40%;display:inline-block">
+        {{!-- For dynamic Generation --}}
+        {{!-- <div style="width:40%;display:inline-block"> --}}
           {{> body }}
-        </div>
-        <div id="dynamic_view" style="width:40%;display:inline-block">
+        {{!-- For dynamic Generation --}}
+        {{!-- <div id="dynamic_view" style="width:40%;display:inline-block">
           <div id="dynamic_content"></div>
           <button id="load_hierarchy">Click here to load the dynamic view</button>
-        </div>
+        </div> --}}
       </section>
     </div>
+{{!-- 
     <!-- Footer -->
     {{> footer }}
-    <script src='assets/app.js'></script>
+ --}}
+{{!-- 
+    <script src='{{assets}}/js/app.js'></script>
+--}}
+
+    <script src='{{assets}}/js/material.js'></script>
+    <script type="text/javascript">   
+      $(document).ready(function(){
+        $.material.init()
+        $('[data-toggle="tooltip"]').tooltip(); 
+      });
+  </script>
   </body>
 </html>
 
