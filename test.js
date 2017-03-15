@@ -8,7 +8,7 @@ const validator = require('html-validator');
 
 const ymlFile   = '_config.yml';
 const homepage  = 'index.html';
-const linkPatternNamespace = function(name) { return `href="/shr/${name}/index.html"`};
+const linkPatternNamespace = function(name) { return `href="/shr/${name}"`};
 const linkPatternElem = function(elem) {return `#${elem}`}
 const namePatternElem = function(elem) {return `id="${elem}"`}
 
