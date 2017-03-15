@@ -670,6 +670,16 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
         }
       }, 
+      staticSHRIndexIncludingElements: {
+        options: {
+          layout: '<%= site.layoutstatic %>',  
+        },
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'index_all_elements.hbs',
+        dest: '<%= site.dest %>/<%= site.dirstaticInd %>'  
+      },
       shrIndex: {
         options: {
           layout: '<%= site.layoutstatic %>',  
@@ -704,6 +714,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
   grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticNamespacePages']);
-  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
+  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:staticSHRIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
