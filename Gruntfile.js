@@ -634,6 +634,42 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
         }
       },
+      shrValuesetIndex: { 
+        options: { 
+          layout: '<%= site.layoutstatic %>',  
+          pages:valueset_index
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirstaticInd %>/vs/': ['!*']
+        }
+      },
+      shrValuesetByNamespace: {
+        options : {
+          layout: '<%= site.layoutstatic %>',  
+          pages:valueset_ns_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirstaticNS %>': ['!*']
+        }
+      }, 
+      shrCodesystemIndex: { 
+        options: { 
+          layout: '<%= site.layoutstatic %>',  
+          pages:codesystem_index
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirstaticInd %>/cs/': ['!*']
+        }
+      },
+      shrCodesystemByNamespace: {
+        options : {
+          layout: '<%= site.layoutstatic %>',  
+          pages:codesystem_ns_pages
+        },
+        files: {
+          '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
+        }
+      }, 
       shrIndex: {
         options: {
           layout: '<%= site.layoutstatic %>',  
@@ -668,6 +704,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
   grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticNamespacePages']);
-  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrNamespacePages']);
+  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
