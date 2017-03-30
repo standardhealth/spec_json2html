@@ -8,14 +8,10 @@
 </div>
 <div class="section-content">
   <div class="container">
-      {{#each children}}
-        {{#eq this.label "Namespaces"}}
-          {{#each this.children as |child|}}
-            {{#if child}}
-                {{> shr_index_namespace entryOnly=false}}
-            {{/if}}
-          {{/each}}
-        {{/eq}}
-      {{/each}}
+    {{#each namespaces as |child|}}
+      {{#if child}}
+          {{> shr_index_namespace entryOnly=false}}
+      {{/if}}
+    {{/each}}
   </div>
 </div>

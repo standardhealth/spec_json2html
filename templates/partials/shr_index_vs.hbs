@@ -5,18 +5,14 @@
 </div>
 <div class="section-content">
   <div class="container">
-      {{#each children}}
-        {{#eq type "ValueSets"}}
-          {{#each index_by_namespace as |valuesets|}}
-            {{#if valuesets}}
-              <div class="row">
-              <h2>{{> shr_namespace_reference label=@key suffix="/vs"}}</h2>
-              {{!-- {{log @root}} --}}
-              {{> shr_index_vs_element vsets=this namespace=@key entryOnly=false}}
-              </div>
-            {{/if}}
-          {{/each}}
-        {{/eq}}
-      {{/each}}
+    {{!-- Iterate over each namespace and its corresponding valuesets, as defined in lookup table --}}
+    {{#each vsetsByNamespace as |valuesets|}}
+      {{#if valuesets}}
+        <div class="row">
+        <h2>{{> shr_namespace_reference label=@key suffix="/vs"}}</h2>
+        {{> shr_index_vs_element vsets=this entryOnly=false}}
+        </div>
+      {{/if}}
+    {{/each}}
   </div>
 </div>
