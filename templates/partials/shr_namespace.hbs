@@ -5,7 +5,6 @@
 {{!--      <h1>{{getNamespaceName label}}{{> shr_version version=grammarVersion}}</h1> --}}
       <h2 style="border: none;">{{namespace.description}}</h2>
       <div class="spec-data-elements">
-        
         {{#each namespace.children as |child|}}         
           {{#if child}}
             {{> shr_dataelement }}
