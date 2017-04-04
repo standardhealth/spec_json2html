@@ -671,7 +671,7 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
         }
       }, 
-      staticSHRIndexIncludingElements: {
+      shrIndexIncludingElements: {
         options: {
           layout: '<%= site.layoutstatic %>',  
           data: {namespaces: data.children[namespacesIndex].children}
@@ -716,7 +716,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticNamespacePages']);
-  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:staticSHRIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
+  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
+  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
