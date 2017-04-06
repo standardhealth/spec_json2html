@@ -10,7 +10,7 @@ module.exports.register = function (Handlebars, options, params) {
     String.prototype.capitalize = function() {
       return this.charAt(0).toUpperCase() + this.slice(1);
     }
-    Handlebars.registerHelper('getNamespaceName', function(name, hier, context) {
+    Handlebars.registerHelper('getNamespaceName', function(name, context) {
       return new Handlebars.SafeString(name.split('.')[1].capitalize());
     });
 };

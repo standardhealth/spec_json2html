@@ -14,15 +14,12 @@ module.exports.register = function (Handlebars, options, params) {
           return this.substr(position, searchString.length) === searchString;
       };
     }
-    Handlebars.registerHelper('getCodesystemLink', function(url, hier, context) {
+    Handlebars.registerHelper('getCodesystemLink', function(url, codesystemLookup, context) {
         if (url.startsWith('http://standardhealthrecord.org') || !url.startsWith('http')) {
             if (url.startsWith("urn:tbd") || url == "") { 
                 return "TBD";
             } else { 
-                var codesystems = _.find(hier.children, function(shrSection) {
-                    return shrSection.type == "CodeSystems";
-                });
-                var cs = codesystems.index_by_url[url];
+                var cs = codesystemLookup[url];
                 return new Handlebars.SafeString(cs.shrLink);
             }
         } else { 

@@ -19,10 +19,8 @@ module.exports.register = function (Handlebars, options, params) {
             if (url.startsWith("urn:tbd") || url == "") { 
                 return "TBD";
             } else { 
-                var codesystems = _.find(hier.children, function(shrSection) {
-                    return shrSection.type == "CodeSystems";
-                });
-                var cs = codesystems.index_by_url[url];
+                var codesystems = hier.csysLookup;
+                var cs = codesystems[url];
                 return new Handlebars.SafeString('/shr/' + cs.namespace.split('.')[1] + '/cs/#' + code);
             }
         } else { 

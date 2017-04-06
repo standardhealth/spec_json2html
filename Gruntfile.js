@@ -25,7 +25,7 @@ module.exports = function(grunt) {
   // For timing tasks
   require('time-grunt')(grunt);   
 
-// start GQ created
+  // start GQ created
   var getDescription = function(field) {
     if (field.description) return field.description;
     if (field.identifier) {
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
   var newRecord = function(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
     if (fieldName && fieldName.constructor === Array) {
       //console.log(field);
-    return {  foundin: [ foundin ], 
+      return {  foundin: [ foundin ], 
               concretedataelement: concretedataelement,
               isValue: isValue, 
               isChoice: isChoice,
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
               cardinality : [  { min: field.min, max: field.max } ], 
               description : getDescription(field) };    
     } else {
-    return {  foundin: [ foundin ], 
+      return {  foundin: [ foundin ], 
               concretedataelement: concretedataelement,
               isValue: isValue, 
               isChoice: isChoice,
@@ -86,7 +86,8 @@ module.exports = function(grunt) {
               isTBD: field.type === "TBD",
               constraints: field.constraints.slice(), 
               cardinality : [  { min: field.min, max: field.max } ], 
-              description : getDescription(field) };
+              description : getDescription(field) 
+          };
     }
   }
 
@@ -268,7 +269,6 @@ module.exports = function(grunt) {
   _.map(data.children[namespacesIndex].children,function(namespace) {
     namespace.index = _.keyBy(namespace.children,"label");
   });
-  data.index = namespaces;
   
   // GQ created
   // for each namespace:
@@ -278,11 +278,20 @@ module.exports = function(grunt) {
   
   //console.log("PHASE 2: effective cardinalities");
   // now go through all fields and figure out its effective cardinality and handle CardConstraints
+  //  while building a map from element to namespace -- this is more economical than passing the whole 
+  //  hierarchy when building namespace pages
+  
+  // mapElementstoNamespace  - lookup table mapping every SHR Element to the namespace it's from
+  var mapElementstoNamespace = {}; 
   var index;
   _.forEach(data.children[namespacesIndex].children, function(namespace) {
     //console.log("!2!2!2 " + namespace);
     _.forEach(namespace.children, function(dataelement) {
       dataelement.namespace = namespace.label; 
+        // For each element, make a namespace mapping;
+      var nsLabel = namespace.label;
+      mapElementstoNamespace[dataelement.label] = nsLabel;
+
       //console.log("!2!2!2 " + dataelement.label);
       _.forEach(dataelement.fieldList, function(record) {
         if (record) {
@@ -317,20 +326,7 @@ module.exports = function(grunt) {
         }
       });
       if (dataelement.valueRecord) {
-        /*index = dataelement.valueRecord.cardinality.length - 1;
-        while (index >= 0 && dataelement.valueRecord.cardinality[index].min === undefined && dataelement.valueRecord.cardinality[index].max === undefined) {
-          index--;
-        }
-        if (index < 0) {
-          console.log("ERROR 8: No cardinalities found for value. namespace: " + namespace.label + "/element " + dataelement.label);
-          console.log(dataelement.valueRecord);
-        } else {
-          //console.log("***************** set effective cardinality for value record");
-          dataelement.valueRecord.effectivecardinality = {};
-          dataelement.valueRecord.effectivecardinality.min = dataelement.valueRecord.cardinality[index].min;
-          dataelement.valueRecord.effectivecardinality.max = dataelement.valueRecord.cardinality[index].max;
-        }*/
-        if (dataelement.valueRecord.values) {
+         if (dataelement.valueRecord.values) {
           //console.log(record.values);
           _.forEach(dataelement.valueRecord.values, function (subrecord) {
            //console.log(subrecord);
@@ -345,19 +341,22 @@ module.exports = function(grunt) {
   // end GQ created
 
   //
-  /// Making Valueset and Codesystem maps
+  /// Making Valueset, Codesystem  and Data Element lookup tables
   // 
-  // 1. mapNamespaceToValuesets - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+  // 1. mapNamespaceToValuesets   - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
   //      an array of all of that namespace's associated valuesets
-  // 2. mapURLtoValueset - lookup table mapping, for every FHIR IG url for a valueset, the valueset it uniquely identifies
-  // 3. mapNamespaceToValuesets - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+  // 2. mapURLtoValueset          - lookup table mapping every FHIR IG url to the valueset it uniquely identifies
+  // 3. mapNamespaceToCodesystems - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
   //      an array of all of that namespace's associated codesystems
+  // 4. mapURLtoCodesystem        - lookup table mapping every FHIR IG url to the codesystem it uniquely identifies
   var valuesets                 = data.children[valuesetIndex].children,
       mapURLtoValueset          = {},
       mapNamespaceToValuesets   = {},
       codesystems               = data.children[codesystemIndex].children,
       mapNamespaceToCodesystems = {},
-      mapURLtoCodesystem        = {}; 
+      mapURLtoCodesystem        = {};
+
+
   // For valuesets
   _.forEach(valuesets, function(vs) {
     var ns  = vs.namespace,
@@ -409,7 +408,7 @@ module.exports = function(grunt) {
   var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
     return {
       filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:item,
+      data:{namespace: item, elemsToNamespace: mapElementstoNamespace, vsetsLookup: mapURLtoValueset},
       content:ns_template
     }
   });
@@ -425,12 +424,13 @@ module.exports = function(grunt) {
   var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
     return {
       filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:{ namespace: ns, vsets: valuesets},
+      data:{ namespace: ns, vsets: valuesets, csysLookup: mapURLtoCodesystem},
       content:vs_by_ns_template 
     }
   });
   var valueset_index = [{
       filename:'index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+      data: {vsetsByNamespace: mapNamespaceToValuesets},
       content:vs_index_template
     }];
   // Codesystem page construction
@@ -444,6 +444,7 @@ module.exports = function(grunt) {
   });
   var codesystem_index = [{
     filename:'index',
+    data: {csysByNamespace: mapNamespaceToCodesystems},
     content:cs_index_template
   }]
 
@@ -529,8 +530,8 @@ module.exports = function(grunt) {
       options: {
         pkg: '<%= pkg %>',
         site: '<%= site %>',
-        data: data,
         assets: '<%= site.assets %>',
+        // data: data,
 
         // Templates
         partials: '<%= site.includes %>',
@@ -586,15 +587,6 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
         }
       }, 
-      // valuesetByVSPages: {
-      //   options : {
-      //     layout: '<%= site.layoutdefault %>',
-      //     pages:valueset_pages
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
-      //   }
-      // },
       staticNamespacePages: {
         options : {
           layout: '<%= site.layoutdefault %>',
@@ -605,6 +597,9 @@ module.exports = function(grunt) {
         }
       },
       staticIndex: {
+        options : {
+          data: {namespaces: data.children[namespacesIndex].children}
+        },
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',
@@ -612,6 +607,9 @@ module.exports = function(grunt) {
         dest: '<%= site.dest %>'
       }, 
       staticIndexIncludingElements: {
+        options : {
+          data: {namespaces: data.children[namespacesIndex].children}
+        },
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',
@@ -619,6 +617,9 @@ module.exports = function(grunt) {
         dest: '<%= site.dest %>'
       },
       staticSHRIndex: {
+        options : {
+          data: {namespaces: data.children[namespacesIndex].children}
+        },
         flatten: true,
         expand: true,
         cwd: '<%= site.pages %>',
@@ -670,9 +671,10 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
         }
       }, 
-      staticSHRIndexIncludingElements: {
+      shrIndexIncludingElements: {
         options: {
           layout: '<%= site.layoutstatic %>',  
+          data: {namespaces: data.children[namespacesIndex].children}
         },
         flatten: true,
         expand: true,
@@ -683,6 +685,7 @@ module.exports = function(grunt) {
       shrIndex: {
         options: {
           layout: '<%= site.layoutstatic %>',  
+          data: {namespaces: data.children[namespacesIndex].children}
         },
         flatten: true,
         expand: true,
@@ -713,7 +716,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticNamespacePages']);
-  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:staticSHRIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
+  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
+  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }

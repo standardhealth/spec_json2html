@@ -14,14 +14,11 @@ module.exports.register = function (Handlebars, options, params) {
           return this.substr(position, searchString.length) === searchString;
       };
     }
-    Handlebars.registerHelper('getValuesetLabel', function(url, hier, context) {
+    Handlebars.registerHelper('getValuesetLabel', function(url, valuesetLookup, context) {
         if (url.startsWith("urn:tbd:")) { 
             return "TBD"
         } else { 
-            var valuesets = _.find(hier.children, function(shrSection) {
-                return shrSection.type == "ValueSets";
-            });
-            var vs = valuesets.index_by_url[url];
+            var vs = valuesetLookup[url];
             return new Handlebars.SafeString(vs.label);
         }
     });
