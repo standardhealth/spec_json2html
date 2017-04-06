@@ -12,12 +12,8 @@ input {
     color: #000
 }
 
-#search-box { 
-    color: #ffffff;
-}
-
-#search { 
-    
+.tt-suggestion p { 
+    background-color: #ffffff;   
 }
 
 #options { 
