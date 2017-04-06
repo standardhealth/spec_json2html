@@ -12,11 +12,25 @@ input {
     color: #000
 }
 
-.tt-suggestion p { 
-    background-color: #ffffff;   
+/**** Search Bar ****/
+.tt-suggestion p {
+    background-color: #ffffff;
 }
 
-#options { 
+.tt-dropdown-menu {
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+
+#options {
     background-color: #ffffff;
     position: absolute;
     top: -5px;
@@ -29,13 +43,15 @@ input {
     border-radius: 3px;
 }
 
-#options li { 
+#options li {
     display: block
 }
 
-#options li:hover { 
-    color: #dddddd;
+#options li:hover {
+    color: #809fff;
 }
+
+/**** /End Search Bar ****/
 
 html,
 body {
