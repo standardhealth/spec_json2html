@@ -520,7 +520,7 @@ module.exports = function(grunt) {
         dest: '<%= site.dest %>/<%= site.assets %>/app.js',
         options: {
           browserifyOptions: {
-            require: ['handlebars'],
+            require: ['handlebars', 'fuse.js'],
             paths: ['./node_modules']
           }
         }

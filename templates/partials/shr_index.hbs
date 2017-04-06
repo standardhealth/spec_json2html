@@ -6,6 +6,22 @@
     The Standard Health Record is a rapidly evolving specification under active development. Ultimately, an individual's SHR will consist of a series of entries relevant to the health of that person. The entries are divided among the categories below, and each <a href="/shr/base/#Entry">entry</a> always includes basic information about itself (e.g. who created it and when). Click on the entries below to explore details of the Standard Health Record. Go to <a href="https://github.com/standardhealth" style="font-weight: 600;">the SHR GitHub</a> or <a href="mailto:shr-project-list@lists.mitre.org" style="font-weight: 600;">email the collaborative</a> to get involved.
   </h2>
 </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group">
+        <input type="text" id="search" class="form-control" placeholder="Search for snippets"/>
+{{!--         <div class="input-group-btn">
+          <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </div> --}}
+      </div>
+    </div>
+    <div class="col-md-12">
+      <ul id="options">
+      </ul>
+    </div>
+  </div>
+</div>
 <div class="section-content">
   <div class="container">
     {{#each namespaces as |child|}}
