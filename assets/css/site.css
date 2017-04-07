@@ -13,11 +13,13 @@ input {
 }
 
 /**** Search Bar ****/
-.tt-suggestion p {
-    background-color: #ffffff;
+#search-form .btn.btn-primary { 
+    padding: 8px 15px;
 }
-
-.tt-dropdown-menu {
+#search-form .tt-input { 
+    text-overflow: ellipsis;
+}
+#search-form .tt-dropdown-menu {
     min-width: 160px;
     margin-top: 2px;
     padding: 5px 0;
@@ -29,26 +31,22 @@ input {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     background-clip: padding-box;
 }
-
-#options {
-    background-color: #ffffff;
-    position: absolute;
-    top: -5px;
-    width: 80%;
-    z-index: 10;
-    padding: 0;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #cbcfe2 #c8cee7 #c4c7d7;
-    border-radius: 3px;
+#search-form .tt-suggestion {
+    background-color: #ffffff; 
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
 }
-
-#options li {
-    display: block
+#search-form .tt-suggestion p {
+    margin: 0;
 }
-
-#options li:hover {
-    color: #809fff;
+#search-form .tt-suggestion.tt-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+    /*color: #f9f9f9;*/
+    color: #ffffff;
+    background-color: #295677;
+} 
+#search-form .tt-suggestion.tt-cursor p{ /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+    color: #ffffff;
 }
 
 /**** /End Search Bar ****/

@@ -133,7 +133,7 @@
         $('#search .typeahead').typeahead({
           hint: true,
           highlight: true,
-          minLength: 3
+          minLength: 2
         },
         {
           name: 'shrValues',
