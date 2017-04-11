@@ -39,3 +39,232 @@
     {{/each}}
   </div>
 </div>
+
+<div class="section-content">
+    <div position:relative;width="100%"; height="1900px">
+        <div display="inline" id="legend" width="15%" height="1900px" style="float:left">
+            <svg id="legendsvg" width="100%" height="100%">
+            </svg>
+        </div >
+        <div display="inline" id="graph" class="chart" width="85%" height="1900px" style="float:right">
+            <svg id="graphsvg" width="100%" height="100%">
+            </svg>
+        </div>
+    </div>
+    <style>
+        #graph {
+        //width: 2000px;
+            width: 85%;
+            height: 1900px;
+            style:inline-block;
+        }
+        #legend {
+        //width: 2000px;
+            width: 15%;
+            height: 1900px;
+            style:inline-block;
+        }
+        .text {
+            fill: black;
+            font: 10px sans-serif;
+            text-anchor: start;
+        }
+
+        .node {
+            fill: #ccc;
+            stroke: #fff;
+            stroke-width: 1px;
+        }
+
+        .link {
+            stroke: #777;
+            stroke-width: 2px;
+        }
+
+    </style>
+    <script>
+        !(function(){
+            "use strict"
+
+            var width,height
+            var chartWidth, chartHeight
+            var margin
+            var svg = d3.select("#graphsvg");
+            var chartLayer = svg.append("g").classed("chartLayer", true)
+            var colorMap = {};
+            var nextColorIndex = 0;
+
+            main()
+
+            function main() {
+                var range = 100
+                /*        var data = {
+                            nodes:d3.range(0, range).map(function(d){ return {label: "l"+d ,r:~~d3.randomUniform(8, 28)()}}),
+                            links:d3.range(0, range).map(function(){ return {source:~~d3.randomUniform(range)(), target:~~d3.randomUniform(range)()} })
+                        }*/
+                var data = {{{generateBasedOnGraph namespaces}}};
+
+                setSize(data)
+                drawChart(data)
+                build_legend()
+            }
+
+            function setSize(data) {
+                width = document.querySelector("#graph").clientWidth
+                height = document.querySelector("#graph").clientHeight
+
+                console.log("size: " + width + "," + height);
+
+                margin = {top:0, left:0, bottom:0, right:0 }
+
+
+                chartWidth = width - (margin.left+margin.right)
+                chartHeight = height - (margin.top+margin.bottom)
+
+                svg.attr("width", width).attr("height", height)
+
+
+                chartLayer
+                        .attr("width", chartWidth)
+                        .attr("height", chartHeight)
+                        .attr("transform", "translate("+[margin.left, margin.top]+")")
+
+                //responsive SVG needs these 2 attributes and no width and height attr
+                /*		svg.attr("preserveAspectRatio", "xMinYMin meet")
+                            .attr("viewBox", "0 0 600 400")
+                            //class to make it responsive
+                            .classed("svg-content-responsive", true);*/
+            }
+
+            /*	function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++ ) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }*/
+
+            function build_legend() {
+                var text;
+                var svg = d3.select("#legendsvg");
+                var rect = svg.append('rect') //.transition().duration(500)
+                        .attr('width', 100)
+                        .attr('height', (colorMap.length * 20))
+                        .attr('x', 20)
+                        .attr('y', 20)
+                        .style('fill', 'white')
+                        .attr('stroke', 'black')
+                var y = 30;
+                for (var key in colorMap) {
+                    //console.log(key);
+                    text = svg.append('text').text(key)
+                            .attr('x', 30)
+                            .attr('y', y)
+                            .attr('fill', colorMap[key])
+                    y = y + 20;
+                }
+            }
+
+            function colores_google(n) {
+                var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
+                return colores_g[n % colores_g.length];
+            }
+
+            function getColorForNamespace(namespace) {
+                if (colorMap[namespace]) return colorMap[namespace];
+                colorMap[namespace] = colores_google(nextColorIndex);
+                nextColorIndex = nextColorIndex + 1;
+                //console.log("namespace '" + namespace + "'. color = " + colorMap[namespace]);
+                return colorMap[namespace];
+            }
+
+            function drawChart(data) {
+
+                svg.call(d3.zoom().on("zoom", function () {
+                    chartLayer.attr("transform", d3.event.transform)
+                }))
+
+                var simulation = d3.forceSimulation()
+                        .force("link", d3.forceLink().id(function(d) { return d.index }).distance(75)) //strength(1)
+                        //.force("collide",d3.forceCollide( function(d){return d.r + 16 }).iterations(16) )
+                        .force("charge", d3.forceManyBody().strength(-190))
+                        .force("center", d3.forceCenter(chartWidth / 2, chartWidth / 2))
+                        .force("y", d3.forceY(0))
+                        .force("x", d3.forceX(0))
+
+                var link = chartLayer.append("g")
+                        .attr("class", "links")
+                        .selectAll("line")
+                        .data(data.links)
+                        .enter()
+                        .append("line")
+                        .attr("stroke", "darkgray")
+
+                var node = chartLayer.append("g")
+                        .attr("class", "nodes")
+                        .selectAll("circle")
+                        .data(data.nodes.filter(function(n) { return n.numlinks > 0; }))
+                        .enter().append("circle")
+                        //.attr("r", function(d){  return d.r })
+                        .attr("r", function(d) { return d.numlinks + 1; })
+                        //				d3.sum(force.links().filter(function(p) {return p.source == d || p.target == d}), function(p) {return p.weight})})
+                        .style("fill", function(d,i) { return getColorForNamespace(d.namespace.label ); })
+                        .call(d3.drag()
+                                .on("start", dragstarted)
+                                .on("drag", dragged)
+                                .on("end", dragended))
+                var text = chartLayer.append("g")
+                        .attr("class", "text")
+                        .selectAll("text")
+                        .data(data.nodes.filter(function(n) { return n.numlinks > 0; }))
+                        .enter().append("text")
+                        .attr("dx", 12)
+                        .attr("dy", ".35em")
+                        .text(function(d) { return d.label })
+
+                var ticked = function() {
+                    link
+                            .attr("x1", function(d) { return d.source.x; })
+                            .attr("y1", function(d) { return d.source.y; })
+                            .attr("x2", function(d) { return d.target.x; })
+                            .attr("y2", function(d) { return d.target.y; });
+
+                    node
+                            .attr("cx", function(d) { return d.x; })
+                            .attr("cy", function(d) { return d.y; });
+
+                    text
+                            .attr("x", function(d) { return d.x; })
+                            .attr("y", function(d) { return d.y; });
+                }
+
+                simulation
+                        .nodes(data.nodes)
+                        .on("tick", ticked);
+
+                simulation.force("link")
+                        .links(data.links);
+
+
+                function dragstarted(d) {
+                    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                }
+
+                function dragged(d) {
+                    d.fx = d3.event.x;
+                    d.fy = d3.event.y;
+                }
+
+                function dragended(d) {
+                    if (!d3.event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                }
+
+            }
+        }());
+    </script>
+</div>

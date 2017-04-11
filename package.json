@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "fuse.js": "^2.6.2",
+    "d3": "^4.7.4",
     "grunt": "^1.0.1",
     "grunt-assemble": "^0.5.0",
     "grunt-browserify": "^5.0.0",
