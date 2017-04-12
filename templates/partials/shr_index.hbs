@@ -39,8 +39,7 @@
     {{/each}}
   </div>
 </div>
-
-<div class="section-content">
+<div class="section-content" id="graph-container">
     <div position:relative;width="100%"; height="1900px">
         <div display="inline" id="legend" width="15%" height="1900px" style="float:left">
             <svg id="legendsvg" width="100%" height="100%">
@@ -52,14 +51,17 @@
         </div>
     </div>
     <style>
+        #graph-container {
+            margin-top: 10%;
+        }
         #graph {
-        //width: 2000px;
+            /*width: 2000px;*/
             width: 85%;
             height: 1900px;
             style:inline-block;
         }
         #legend {
-        //width: 2000px;
+            /*width: 2000px;*/
             width: 15%;
             height: 1900px;
             style:inline-block;
@@ -86,42 +88,44 @@
         !(function(){
             "use strict"
 
-            var width,height
-            var chartWidth, chartHeight
-            var margin
+            var width,height;
+            var chartWidth, chartHeight;
+            var margin;
             var svg = d3.select("#graphsvg");
-            var chartLayer = svg.append("g").classed("chartLayer", true)
+            var chartLayer = svg.append("g").classed("chartLayer", true);
             var colorMap = {};
             var nextColorIndex = 0;
 
-            main()
+            main();
 
             function main() {
-                var range = 100
+                var range = 100;
                 /*        var data = {
                             nodes:d3.range(0, range).map(function(d){ return {label: "l"+d ,r:~~d3.randomUniform(8, 28)()}}),
                             links:d3.range(0, range).map(function(){ return {source:~~d3.randomUniform(range)(), target:~~d3.randomUniform(range)()} })
                         }*/
                 var data = {{{generateBasedOnGraph namespaces}}};
 
-                setSize(data)
-                drawChart(data)
-                build_legend()
-            }
+                setSize(data);
+                drawChart(data);
+                build_legend();
+            };
 
             function setSize(data) {
-                width = document.querySelector("#graph").clientWidth
-                height = document.querySelector("#graph").clientHeight
+                width = document.querySelector("#graph").clientWidth;
+                height = document.querySelector("#graph").clientHeight;
 
                 console.log("size: " + width + "," + height);
+                console.log("#graph");
+                console.log(document.querySelector("#graph"));
 
-                margin = {top:0, left:0, bottom:0, right:0 }
+                margin = {top:0, left:0, bottom:0, right:0 };
 
 
-                chartWidth = width - (margin.left+margin.right)
-                chartHeight = height - (margin.top+margin.bottom)
+                chartWidth = width - (margin.left+margin.right);
+                chartHeight = height - (margin.top+margin.bottom);
 
-                svg.attr("width", width).attr("height", height)
+                svg.attr("width", width).attr("height", height);
 
 
                 chartLayer
@@ -134,7 +138,7 @@
                             .attr("viewBox", "0 0 600 400")
                             //class to make it responsive
                             .classed("svg-content-responsive", true);*/
-            }
+            };
 
             /*	function getRandomColor() {
                     var letters = '0123456789ABCDEF';
@@ -164,12 +168,12 @@
                             .attr('fill', colorMap[key])
                     y = y + 20;
                 }
-            }
+            };
 
             function colores_google(n) {
                 var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
                 return colores_g[n % colores_g.length];
-            }
+            };
 
             function getColorForNamespace(namespace) {
                 if (colorMap[namespace]) return colorMap[namespace];
@@ -177,13 +181,16 @@
                 nextColorIndex = nextColorIndex + 1;
                 //console.log("namespace '" + namespace + "'. color = " + colorMap[namespace]);
                 return colorMap[namespace];
-            }
+            };
 
             function drawChart(data) {
 
+                console.log("data");
+                console.log(data);
+
                 svg.call(d3.zoom().on("zoom", function () {
                     chartLayer.attr("transform", d3.event.transform)
-                }))
+                }));
 
                 var simulation = d3.forceSimulation()
                         .force("link", d3.forceLink().id(function(d) { return d.index }).distance(75)) //strength(1)
@@ -191,7 +198,7 @@
                         .force("charge", d3.forceManyBody().strength(-190))
                         .force("center", d3.forceCenter(chartWidth / 2, chartWidth / 2))
                         .force("y", d3.forceY(0))
-                        .force("x", d3.forceX(0))
+                        .force("x", d3.forceX(0));
 
                 var link = chartLayer.append("g")
                         .attr("class", "links")
@@ -200,6 +207,24 @@
                         .enter()
                         .append("line")
                         .attr("stroke", "darkgray")
+//                        .attr("marker-end", "url(#end)"); flip arrow (point to parent)
+                        .attr("marker-start", "url(#end)");
+
+                svg.append("svg:defs").selectAll("marker")
+                        .data(["end"])      // Different link/path types can be defined here
+                        .enter().append("svg:marker")    // This section adds in the arrows
+                        .attr("id", String)
+                        .attr("viewBox", "0 -5 10 10")
+                        .attr("refX",-5)
+                        //.attr("refX", 15)  flip arrow (point to parent)
+                        .attr("refY", -1.5)
+                        .attr("markerWidth", 6)
+                        .attr("markerHeight", 6)
+                        .attr("orient", "auto")
+                        .append("svg:path")
+                        .attr("d", "M10,-5L0,0L10,5");
+//                        .attr("d", "M0,-5L10,0L0,5"); flip arrow (point to parent)
+
 
                 var node = chartLayer.append("g")
                         .attr("class", "nodes")
@@ -208,12 +233,15 @@
                         .enter().append("circle")
                         //.attr("r", function(d){  return d.r })
                         .attr("r", function(d) { return d.numlinks + 1; })
+//                        .attr("r", 5)
+
                         //				d3.sum(force.links().filter(function(p) {return p.source == d || p.target == d}), function(p) {return p.weight})})
                         .style("fill", function(d,i) { return getColorForNamespace(d.namespace.label ); })
                         .call(d3.drag()
                                 .on("start", dragstarted)
                                 .on("drag", dragged)
-                                .on("end", dragended))
+                                .on("end", dragended));
+
                 var text = chartLayer.append("g")
                         .attr("class", "text")
                         .selectAll("text")
@@ -221,7 +249,7 @@
                         .enter().append("text")
                         .attr("dx", 12)
                         .attr("dy", ".35em")
-                        .text(function(d) { return d.label })
+                        .text(function(d) { return d.label });
 
                 var ticked = function() {
                     link
@@ -237,7 +265,7 @@
                     text
                             .attr("x", function(d) { return d.x; })
                             .attr("y", function(d) { return d.y; });
-                }
+                };
 
                 simulation
                         .nodes(data.nodes)
@@ -251,20 +279,20 @@
                     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
                     d.fx = d.x;
                     d.fy = d.y;
-                }
+                };
 
                 function dragged(d) {
                     d.fx = d3.event.x;
                     d.fy = d3.event.y;
-                }
+                };
 
                 function dragended(d) {
                     if (!d3.event.active) simulation.alphaTarget(0);
                     d.fx = null;
                     d.fy = null;
-                }
+                };
 
-            }
+            };
         }());
     </script>
 </div>
