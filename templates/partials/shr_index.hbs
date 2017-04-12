@@ -42,6 +42,8 @@
 <div class="section-content" id="graph-container">
     <div position:relative;width="100%"; height="1900px">
         <div display="inline" id="legend" width="15%" height="1900px" style="float:left">
+            <h3>Legend</h3>
+            <h4>Parent --> Child</h4>
             <svg id="legendsvg" width="100%" height="100%">
             </svg>
         </div >
@@ -207,6 +209,7 @@
                         .append("line")
                         .attr("stroke", "darkgray")
 //                        .attr("marker-end", "url(#end)"); flip arrow (point to parent)
+//                        .attr("marker-mid", "url(#end)"); put arrow in the middle of the line (can only use this on paths)
                         .attr("marker-start", "url(#end)");
 
                 svg.append("svg:defs").selectAll("marker")
@@ -231,8 +234,7 @@
                         .data(data.nodes.filter(function(n) { return n.numlinks > 0; }))
                         .enter().append("circle")
                         //.attr("r", function(d){  return d.r })
-                        .attr("r", function(d) { return d.numlinks + 1; })
-//                        .attr("r", 5)
+                        .attr("r", function(d) { return d.numlinks + 1; })  // TODO: set threshold values for radius
 
                         //				d3.sum(force.links().filter(function(p) {return p.source == d || p.target == d}), function(p) {return p.weight})})
                         .style("fill", function(d,i) { return getColorForNamespace(d.namespace.label ); })
