@@ -7,10 +7,10 @@
 // Export helpers
 module.exports.register = function (Handlebars, options, params) {
   'use strict';
-  
-  var addBasedOnRelationship = function(hier, de, deNode, curNamespace) {
+
+  var addBasedOnRelationship = function(namespaces, de, deNode, curNamespace) {
 	  var namespace;
-      var namespaces = _.find(hier.children, {label: "Namespaces"})
+      // var namespaces = _.find(hier.children, {label: "Namespaces"})
 	  var basedOnNode, basedOnDE;
 	  if (de.basedOn) {
 		_.forEach(de.basedOn, function (basedOn) {
@@ -25,12 +25,12 @@ module.exports.register = function (Handlebars, options, params) {
 			//console.log(basedOn);
 			//console.log(hier);
 			if (basedOn.namespace) {
-				namespace = _.find(namespaces.children, {label: basedOn.namespace});
+				namespace = _.find(namespaces, {label: basedOn.namespace});
 				basedOnDE = _.find(namespace.children, {label: basedOn.label});
 				if (basedOnNode.children.length == 0) {
 					//console.log("more?");
 					//console.log(basedOnDE.basedOn);
-					addBasedOnRelationship(hier, basedOnDE, basedOnNode, curNamespace);
+					addBasedOnRelationship(namespaces, basedOnDE, basedOnNode, curNamespace);
 				}
 			}
 		});
@@ -38,18 +38,18 @@ module.exports.register = function (Handlebars, options, params) {
   };
   
   var _ = require('lodash');
-  Handlebars.registerHelper('generateBasedOnHierarchy', function(hier, opts) {
+  Handlebars.registerHelper('generateBasedOnHierarchy', function(namespaces, opts) {
 	  var result = {name:"SHR", children: []};
 	  var nsNode, deNode;
-      var namespaces = _.find(hier.children, {label: "Namespaces"})
-	  _.forEach(namespaces.children, function(namespace) {
+      // var namespaces = _.find(hier.children, {label: "Namespaces"})
+	  _.forEach(namespaces, function(namespace) {
 		  nsNode = {name: namespace.label, children: []};
 		  result.children.push(nsNode);
 		  _.forEach(namespace.children, function(de) {
 			  deNode = {name:de.label, children: []};
 			  nsNode.children.push(deNode);
 			  //console.log("**** check based on for " + de.label);
-			  addBasedOnRelationship(hier, de, deNode, namespace.label);
+			  addBasedOnRelationship(namespaces, de, deNode, namespace.label);
 		  });
 		  //nsNode.index = _.keyBy(nsNode.children, 'name');
 	  });

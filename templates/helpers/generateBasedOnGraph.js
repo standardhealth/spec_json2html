@@ -30,7 +30,7 @@ module.exports.register = function (Handlebars, options, params) {
 				if (basedOnNode.children.length == 0) {
 					//console.log("more?");
 					//console.log(basedOnDE.basedOn);
-					addBasedOnRelationship(hier, basedOnDE, basedOnNode, curNamespace);
+					addBasedOnRelationship(namespaces, basedOnDE, basedOnNode, curNamespace);
 				}
 			}
 		});
