@@ -70,8 +70,6 @@
         var treeData;
         var parentnode = {name:"SHR", children: []}, nsnode, denode;
         treeData = {{{generateBasedOnHierarchy namespaces}}};
-        console.log("treeData");
-        console.log(treeData);
 
         // Set the dimensions and margins of the diagram
         var margin = {top: 20, right: 90, bottom: 30, left: 90},
@@ -87,16 +85,6 @@
                 .append("g")
                 .attr("transform", "translate("
                         + margin.left + "," + margin.top + ")");
-        //	.attr("border", 1);
-
-        /*var borderPath = svg.append("rect")
-                           .attr("x", 0)
-                           .attr("y", 0)
-                           .attr("height", height + margin.top + margin.bottom)
-                           .attr("width", width + margin.right + margin.left)
-                           .style("stroke", 'black')
-                           .style("fill", "none")
-                           .style("stroke-width", 1);*/
 
         var i = 0,
                 duration = 750,
@@ -107,8 +95,6 @@
 
         // Assigns parent, children, height, depth
         root = d3.hierarchy(treeData, function(d) { return d.children; });
-        console.log("root");
-        console.log(root);
 
         root.x0 = height / 2;
         root.y0 = 0;
@@ -160,7 +146,6 @@
                     .attr('r', 1e-6)
                     .style("fill", function(d) {
                         return d._children ? "#a6a6a6" : "#fff";
-//                        return d._children ? "#a6a6a6" : ( d.sameNamespace ? "#fff" : "#803333");
                     });
 
             // Add labels for the nodes
@@ -189,7 +174,8 @@
                     .attr('r', 10)
                     .style("fill", function(d) {
 //                        return d._children ? "#a6a6a6" : "#fff";
-                        return d._children ? "#a6a6a6" : ( d.data.sameNamespace ? "#fff" : "#803333");
+//                        return d._children ? "#a6a6a6" : ( d.data.sameNamespace ? "#fff" : "#803333");
+                        return d._children ? "#a6a6a6" : ( d.data.isDifferentNamespace ? "#803333" : "#fff");
                     })
                     .attr('cursor', 'pointer');
 
