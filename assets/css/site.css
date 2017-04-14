@@ -12,6 +12,38 @@ input {
     color: #000
 }
 
+
+/**** Hierarchy Visualization ****/
+#chart-container {
+    margin-top: 10%;
+    border-style: groove;
+}
+
+#legendText {
+    display: inline-block;
+}
+
+#legendCircle {
+    display: inline-block;
+}
+
+.node circle {
+    fill: #fff;
+    stroke: #6d6b6b;
+    stroke-width: 3px;
+}
+
+.node text {
+    font: 12px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+/**** /End Search Bar ****/
+
 /**** Search Bar ****/
 #search-form .btn.btn-primary { 
     padding: 8px 15px;
