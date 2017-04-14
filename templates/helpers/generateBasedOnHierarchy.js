@@ -40,16 +40,28 @@ module.exports.register = function (Handlebars, options, params) {
   var _ = require('lodash');
   Handlebars.registerHelper('generateBasedOnHierarchy', function(namespaces, opts) {
 	  var result = {name:"SHR", children: []};
-	  var nsNode, deNode;
+	  var nsNode, entryNode, fieldNode;
       // var namespaces = _.find(hier.children, {label: "Namespaces"})
 	  _.forEach(namespaces, function(namespace) {
 		  nsNode = {name: namespace.label, children: []};
 		  result.children.push(nsNode);
 		  _.forEach(namespace.children, function(de) {
-			  deNode = {name:de.label, children: []};
-			  nsNode.children.push(deNode);
-			  //console.log("**** check based on for " + de.label);
-			  addBasedOnRelationship(namespaces, de, deNode, namespace.label);
+				if (de.isEntry) {
+					entryNode = {name:de.label, children: []};
+					if (de.value) {
+						fieldNode = {name: de.value.identifier.label, children: []};
+						entryNode.children.push(fieldNode);
+					}
+
+					_.forEach(de.fieldList, function(field) {
+						fieldNode = {name: field.label, children: []};
+						entryNode.children.push(fieldNode);
+					});
+
+					nsNode.children.push(entryNode);
+				}
+
+
 		  });
 		  //nsNode.index = _.keyBy(nsNode.children, 'name');
 	  });
