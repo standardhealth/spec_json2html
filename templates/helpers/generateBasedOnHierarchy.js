@@ -39,34 +39,40 @@ module.exports.register = function (Handlebars, options, params) {
   
   var _ = require('lodash');
   Handlebars.registerHelper('generateBasedOnHierarchy', function(namespaces, opts) {
-	  var result = {name:"SHR", children: []};
-	  var nsNode, entryNode, fieldNode;
+	  var result = {name:"SHR", sameNamespace: true, children: []};
+	  var nsNode, entryNode, fieldNode, currentNamespace;
       // var namespaces = _.find(hier.children, {label: "Namespaces"})
 	  _.forEach(namespaces, function(namespace) {
-		  nsNode = {name: namespace.label, children: []};
+		  nsNode = {name: namespace.label, sameNamespace: true, children: []};
 		  result.children.push(nsNode);
 		  _.forEach(namespace.children, function(de) {
 				if (de.isEntry) {
-					entryNode = {name:de.label, children: []};
+					entryNode = {name:de.label, sameNamespace: true, children: []};
+					currentNamespace = de.namespace;
+
 					if (de.value) {
-						fieldNode = {name: de.value.identifier.label, children: []};
+						if (currentNamespace === de.value.identifier.namespace) {
+							fieldNode = {name: de.value.identifier.label, sameNamespace: true, children: []};
+						}
+						else {
+							fieldNode = {name: de.value.identifier.label, sameNamespace: false, children: []};
+						}
 						entryNode.children.push(fieldNode);
 					}
-
 					_.forEach(de.fieldList, function(field) {
-						fieldNode = {name: field.label, children: []};
+						if (currentNamespace === field.namespace) {
+							fieldNode = {name: field.label, sameNamespace: true, children: []};
+						}
+						else {
+							fieldNode = {name: field.label, sameNamespace: false, children: []};
+						}
+
 						entryNode.children.push(fieldNode);
 					});
-
 					nsNode.children.push(entryNode);
 				}
-
-
 		  });
-		  //nsNode.index = _.keyBy(nsNode.children, 'name');
 	  });
-	  //result.index = _.keyBy(result.children, 'name');
-	  
       return JSON.stringify(result);
   });
 };
