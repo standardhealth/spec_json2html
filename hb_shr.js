@@ -1,142 +1,188 @@
-(function() {
-  var Handlebars = require('handlebars');
-  var page = require('page');
+// Keep a model of the important data alive in the app (Dylan)
+var App = window.App = {
+    // namespaces: [],
+    // dataelements: [],
+    // valuesets: [],
+    // codesystems: [],
+    options: [],
+    selectedElem: {}
+};
 
-  var App = window.App = {
-    hierarchy: {},
-    namespaces: {},
-    valueset: {}
-      // No variables to be stored about the application now. 
-  };
-
-  App.loadDataElement = (namespace) => {
-    console.log('actually was called');
-    $("#dynamic_content").empty();
-  }
-
-  App.mapToElement = (namespace, label) => { 
-    console.log('Mapping from current page to namespace: ' + namespace + ' and element: ' + label);
-  }
-
-  String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-  }
-  $(document).ready(function() {
-    registerPartials();
-    registerHelpers();
-  });
-
-  // TODO: Use page.js in our single page application to 
-  //       enable backspacing on dynamically generated content.
-  //
-  // page('/', function (a) {
-  //   console.log("pages works ");
-  // })
-  // page();
-  
-    $("#load_hierarchy").click(function() {
-      $.getJSON("assets/data/shr_v4.json",function(data) {
-        App.hierarchy = data;
-        App.namespaces = _.indexBy(App.hierarchy.children,"label");
-
-        App.de = _.map(App.hierarchy.children,function(namespace) {
-          namespace.index = _.indexBy(namespace.children,"label");
-        });
-        App.hierarchy.index = namespaces;
-        // addHierarchyIndex(hierarchy.children);
-        console.log('fin addhier')
-
-        /* Call Handlebars.compile on the templates
-         and then call the template with hierarchy as the context */
-        var template = $.ajax({
-            url: $('#schema_shr').attr('src'),
-            type: "GET", 
-            async: false
-          });
-
-        var tempScript = Handlebars.compile(template.responseText);
-        var html = tempScript({hierarchy: hierarchy});
-        $("#dynamic_content").append(html); 
-      });
-    });
-
-
-  /* Add an index to namespaces and idref member to each identifier to make it easy to show the description */
-  function addHierarchyIndex(h) {
-    // For IE functionality 
-    if (!String.prototype.startsWith) {
-        String.prototype.startsWith = function(searchString, position){
-          position = position || 0;
-          return this.substr(position, searchString.length) === searchString;
-      };
+(function () {
+    const Fuse = require('fuse.js');
+    const _ = require('lodash');
+    // Define capitalize incase it's not already
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
     }
-    _.each(h,function(item) {
-      if (item && _.isObject(item)) {
-        if (item.type == "Identifier") {
-          if (item.namespace == "primitive") {
-            item.description = item.label.capitalize();
-          }
-          if (item.namespace.startsWith("shr.")) {
-            item.idref = hierarchy.index[item.namespace].index[item.label];
-          }
-        }
-        addHierarchyIndex(item);
-      } else {
-        if (item && _.isArray(item)) {
-          _.each(item,function(child) {
-            addHierarchyIndex(child);
-          });
-        }
-        // not an object, not an array
-      }
-    });
-  }
-  
-  // Register all the partials that have been referenced on the clientside page
-  function registerPartials(templates, hierarchy) {     
-    $.each($('#partials script').get(), function(index, value) {
-      var partial = $('#partials script').get(index)
-      if (partial != 'schema_shr') { 
-        var id = $(partial).attr('id')
-        var data = $.ajax({
-          url: $(partial).attr('src'),
-          type: "GET", 
-          async: false
-        })
-        if (data.status == 200) { 
-          Handlebars.registerPartial(id, data.responseText);
-        } else { 
-          console.error('Error loading partial with ID: ' + id + "\nError: " + data.statusText);
-        }
-      }
-    });
-    console.log('finished registering partials'); 
-  }
+    String.prototype.lowerCase = function () {
+        return this.charAt(0).toLowerCase() + this.slice(1);
+    }
 
-  // (Manually) register the heleprs used in generating the Handlebars templates. 
-  function registerHelpers () { 
-    Handlebars.registerHelper('getNamespaceFilename', function(nStatic, nDynamic, context) {
-      // Clientside and Serverside compilation understand scope differently, leading to a disparity 
-      // in referencing parent scope (which is where we get our namespace name from) 
-      // Solution: offer two namespace definitions, default to static unless undefined.
-      var name = nStatic !== undefined ? nStatic : nDynamic;
-      return new Handlebars.SafeString(name.split('.')[1]+'.html');
-    });
+    //
+    //
+    // Format a list to be searched by Fuse.js
+    //
+    function formatForSearch(hier, list) {
+        _.forEach(hier.children, function (shrArea) {
+            // shrArea can contain namespaces, valusets, or codesystems
+            let sectionType = shrArea.type,
+                ns,
+                link;
+            _.forEach(shrArea.children, function (subSection) {
+                // Subsection can be an individual namespace, valueset, or codesystem
+                switch (sectionType) {
+                    case "ValueSets":
+                        // We want to search on valueset names, nothing else
+                        link = `/shr/${subSection.namespace.split('.')[1].lowerCase()}/vs/#${subSection.label}`;
+                        addObjToSearch(subSection.label,
+                            subSection.description,
+                            sectionType,
+                            subSection.namespace.split('.')[1].capitalize(),
+                            link,
+                            list);
+                        break;
+                    case "CodeSystems":
+                        // We want to search on individual codes
+                        ns = subSection.namespace;
+                        _.forEach(subSection.children, function (curElement) {
+                            link = `/shr/${ns.split('.')[1].lowerCase()}/cs/#${curElement.code}`;
+                            // Current Elements can be an individual codes contained in a codesystem
+                            // N.B. the code servs the role of label, and display servces the role of description.
+                            addObjToSearch(curElement.code,
+                                curElement.display,
+                                sectionType,
+                                ns.split('.')[1].capitalize(),
+                                link,
+                                list);
+                        });
+                        break;
+                    case "Namespaces":
+                        // We want to search on namespace names
+                        ns = subSection.label;
+                        link = `/shr/${ns.split('.')[1].lowerCase()}/`;
+                        addObjToSearch(subSection.label,
+                            subSection.description,
+                            sectionType,
+                            ns.split('.')[1].capitalize(),
+                            link,
+                            list);
+                        _.forEach(subSection.children, function (curElement) {
+                            link = `/shr/${ns.split('.')[1].lowerCase()}/#${curElement.label}`;
+                            // We want to be able to search each individaul data element
+                            addObjToSearch(curElement.label,
+                                curElement.description,
+                                curElement.type,
+                                ns.split('.')[1].capitalize(),
+                                link,
+                                list);
+                        });
+                        break;
+                    default:
+                        console.log('New type: ' + sectionType);
+                }
+                ;
+            });
+        });
+    };
+    //
+    //
+    // Short function for pushing a new object onto list of searchable objects for Fuse.
+    //
+    function addObjToSearch(label, description, ty, ns, link, list) {
+        let curObj = {};
+        curObj['label'] = label;
+        curObj['link'] = link;
+        curObj['description'] = description;
+        curObj['type'] = ty;
+        curObj['ns'] = ns;
+        // Different html formats
+        // curObj['html'] = `<option href='${link}' value='${label}'>${ty}</option>`;
+        // curObj['html'] = `<li><a href='${link}' value='${ty}'>${label}</a></li>`;
 
-    Handlebars.registerHelper('getNamespaceName', function(nStatic, nDynamic, context) {
-      var name = nStatic !== undefined ? nStatic : nDynamic;
-      return new Handlebars.SafeString(name.split('.')[1]);
-    });
-    // Basic conditional checking.
-    Handlebars.registerHelper('eq', function(a, b, opts) {
-        if (a == b) {
-            return opts.fn(this);
-        } else {
-            return opts.inverse(this);
+        list.push(curObj);
+    };
+    //
+    //
+    // Returns a function that takes a query and a callback, uses the query 
+    // to run a search on fuse, reformats fuses list to fit with typeahead formatting
+    // and passes that array onto the typeahead callback
+    //
+    function fuseQueryOnList(list) {
+        return function (query, cb) {
+            // Options for fuse
+            const options = {
+                shouldSort: true,
+                tokenize: true,
+                threshold: 0.2,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 35,
+                minMatchCharLength: 3,
+                keys: [{
+                    name: "label",
+                    weight: 1
+                }]
+            };
+            const fuse = new Fuse(list, options);
+            let result;
+            result = fuse.search(query);
+            if (result.length > 0) {
+                result.length = (result.length) > 5 ? 5 : result.length;
+                App.options = result;
+                console.log(App);
+                cb(_.map(result, function (elem) {
+                    return {value: elem.label};
+                }));
+            } else {
+                App.options = result;
+                cb(result);
+            }
+        };
+    }
+    //
+    // Make an ajax call to load the json, parse it and build saerch ahead on top of the results
+    $.ajax({
+        url: '/assets/data/data.json',
+        dataType: 'json',
+        success: function (data) {
+            let json = data;
+            let list = [];
+
+            formatForSearch(json, list);
+
+            var searchResults = fuseQueryOnList(list);
+
+            $('#search .typeahead').typeahead({
+                    hint: true,
+                    highlight: true,
+                    minLength: 2
+                },
+                {
+                    name: 'shrValues',
+                    // source: fuseQueryOnList(list)
+                    source: searchResults
+                });
+            // $('#search').on('input', function (e) {
+            //     result = fuse.search(e.target.value);
+            //     if (result.length > 0 ) {
+            //       result.length = (result.length) > 5 ? 5 : result.length;
+            //       // TODO: Optimize so we don't iterate over once on map, once on join.
+            //       $('#options').html(_.map(result, function (elem) {
+            //         return elem.html;
+            //       }).join('\n'));
+            //     } else {
+            //       $('#options').html('')
+            //     }
+            // })
+
+            // On search button click, navigate to selected data element from search box
+            $('#searchSubmitButton').on('click', function (e) {
+                e.preventDefault();
+                var redirectLink = _.find(App.options, function (obj) {return obj.label == $('.tt-input')[0].value}).link;
+                window.location.href = redirectLink;
+            })
         }
     });
-    Handlebars.registerHelper("log", function(something) {
-      console.log(something);
-    });
-  }
 })();
+
