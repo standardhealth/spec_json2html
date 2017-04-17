@@ -472,15 +472,15 @@ module.exports = function(grunt) {
           dest:'<%= site.dest %>/<%= site.assets %>'
         }]
       },
-      // img: {
-      //   files: [{
-      //     expand:true, 
-      //     flatten: false, 
-      //     cwd: '<%= site.assets %>', 
-      //     src: ['img/**'], 
-      //     dest:'<%= site.dest %>/<%= site.assets %>'
-      //   }]
-      // },
+      img: {
+        files: [{
+          expand:true, 
+          flatten: false, 
+          cwd: '<%= site.assets %>', 
+          src: ['img/**'], 
+          dest:'<%= site.dest %>/<%= site.assets %>'
+        }]
+      },
       css: {
         files: [{
           expand:true, 
