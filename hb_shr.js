@@ -128,7 +128,14 @@ var App = window.App = {
             let result;
             result = fuse.search(query);
             if (result.length > 0) {
-                result.length = (result.length) > 5 ? 5 : result.length;
+                let optionLength = result.length; 
+                let limit = ($(window).width() > 480) ? 6 : 3;
+                console.log(limit);
+                console.log(optionLength);
+                if (optionLength > limit) { 
+                    result.length = limit;
+                    result.push({label: "More elements...", link: '/shr'});
+                }
                 App.options = result;
                 console.log(App);
                 cb(_.map(result, function (elem) {
