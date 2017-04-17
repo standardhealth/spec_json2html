@@ -1,0 +1,398 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+a,
+input {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #000
+}
+
+html,
+body {
+    font-weight: regular;
+    overflow-x: hidden;
+    background-color: #f9f9f9
+}
+
+body {
+    visibility: "hidden"
+}
+
+html {
+    height: 100%
+}
+
+h1 {
+    font-size: 51.6px
+}
+
+h2 {
+    font-size: 42.48px
+}
+
+h3 {
+    font-size: 35.04px
+}
+
+p {
+    font-size: 18.48px
+}
+
+a {
+    color: #295677;
+    font-size: 18.48px
+}
+
+a:focus {
+    color: #052A45;
+    border: 0
+}
+
+section {
+    padding-top: 45px;
+    margin-bottom: 0px
+}
+
+.section-heading {
+    padding-bottom: 45px;
+    text-align: center
+}
+
+.section-heading h1 {
+    text-transform: uppercase;
+    font-weight: 600
+}
+
+section:before {
+    display: block;
+    content: " ";
+    margin-top: -80px;
+    height: 80px;
+    visibility: hidden
+}
+
+.icon {
+    color: #000
+}
+
+.btn.btn-raised.btn-default {
+    margin-top: 30px;
+    color: white;
+    background-color: #295677
+}
+
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -135px
+}
+
+.wrapper-padding {
+    height: 135px
+}
+
+.buffer {
+    display: block;
+    height: 125px;
+    margin-top: -125px;
+    visibility: hidden
+}
+
+header nav.navbar {
+    background-color: rgba(255, 255, 255, 0);
+    width: 100%
+}
+
+header nav.navbar .navbar-header a img {
+    margin: 10px 20px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out
+}
+
+header nav.navbar .navbar-header .logo-banner {
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out
+}
+
+header nav.navbar.affix {
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.90196);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out
+}
+
+header nav.navbar.affix .navbar-header a img {
+    width: 60px
+}
+
+header nav.navbar.affix #site-menu li {
+    margin: 10px 5px 5px 5px;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out
+}
+
+header nav.navbar.affix-top .navbar-header a img {
+    width: 85px
+}
+
+header nav.navbar.affix-top #site-menu li {
+    margin: 25px 5px 5px 5px;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out
+}
+
+header nav.navbar.affix-bottom {
+    position: absolute
+}
+
+header nav.navbar #site-menu {
+    float: right
+}
+
+header nav.navbar #site-menu li {
+    font-size: 18.48px;
+    margin: 10px 5px 5px 5px
+}
+
+header nav.navbar .dropdown-menu li>a:hover {
+    color: #000
+}
+
+header nav #site-menu li a:after {
+    display: block;
+    position: absolute;
+    bottom: 6px;
+    width: 0;
+    height: 2px;
+    content: "";
+    left: 0;
+    background: #295677;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -o-transition: all .2s;
+    -ms-transition: all .2s;
+    transition: all .2s
+}
+
+header nav #site-menu li ul li a:after {
+    color: #000;
+    background: none
+}
+
+header .navbar .dropdown-menu .active>a {
+    background-color: #fff;
+    color: #000
+}
+
+header nav #site-menu li.active a:after {
+    width: 100%
+}
+
+#spec,
+#spec-viewer {
+    padding-bottom: 30px
+}
+
+#spec a:hover,
+#spec-viewer a:hover {
+    color: #052A45
+}
+
+#spec h1,
+#spec-viewer h1 {
+    margin-top: 75px
+}
+
+#spec .pane,
+#spec-viewer .pane {
+    padding: 30px 0 10px 0;
+    text-align: center;
+    display: inline-block;
+    height: 100%
+}
+
+#spec .pane p,
+#spec-viewer .pane p {
+    text-align: left;
+    padding: 0 0px
+}
+
+#spec .pane h2,
+#spec-viewer .pane h2 {
+    padding-top: 0;
+    font-size: 35.04px
+}
+
+#spec .btn.btn-raised.btn-default,
+#spec-viewer .btn.btn-raised.btn-default {
+    margin-top: 50px;
+    color: white;
+    background-color: #295677
+}
+
+#spec ul,
+#spec-viewer ul {
+    margin-bottom: 0
+}
+
+#spec-viewer .section-heading {
+    padding-bottom: 10px
+}
+
+#spec-viewer .section-heading h2,
+#spec-viewer .section-heading a {
+    text-align: left;
+    font-size: 24px
+}
+
+#spec-viewer .section-heading h2>a {
+    padding: 0
+}
+
+#spec-viewer .section-content h2,
+#spec-viewer .section-content a {
+    padding: 0 10px 0 10px
+}
+
+#spec-viewer h3 {
+    margin-top: 30px
+}
+
+#spec-viewer h3 a.paddedId {
+    display: block;
+    position: relative;
+    top: -100px;
+    visibility: hidden
+}
+
+#spec-viewer h2>a {
+    font-size: 29.52px
+}
+
+#spec-viewer td a {
+    padding: 0
+}
+
+#spec-viewer td i {
+    font-size: 12px
+}
+
+@media (max-width: 992px) {
+    .buffer {
+        display: block;
+        height: 115px;
+        margin-top: -115px;
+        visibility: hidden
+    }
+    #spec h1,
+    #spec h2,
+    #spec-viewer h1,
+    #spec-viewer h2 {
+        padding: 0 8px
+    }
+    #spec h2,
+    #spec-viewer h2 {
+        font-size: 35.04px
+    }
+    #spec-viewer h2 {
+        font-size: 24px
+    }
+    #spec-viewer .section-heading {
+        padding-bottom: 5px
+    }
+    #spec-viewer .section-heading h1 {
+        font-size: 42.48px
+    }
+    #spec-viewer .section-heading h2,
+    #spec-viewer .section-heading a {
+        font-size: 18.48px
+    }
+}
+
+@media (max-width: 767px) {
+    .img-card {
+        height: 100%;
+        min-height: 400px
+    }
+    h1 {
+        font-size: 42.48px
+    }
+    h2 {
+        font-size: 35.04px
+    }
+    h3 {
+        font-size: 29.52px
+    }
+    header nav.navbar {
+        background-color: rgba(255, 255, 255, 0.90196);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        -webkit-transition: all .4s ease-in-out;
+        -moz-transition: all .4s ease-in-out;
+        -o-transition: all .4s ease-in-out;
+        -ms-transition: all .4s ease-in-out;
+        transition: all .4s ease-in-out
+    }
+    header nav.navbar .navbar-header .logo-banner {
+        vertical-align: middle;
+        position: relative;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 110px;
+        height: 90px
+    }
+    header nav.navbar .navbar-header a img {
+        left: 0px
+    }
+    header nav.navbar.affix-top .navbar-header a img {
+        width: 70px
+    }
+    header nav.navbar.affix .navbar-header a img {
+        width: 50px
+    }
+    header nav.navbar.affix .navbar-header .logo-banner {
+        width: 90px;
+        height: 70px
+    }
+    header nav.navbar.affix #site-menu li,
+    header nav.navbar.affix-top #site-menu li {
+        margin: 0 5px 0 5px
+    }
+    header nav.navbar.affix #site-menu li a,
+    header nav.navbar.affix-top #site-menu li a {
+        font-size: 16.8px
+    }
+    #spec .panel-body,
+    #spec-viewer .panel-body {
+        padding: 15px
+    }
+}
+
+@media (max-width: 480px) {
+    p {
+        font-size: 18.48px
+    }
+}
+
+@media (max-width: 375px) {
+}
