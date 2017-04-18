@@ -285,6 +285,11 @@ header nav #site-menu li.active a:after {
     visibility: hidden
 }
 
+#spec-viewer .section-heading h2.sub-header {
+    text-align: center;
+    font-size: 42.48px
+}
+
 #spec-viewer h2>a {
     font-size: 29.52px
 }

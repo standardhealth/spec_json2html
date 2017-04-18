@@ -15,8 +15,7 @@ layouts:        <%= site.templates %>/layouts
 layoutdefault:  default.hbs
 layoutstatic:   shrstatic.hbs
 dirNS:          shr
-dirstaticInd:   spec
-dirstaticNS:    spec/shr
+dirSHRFiles:    spec
 
 
 # Extensions

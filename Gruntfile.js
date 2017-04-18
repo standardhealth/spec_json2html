@@ -606,6 +606,16 @@ module.exports = function(grunt) {
         src: 'index.hbs',
         dest: '<%= site.dest %>'
       }, 
+      staticGraphic: {
+        options : {
+          data: {namespaces: data.children[namespacesIndex].children}
+        },
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'graphic.hbs',
+        dest: '<%= site.dest %>/<%= site.dirNS %>/'
+      }, 
       staticIndexIncludingElements: {
         options : {
           data: {namespaces: data.children[namespacesIndex].children}
@@ -626,13 +636,14 @@ module.exports = function(grunt) {
         src: 'index.hbs',
         dest: '<%= site.dest %>/<%= site.dirNS %>/'
       }, 
+      // SHR files
       shrNamespacePages: { 
         options : {
           layout: '<%= site.layoutstatic %>', 
           pages: namespace_pages
         },
         files: {
-          '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
+          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
         }
       },
       shrValuesetIndex: { 
@@ -641,7 +652,7 @@ module.exports = function(grunt) {
           pages:valueset_index
         },
         files: {
-          '<%= site.dest %>/<%= site.dirstaticInd %>/vs/': ['!*']
+          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/vs/': ['!*']
         }
       },
       shrValuesetByNamespace: {
@@ -650,7 +661,7 @@ module.exports = function(grunt) {
           pages:valueset_ns_pages
         },
         files: {
-          '<%= site.dest %>/<%= site.dirstaticNS %>': ['!*']
+          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
         }
       }, 
       shrCodesystemIndex: { 
@@ -659,7 +670,7 @@ module.exports = function(grunt) {
           pages:codesystem_index
         },
         files: {
-          '<%= site.dest %>/<%= site.dirstaticInd %>/cs/': ['!*']
+          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/cs/': ['!*']
         }
       },
       shrCodesystemByNamespace: {
@@ -668,7 +679,7 @@ module.exports = function(grunt) {
           pages:codesystem_ns_pages
         },
         files: {
-          '<%= site.dest %>/<%= site.dirstaticNS %>/': ['!*']
+          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
         }
       }, 
       shrIndexIncludingElements: {
@@ -680,7 +691,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index_all_elements.hbs',
-        dest: '<%= site.dest %>/<%= site.dirstaticInd %>'  
+        dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
       },
       shrIndex: {
         options: {
@@ -691,7 +702,18 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index.hbs',
-        dest: '<%= site.dest %>/<%= site.dirstaticInd %>'  
+        dest: '<%= site.dest %>/<%= site.dirSHRFiles %>'  
+      },
+      shrGraphic: {
+        options: {
+          layout: '<%= site.layoutstatic %>',  
+          data: {namespaces: data.children[namespacesIndex].children}
+        },
+        flatten: true,
+        expand: true,
+        cwd: '<%= site.pages %>',
+        src: 'graphic.hbs',
+        dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
       }
     },
     mochaTest: {
@@ -716,7 +738,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
-  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
+  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticGraphic', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
+  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrGraphic', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
