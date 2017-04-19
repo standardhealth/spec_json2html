@@ -278,11 +278,11 @@ header nav #site-menu li.active a:after {
     margin-top: 30px
 }
 
-#spec-viewer h3 a.paddedId {
-    display: block;
-    position: relative;
-    top: -100px;
-    visibility: hidden
+#spec-viewer a.paddedId{
+    display:block;
+    position:relative;
+    top:-75px;
+    visibility:hidden;
 }
 
 #spec-viewer .section-heading h2.sub-header {
