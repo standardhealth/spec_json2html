@@ -116,7 +116,15 @@
                     return d.children || d._children ? "end" : "start";
                 })
                 .text(function (d) {
-                    return d.data.name;
+                    if (d.data.isDifferentNamespace) {
+                        if (d.data.namespace === "") {
+                            return d.data.name + " (Namespace TBD)";
+                        } else {
+                            return d.data.name + " (" + d.data.namespace + ")";
+                        }
+                    } else {
+                        return d.data.name;
+                    }
                 });
 
         // UPDATE
@@ -133,8 +141,6 @@
         nodeUpdate.select('circle.node')
                 .attr('r', 10)
                 .style("fill", function (d) {
-//                        return d._children ? "#a6a6a6" : "#fff";
-//                        return d._children ? "#a6a6a6" : ( d.data.sameNamespace ? "#fff" : "#803333");
                     return d._children ? "#a6a6a6" : ( d.data.isDifferentNamespace ? "#803333" : "#fff");
                 })
                 .attr('cursor', 'pointer');

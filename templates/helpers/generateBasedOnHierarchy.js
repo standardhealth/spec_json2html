@@ -50,7 +50,7 @@ module.exports.register = function (Handlebars, options, params) {
 							fieldNode = {name: de.value.identifier.label, isDifferentNamespace: false, children: []};
 						}
 						else {
-							fieldNode = {name: de.value.identifier.label, isDifferentNamespace: true, children: []};
+							fieldNode = {name: de.value.identifier.label, namespace: de.value.identifier.namespace, isDifferentNamespace: true, children: []};
 						}
 						entryNode.children.push(fieldNode);
 					}
@@ -59,7 +59,7 @@ module.exports.register = function (Handlebars, options, params) {
 							fieldNode = {name: field.label, isDifferentNamespace: false, children: []};
 						}
 						else {
-							fieldNode = {name: field.label, isDifferentNamespace: true, children: []};
+							fieldNode = {name: field.label, namespace: field.namespace, isDifferentNamespace: true, children: []};
 						}
 
 						entryNode.children.push(fieldNode);
