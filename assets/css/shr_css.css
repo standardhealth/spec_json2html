@@ -245,7 +245,7 @@ header nav #site-menu li.active a:after {
 
 #spec .btn.btn-raised.btn-default,
 #spec-viewer .btn.btn-raised.btn-default {
-    margin-top: 50px;
+    margin-top: 5px;
     color: white;
     background-color: #295677
 }
