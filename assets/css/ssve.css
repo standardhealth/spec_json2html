@@ -9,8 +9,9 @@
     display: inline-block;
 }
 
-#legendCircle {
+#legend {
     display: inline-block;
+    width: 30%;
 }
 
 .node circle {

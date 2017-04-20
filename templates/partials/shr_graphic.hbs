@@ -1,6 +1,6 @@
 <div class="row"> 
     <div class="section-heading">
-        <h1 class="text-center">THE SPECIFICATION</h1>
+        <h1 class="text-center">SPECIFICATION VISUALIZATION</h1>
     </div>      
 </div> 
 <div class="row text-center">
@@ -9,7 +9,8 @@
 
 <div class="section-content" id="chart-container">
     <div id="chart">
-        <svg height="100" width="100" id="legendCircle">
+        <svg id="hierarchy-chart"></svg>
+        <svg height="100" width="100" id="legend">
             <circle cx="15" cy="15" r="11" stroke="#6d6b6b" stroke-width="3" fill="#803333"/>
             <text x="30" y="18">Not in same namespace as parent node</text>
         </svg>
@@ -30,7 +31,9 @@
     // get the svg object
     // appends a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
-    var svg = d3.select("svg")
+
+//    var svg = d3.select("svg")
+    var svg = d3.select("#hierarchy-chart")
             .attr("width", width + margin.right + margin.left)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
