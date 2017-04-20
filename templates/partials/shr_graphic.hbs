@@ -1,7 +1,6 @@
 <div class="row"> 
     <div class="section-heading">
         <h1 class="text-center">THE SPECIFICATION</h1>
-        <h2 class="sub-header">Built With Patient-Clinician Needs In Mind</h2>
     </div>      
 </div> 
 <div class="row text-center">
@@ -9,14 +8,12 @@
 </div>
 
 <div class="section-content" id="chart-container">
-    <div id="legend">
-
+    <div id="chart">
         <svg height="100" width="100" id="legendCircle">
             <circle cx="15" cy="15" r="11" stroke="#6d6b6b" stroke-width="3" fill="#803333"/>
             <text x="30" y="18">Not in same namespace as parent node</text>
         </svg>
     </div>
-    <svg class="chart"></svg>
 </div>
 
 <script>
@@ -118,7 +115,15 @@
                     return d.children || d._children ? "end" : "start";
                 })
                 .text(function (d) {
-                    return d.data.name;
+                    if (d.data.isDifferentNamespace) {
+                        if (d.data.namespace === "") {
+                            return d.data.name + " (Namespace TBD)";
+                        } else {
+                            return d.data.name + " (" + d.data.namespace + ")";
+                        }
+                    } else {
+                        return d.data.name;
+                    }
                 });
 
         // UPDATE
@@ -135,8 +140,6 @@
         nodeUpdate.select('circle.node')
                 .attr('r', 10)
                 .style("fill", function (d) {
-//                        return d._children ? "#a6a6a6" : "#fff";
-//                        return d._children ? "#a6a6a6" : ( d.data.sameNamespace ? "#fff" : "#803333");
                     return d._children ? "#a6a6a6" : ( d.data.isDifferentNamespace ? "#803333" : "#fff");
                 })
                 .attr('cursor', 'pointer');
