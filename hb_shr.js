@@ -10,7 +10,6 @@ var App = window.App = {
 
 (function () {
     const Fuse = require('fuse.js');
-    const _ = require('lodash');
     // Define capitalize incase it's not already
     String.prototype.capitalize = function () {
         return this.charAt(0).toUpperCase() + this.slice(1);
@@ -184,14 +183,22 @@ var App = window.App = {
             // })
 
             // On search button click, navigate to selected data element from search box
-            $('#searchSubmitButton').on('click', function (e) {
+            $('#searchSubmitButton-mobile').on('click', function (e) {
                 e.preventDefault();
                 var redirectLink = _.find(App.options, function (obj) {return obj.label == $('.tt-input')[0].value}).link;
                 window.location.href = redirectLink;
             })
-
-            $('#search-input').on('typeahead:selected', function (obj, datum, name) {
+            $('#searchSubmitButton').on('click', function (e) {
+                e.preventDefault();
+                var redirectLink = _.find(App.options, function (obj) {return obj.label == $('.tt-input')[1].value}).link;
+                window.location.href = redirectLink;
+            })
+            $('#search-input-mobile').on('typeahead:selected', function (obj, datum, name) {
                 var redirectLink = _.find(App.options, function (obj) {return obj.label == $('.tt-input')[0].value}).link;
+                window.location.href = redirectLink;
+            });
+            $('#search-input').on('typeahead:selected', function (obj, datum, name) {
+                var redirectLink = _.find(App.options, function (obj) {return obj.label == $('.tt-input')[1].value}).link;
                 window.location.href = redirectLink;
             });
         }
