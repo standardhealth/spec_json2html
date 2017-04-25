@@ -159,7 +159,7 @@ var App = window.App = {
 
             var searchResults = fuseQueryOnList(list);
 
-            $('#search .typeahead').typeahead({
+            $('.search .typeahead').typeahead({
                     hint: true,
                     highlight: true,
                     minLength: 2

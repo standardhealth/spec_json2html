@@ -10,17 +10,11 @@ const ymlFile   = '_config.yml';
 const homepage  = 'index.html';
 const linkPatternNamespace = function(name) { return `href="/shr/${name}"`};
 const linkPatternElem = function(elem) {return `#${elem}`}
-const namePatternElem = function(elem) {return `id="${elem}"`}
+const idPatternElem = function(elem) {return `id="${elem}"`}
+const codePatternElem = function(code) {return `<code>${code}</code>`}
+const linkPatternCodesystem = function(csObj) {return `href="/shr/${csObj.namespace}/cs/#${csObj.name}"`}
+const linkPatternValueset   = function(vsObj) {return `href="/shr/${vsObj.namespace}/cs/#${vsObj.name}"`}
 
-// const wrappedExpectedFn = function(name, testCase) {
-//     try {
-//         return expectedFn(name);
-//     } catch (e) {
-//         const msg = `Skipping ${name} test.  Failed to load expected values: ${e}`;
-//         console.warn(msg);
-//         testCase.skip(msg);
-//     }
-// };
 
 // Validate HTML 
 describe('htmlValidation', function() {
@@ -32,15 +26,18 @@ describe('htmlValidation', function() {
 }); 
 
 
-// Homepage Tests:
-describe('homePage', function(){
+//
+//
+// Namespce pages
+
+// NamespaceIndex Tests:
+describe('Namespace Index', function(){
     const config = getYMLFile(ymlFile);
-    
-    it('should exist as file titled index.html in the dist folder', function() {
+
+    it('should exist as file titled index.html in the shr folder', function() {
         // Use the config file to go to proper dist folder 
         getHomePage.should.not.throw();
     });
-
     it('should display all namespaces in the hierarchy that contain entries', function() { 
         // Use jsonpath to aggregate all of the namespaces within the hierarchy
         const allNsWithEntries = getNamespaceNames();
@@ -52,12 +49,11 @@ describe('homePage', function(){
             const myRe = new RegExp(namespace, 'i');
             allFound = allFound && myRe.test(home);
             if (!allFound) { 
-                console.log(namespace)
+                console.log("Could not find: " + namespace)
             }
         }
         allFound.should.be.true;
     });
-
     it('should contain all elements that are entries contained in namespaces', function() { 
         // Use jsonpath to aggregate all the dataElements and Groups
         const elems = getElements();
@@ -67,26 +63,12 @@ describe('homePage', function(){
             let elem = elems[ind];
             const myRe = new RegExp(elem, 'i');
             allFound = allFound && myRe.test(home);
+            if (!allFound) { 
+                console.log("Could not find: " + namespace);
+            }
         }
         allFound.should.be.true;
     });
-
-    // it('should display each element under its proper namespace', function() { 
-    //     const allNs = getNamespaces();
-    //     const home = getHomePage();
-    //     let allFound = true;
-    //     for (ind in allNs) { 
-    //         const myRe = 
-    //         const myRe = new RegExp(namespace, 'i');
-    //         allFound = allFound && myRe.test(home);
-    //     }
-    //     // allFound.should.be.true;
-    //     // allFound.should.be.true;
-    //     // Use jsonpath to aggregate, for each namespace, all the dataElements and Groups
-    //     // $..[?(@.type=="Namespace")].children
-    //     // Check that, for each namespace, it contains all the proper dataElements/Groups
-    // });
-
     it('should contain links to namespaces that contain entries', function() { 
         // Check that, for each namespace, there is an anchor tag with an href to the relevant 
         const allNsWithEntries = getNamespaceNames();
@@ -94,13 +76,15 @@ describe('homePage', function(){
         let allFound = true
         for (ind in allNsWithEntries) { 
             let namespace = allNsWithEntries[ind];
-            const link = linkPatternNamespace(namespace.split('.')[1])
+            const link = linkPatternNamespace(namespace.split('.')[1]);
             const myRe = new RegExp(link, 'i');
             allFound = allFound && myRe.test(home);
+            if (!allFound) { 
+                console.log("Could not find: " + namespace);
+            }
         }
         allFound.should.be.true;
     });
-
     it('should contain links to each dataElement that is an entry', function() { 
         // Use jsonpath to aggregate all the dataelements and groups 
         const elems = getElements();
@@ -111,17 +95,20 @@ describe('homePage', function(){
             const link = linkPatternElem(elem)
             const myRe = new RegExp(link, 'i');
             allFound = allFound && myRe.test(home);
+            if (!allFound) { 
+                console.log("Could not find: " + namespace);
+            }
         }
         allFound.should.be.true;
     });
 });
 
-// Namespaces tests
+// Namespace Pages tests
 describe('namespaces', function(){
-    allNs = getNamespaces();
-    for (var i = allNs.length - 1; i >= 0; i--) {
-        ns = allNs[i]
-        namespaceTests(ns)
+    let allNs = getNamespaces();
+    for (let i = allNs.length - 1; i >= 0; i--) {
+        let ns = allNs[i];
+        namespaceTests(ns);
     };
 });
 
@@ -131,18 +118,18 @@ function namespaceTests(ns) {
         it('should have its own filein the dist folder', function() {
             // Form is shr.namespace, so split on the '.'
             // Check that a file opens given the name
-            (function() {getNamespaceFile(ns[0].split('.')[1])}).should.not.throw()
+            (function() {getNamespaceFile(processNamespace(ns[0]))}).should.not.throw()
         });
 
         it('should contain all namespace defined elements', function () { 
             // Check that, for this namespace, every one of the values listed is contained 
             //  within the above set of dataelements/groups 
             const elems = ns[1];
-            const nsPage = getNamespaceFile(ns[0].split('.')[1]);
+            const nsPage = getNamespaceFile(processNamespace(ns[0]));
             let allFound = true
             for (ind in elems) { 
                 let elem = elems[ind];
-                const link = namePatternElem(elem.label)
+                const link = idPatternElem(elem.label)
                 const myRe = new RegExp(link, 'i');
                 allFound = allFound && myRe.test(nsPage);
             }
@@ -151,25 +138,272 @@ function namespaceTests(ns) {
     });
 };
 
-// Returns a list of all the html files, as a single str, contained in the 
-// dist folder as defined by the proper config file.
-// TODO: Check that the file is a file, not a directory
-function getHTMLFiles() {
+
+//
+//
+// Codesystem Testing
+
+// Codesystem Index tests
+describe('codesystemIndex', function() {
     const config = getYMLFile(ymlFile);
-    let files = [];
-    let curdir = `${__dirname}/${config.dest}/`;
-    let fnames = fs.readdirSync(curdir);
-    for (var index in fnames) { 
-        const curfname = fnames[index];
-        if (fs.lstatSync(curdir + curfname).isFile()) {
-            files.push({
-                text: fs.readFileSync(`${__dirname}/${config.dest}/${curfname}`, 'utf8'), 
-                name: curfname
-            });
+
+    it('should exist as file titled index.html in the dist folder', function() {
+        // Use the config file to go to proper dist folder 
+        getCodesystemIndexFile.should.not.throw();
+    });
+    it('should display all codesystems in the SHR', function() { 
+        // Use jsonpath to aggregate all of the namespaces within the hierarchy
+        const allCodesystems = getCodesystemsObjs();  //  [{name: csysName, namespace: csysNamespace}]
+        const csIndex = getCodesystemIndexFile();
+        let allFound = true;
+        for (let ind in allCodesystems) { 
+            const cs = allCodesystems[ind];
+            const myRe = new RegExp(cs.name, 'i');
+            allFound = allFound && myRe.test(csIndex);
+            if (!allFound) { 
+                console.log("Could not find: " + cs.name);
+            }
         }
+        allFound.should.be.true;
+    });
+    it('should contain links to codesystems', function() { 
+        // Check that, for each namespace, there is an anchor tag with an href to the relevant 
+        const allCodesystems = getCodesystemsObjs(); //  [{name: csysName, namespace: csysNamespace}]
+        const csIndex = getCodesystemIndexFile();
+        let allFound = true;
+        for (let ind in allCodesystems) { 
+            const cs = allCodesystems[ind];
+            const link = linkPatternCodesystem(cs);
+            const myRe = new RegExp(link, 'i');
+            allFound = allFound && myRe.test(csIndex);
+            if (!allFound) { 
+                console.log("Could not find: " + cs.name);
+            }
+        }
+        allFound.should.be.true;
+    });
+});
+
+// Codesystems by namespace tests
+describe('Codesystems By Namespace', function() {
+    let csByNamespace = getCodesystemsByNamespace();
+    for (let ns in csByNamespace) {
+        codesystemByNamespaceTests(ns, csByNamespace)
     }
-    return files;
-}   
+});
+
+// Takes each valueset and run tests on all the associated valuesets. 
+function codesystemByNamespaceTests(ns, lookup) { 
+    describe(ns, function() {
+
+        it('should have an index.html file in thisNamespace/cs/ folder', function() {
+            // Use the config file to go to proper dist folder 
+            (function() {getCodesystemFile(processNamespace(ns))}).should.not.throw()
+        });
+        it('should contain all codesystems defined in those namespaces', function () { 
+            // Check that, for this namespace, every one of the codesystems that say they're 
+            // contained therein are generated on the page
+            const codesystems = lookup[ns];
+            const nsPage = getCodesystemFile(processNamespace(ns));
+            let allFound = true;
+            for (let ind in codesystems) { 
+                const cs = codesystems[ind];
+                const idPattern = idPatternElem(cs.label);
+                const myRe = new RegExp(idPattern, 'i');
+                allFound = allFound && myRe.test(nsPage);
+                if (!allFound) { 
+                    console.log("Could not find: " + cs.label + " in namespace: " + ns);
+                }
+            }
+            allFound.should.be.true;
+        });
+        it('should contain all codes defined in each codesystem', function () { 
+            // Check that, for this namespace, every one of the codesystems that say they're 
+            // contained therein are generated on the page
+            const codesystems = lookup[ns];
+            const nsPage = getCodesystemFile(processNamespace(ns));
+            let allFound = true;
+            for (let ind in codesystems) { 
+                const cs = codesystems[ind];
+                // For each of the codes in this codesystem
+                if (cs.children) { 
+                    for (ind in cs.children) { 
+                        const codeObj = cs.children[ind];
+                        const code = codeObj.code
+                        const idPattern = idPatternElem(code);
+                        const myRe = new RegExp(idPattern, 'i');
+                        // Find it on the page
+                        allFound = allFound && myRe.test(nsPage);
+                        // Log to console if not found
+                        if (!allFound) { 
+                            console.log("Could not find: " + code + " for codesystem: "  + cs.label +  " in namespace: " + ns);
+                        }
+                    }
+                } else { 
+                    console.log("CS: " + cs.label + " has no children?")
+                }
+                if (!allFound) { 
+                    console.log("Could not find all codes for: " + cs.label + " in namespace: " + ns);
+                }
+            }
+            allFound.should.be.true;
+        });
+    });
+};
+
+
+//
+//
+// Valueset Testing
+
+// Valueset Index tests
+describe('valuesetIndex', function() {
+    const config = getYMLFile(ymlFile);
+
+    it('should exist as file titled index.html in the dist folder', function() {
+        // Use the config file to go to proper dist folder 
+        getValuesetIndexFile.should.not.throw();
+    });
+    it('should display all valuesets in the SHR', function() { 
+        // Use jsonpath to aggregate all of the namespaces within the hierarchy
+        const allValuesets = getValuesetsObjs();  //  [{name: csysName, namespace: csysNamespace}]
+        const vsIndex = getValuesetIndexFile();
+        let allFound = true;
+        for (let ind in allValuesets) { 
+            const vs = allValuesets[ind];
+            const myRe = new RegExp(vs.name, 'i');
+            allFound = allFound && myRe.test(vsIndex);
+            if (!allFound) { 
+                console.log("Could not find: " + vs.name);
+            }
+        }
+        allFound.should.be.true;
+    });
+    it('should contain links to valuesets', function() { 
+        // Use jsonpath to aggregate all of the namespaces within the hierarchy
+        const allValuesets = getValuesetsObjs();  //  [{name: csysName, namespace: csysNamespace}]
+        const vsIndex = getValuesetIndexFile();
+        let allFound = true;
+        for (let ind in allValuesets) { 
+            const vs = allValuesets[ind];
+            const link = linkPatternValueset(vs);
+            const myRe = new RegExp(vs.name, 'i');
+            allFound = allFound && myRe.test(vsIndex);
+            if (!allFound) { 
+                console.log("Could not find: " + vs.name);
+            }
+        }
+        allFound.should.be.true;
+    });
+});
+
+// Valuesets by namespace tests
+describe('Valuesets By Namespace', function() {
+    let vsByNamespace = getValuesetsByNamespace();
+    // Lookup table, so keys are ns 
+    for (let ns in vsByNamespace) {
+        valuesetByNamespaceTests(ns, vsByNamespace)
+    }
+});
+
+// Takes each valueset and run tests on all the associated valuesets. 
+function valuesetByNamespaceTests(ns, lookup) { 
+    describe(ns, function() {
+        
+        it('should have an index.html file in thisNamespace/vs/ folder', function() {
+            // Use the config file to go to proper dist folder 
+            (function() {getValuesetFile(processNamespace(ns))}).should.not.throw()
+        });
+        it('should contain all valuesets defined in those namespaces', function () { 
+            // Check that, for this namespace, every one of the valuesets that say they're 
+            // contained therein are generated on the page
+            const valuesets = lookup[ns];
+            const nsPage = getValuesetFile(processNamespace(ns));
+            let allFound = true;
+            for (let ind in valuesets) { 
+                const vs = valuesets[ind];
+                const idPattern = idPatternElem(vs.label);
+                const myRe = new RegExp(idPattern, 'i');
+                allFound = allFound && myRe.test(nsPage);
+                if (!allFound) { 
+                    console.log("Could not find: " + vs.label + " in namespace: " + ns);
+                }
+            }
+            allFound.should.be.true;
+        });
+        it('should contain all codes defined in each valueset', function () { 
+            // Check that, for this namespace, every one of the valuesets that say they're 
+            // contained therein are generated on the page
+            const valuesets = lookup[ns];
+            const nsPage = getValuesetFile(processNamespace(ns));
+            let allFound = true;
+            for (let ind in valuesets) { 
+                const vs = valuesets[ind];
+                const idPattern = idPatternElem(vs.label);
+                // For each of the codes in this valueset
+                if (vs.children) { 
+                    for (ind in vs.children) { 
+                        const codeObj = vs.children[ind];
+                        // Code is two levels deep on this.
+                        const code = codeObj.code.code;
+                        const specialChars = ['<','<=','>','>=']
+                        // If this code is one of the characters that will break the regex, skip
+                        if(specialChars.includes(code)) { continue;}
+                        const idPattern = codePatternElem(code);
+                        const myRe = new RegExp(idPattern, 'i');
+                        // Find it on the page
+                        allFound = allFound && myRe.test(nsPage);
+                        // Log to console if not found
+                        if (!myRe.test(nsPage)) { 
+                            console.log("Could not find: " + code + " in valueset: "  + vs.label +  " in namespace: " + ns);
+                        }
+                    }
+                } else { 
+                    console.log("VS: " + vs.label + " has no children?")
+                }
+                if (!allFound) { 
+                    console.log("Could not find all codes for: " + vs.label + " in namespace: " + ns);
+                }
+            }
+            allFound.should.be.true;
+        });
+    });
+};
+
+// // Valueset tests
+// describe('valuesets', function() {
+//     let allVs = getValuesets();
+//     for (let i = allVs.length - 1; i >= 0; i--) { 
+//         let vs = allVs[i];
+//         codesystemTests(vs);
+//     }
+// })
+
+// Takes the string of a valueset and runs a suite of tests on it. 
+// function valuesetTests(vs) { 
+//     describe(vs[0], function() { 
+//         it('should have its own filein the dist folder', function() {
+//             // Form is shr.namespace, so split on the '.'
+//             // Check that a file opens given the name
+//             // (function() {getNamespaceFile(cs[0].split('.')[1])}).should.not.throw()
+//         });
+
+//         // it('should contain all namespace defined elements', function () { 
+//         //     // Check that, for this namespace, every one of the values listed is contained 
+//         //     //  within the above set of dataelements/groups 
+//         //     const elems = cs[1];
+//         //     const nsPage = getNamespaceFile(cs[0].split('.')[1]);
+//         //     let allFound = true
+//         //     for (ind in elems) { 
+//         //         let elem = elems[ind];
+//         //         const link = idPatternElem(elem.label)
+//         //         const myRe = new RegExp(link, 'i');
+//         //         allFound = allFound && myRe.test(nsPage);
+//         //     }
+//         //     allFound.should.be.true;
+//         // });
+//     });
+// };
 
 // Given an HTML file, does it validate?
 function validateHTML(file) { 
@@ -185,12 +419,14 @@ function validateHTML(file) {
     });
 }
 
-// Returns a file corresponding to the home page for the shr viewer
-function getHomePage() { 
-    const config = getYMLFile(ymlFile);
-    return fs.readFileSync(`${__dirname}/${config.dest}/index.html`,'utf8')
-}
 
+//
+//
+// SHR Object fetching: Find and process different aspects of the SHR hierarchy
+
+//
+// Namespaces
+//
 // Returns a string list of the names of the namespaces contained in the 
 // SHR Hierarchy
 function getNamespaceNames() {
@@ -217,11 +453,9 @@ function getNamespaceNames() {
 function getNamespaces() { 
     const nsPattern = '$..[?(@.type=="Namespace")].label';
     const childrenPattern = '$..[?(@.type=="Namespace")].children';
-    const elemPattern = '$..[?(@.label && (@.type=="DataElement" && @.isEntry))].label';
     let hierarchy = getHierarchy();
     let names = jp.query(hierarchy, nsPattern);
     let elements = jp.query(hierarchy, childrenPattern);
-    // console.log(elements)
     return _.zip(names, elements);
 }
 
@@ -230,8 +464,99 @@ function getElements() {
     const elemPattern = '$..[?(@.label && (@.type=="DataElement" && @.isEntry))].label';
     let hierarchy = getHierarchy();
     return jp.query(hierarchy, elemPattern);
-
 }
+
+
+//
+// Codesystems
+//
+// Returns array of objs with names/namespaces of each codesystem in the 
+// SHR Hierarchy
+function getCodesystemsObjs() {
+    const csPattern = '$..[?(@.type=="CodeSystems")].children'; // returns array of all cs
+    const hierarchy = getHierarchy();
+    const codesystemNamesArray = jp.query(hierarchy, csPattern); // Returns array of possible results (which are an array themselves)
+    if (codesystemNamesArray.length == 1 ) { 
+        let csys = codesystemNamesArray[0];
+        let codesystemObjs = _.map(csys, function(cs) {
+            return {name: cs.label, namespace: processNamespace(cs.namespace)};
+        });
+        return codesystemObjs;
+    } else { 
+        return [];        
+    }
+}
+
+// Returns a lookup table of namespaces and the codesystems defined within it.
+function getCodesystemsByNamespace() { 
+    const csPattern = '$..[?(@.type=="CodeSystems")].children'; // returns array of all cs
+    const hierarchy = getHierarchy();
+    const codesystemNamesArray = jp.query(hierarchy, csPattern); // Returns array of possible results (which are an array themselves)
+    let mapNamespaceToCodesystems = {};
+    if (codesystemNamesArray.length == 1 ) { 
+        let csys = codesystemNamesArray[0];
+        _.forEach(csys, function(cs) {
+          var ns  = cs.namespace;
+          // add vs to namespace array if the array exists; else construct the array and add vs to it.
+          if (mapNamespaceToCodesystems[ns] != undefined) { 
+            mapNamespaceToCodesystems[ns].push(cs)
+          } else { 
+            mapNamespaceToCodesystems[ns] = [cs]      
+          }
+        });
+        return mapNamespaceToCodesystems;
+    } else { 
+        return {};        
+    }
+}
+
+//
+// Valuesets
+//
+// Returns array of objs with names/namespaces of each codesystem in the 
+// SHR Hierarchy
+function getValuesetsObjs() {
+    const vsPattern = '$..[?(@.type=="ValueSets")].children'; // returns array of all cs
+    const hierarchy = getHierarchy();
+    const valuesetNamesArray = jp.query(hierarchy, vsPattern); // Returns array of possible results (which are an array themselves)
+    if (valuesetNamesArray.length == 1 ) { 
+        let vsets = valuesetNamesArray[0];
+        let valuesetObjs = _.map(vsets, function(vs) {
+            return {name: vs.label, namespace: processNamespace(vs.namespace)};
+        });
+        return valuesetObjs;
+    } else { 
+        return [];        
+    }
+}
+
+// Returns a lookup table of namespaces and the codesystems defined within it.
+function getValuesetsByNamespace() { 
+    const vsPattern = '$..[?(@.type=="ValueSets")].children'; // returns array of all cs
+    const hierarchy = getHierarchy();
+    const valuesetNamesArray = jp.query(hierarchy, vsPattern); // Returns array of possible results (which are an array themselves)
+    let mapNamespaceToValuesets = {};
+    if (valuesetNamesArray.length == 1 ) { 
+        let vsets = valuesetNamesArray[0];
+        _.forEach(vsets, function(vs) {
+          var ns  = vs.namespace;
+          // add vs to namespace array if the array exists; else construct the array and add vs to it.
+          if (mapNamespaceToValuesets[ns] != undefined) { 
+            mapNamespaceToValuesets[ns].push(vs)
+          } else { 
+            mapNamespaceToValuesets[ns] = [vs]      
+          }
+        });
+        return mapNamespaceToValuesets;
+    } else { 
+        return {};        
+    }
+}
+
+
+//
+//
+// File and data fetching
 
 // Returns a JSON object corresponding to the SHR Hierarchy 
 function getHierarchy() { 
@@ -249,13 +574,68 @@ function getYMLFile(name) {
     } 
 }
 
-// Returns the namespace file corresponding to named html file
+// Returns a file corresponding to the namespace index
+function getHomePage() { 
+    const config = getYMLFile(ymlFile);
+    return fs.readFileSync(`${__dirname}/${config.dest}/index.html`,'utf8')
+}
+
+// Returns the namespace file corresponding to name provided
 function getNamespaceFile(name) {
     const config = getYMLFile(ymlFile);
     return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/${name}/index.html`,'utf8')
 }
 
+// Returns a file corresponding to the codesystem index
+function getCodesystemIndexFile() {
+    const config = getYMLFile(ymlFile);
+    return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/cs/index.html`,'utf8')
+}
+
+// Returns the codesystem file corresponding to the namespace provided
+function getCodesystemFile(ns) {
+    const config = getYMLFile(ymlFile);
+    return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/${ns}/cs/index.html`,'utf8')
+}
+
+// Returns a file corresponding to the valueset index
+function getValuesetIndexFile() {
+    const config = getYMLFile(ymlFile);
+    return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/vs/index.html`,'utf8')
+}
+
+// Returns the valueset file corresponding to the namespace provided
+function getValuesetFile(ns) {
+    const config = getYMLFile(ymlFile);
+    return fs.readFileSync(`${__dirname}/${config.dest}/${config.dirNS}/${ns}/vs/index.html`,'utf8')
+}
+
+// Returns a list of all the html files, as a single str, contained in the 
+// dist folder as defined by the proper config file.
+function getHTMLFiles() {
+    const config = getYMLFile(ymlFile);
+    let files = [];
+    let curdir = `${__dirname}/${config.dest}/`;
+    let fnames = fs.readdirSync(curdir);
+    for (var index in fnames) { 
+        const curfname = fnames[index];
+        if (fs.lstatSync(curdir + curfname).isFile()) {
+            files.push({
+                text: fs.readFileSync(`${__dirname}/${config.dest}/${curfname}`, 'utf8'), 
+                name: curfname
+            });
+        }
+    }
+    return files;
+}   
+
+
+//
+//
+// File processing and helpers 
+
 // Returns the namespace in processed form so it appears as it is in rendered html,=
 function processNamespace(ns) { 
-    return ns.split('.')[1];
+    return (ns.length > 1) ? ns.split('.')[1] : "";
 }
+

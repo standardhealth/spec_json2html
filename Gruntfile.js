@@ -548,7 +548,7 @@ module.exports = function(grunt) {
           pages:valueset_index
         },
         files: {
-          '<%= site.dest %>/vs/': ['!*']
+          '<%= site.dest %>/<%= site.dirNS %>/vs/': ['!*']
         }
       },
       valuesetByNamespace: {
@@ -575,7 +575,7 @@ module.exports = function(grunt) {
           pages:codesystem_index
         },
         files: {
-          '<%= site.dest %>/cs/': ['!*']
+          '<%= site.dest %>/<%= site.dirNS %>/cs/': ['!*']
         }
       },
       codesystemByNamespace: {
