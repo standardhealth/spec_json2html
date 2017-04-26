@@ -15,6 +15,9 @@ const codePatternElem = function(code) {return `<code>${code}</code>`}
 const linkPatternCodesystem = function(csObj) {return `href="/shr/${csObj.namespace}/cs/#${csObj.name}"`}
 const linkPatternValueset   = function(vsObj) {return `href="/shr/${vsObj.namespace}/cs/#${vsObj.name}"`}
 
+//
+//
+// Series of tests
 
 // Validate HTML 
 describe('htmlValidation', function() {
@@ -25,8 +28,21 @@ describe('htmlValidation', function() {
     }
 }); 
 
+// Given an HTML file, does it validate?
+function validateHTML(file) { 
+    it(`should validate file ${file.name}`, function (done) {
+        const options = {
+            format: 'text',
+            data: file.text
+        };
+        validator(options, function (err, data) { 
+            data.should.contain('The document validates according to the specified schema');
+            done();
+        }); 
+    });
+}
 
-//
+
 //
 // Namespce pages
 
@@ -140,7 +156,6 @@ function namespaceTests(ns) {
 
 
 //
-//
 // Codesystem Testing
 
 // Codesystem Index tests
@@ -252,7 +267,6 @@ function codesystemByNamespaceTests(ns, lookup) {
 };
 
 
-//
 //
 // Valueset Testing
 
@@ -369,55 +383,6 @@ function valuesetByNamespaceTests(ns, lookup) {
         });
     });
 };
-
-// // Valueset tests
-// describe('valuesets', function() {
-//     let allVs = getValuesets();
-//     for (let i = allVs.length - 1; i >= 0; i--) { 
-//         let vs = allVs[i];
-//         codesystemTests(vs);
-//     }
-// })
-
-// Takes the string of a valueset and runs a suite of tests on it. 
-// function valuesetTests(vs) { 
-//     describe(vs[0], function() { 
-//         it('should have its own filein the dist folder', function() {
-//             // Form is shr.namespace, so split on the '.'
-//             // Check that a file opens given the name
-//             // (function() {getNamespaceFile(cs[0].split('.')[1])}).should.not.throw()
-//         });
-
-//         // it('should contain all namespace defined elements', function () { 
-//         //     // Check that, for this namespace, every one of the values listed is contained 
-//         //     //  within the above set of dataelements/groups 
-//         //     const elems = cs[1];
-//         //     const nsPage = getNamespaceFile(cs[0].split('.')[1]);
-//         //     let allFound = true
-//         //     for (ind in elems) { 
-//         //         let elem = elems[ind];
-//         //         const link = idPatternElem(elem.label)
-//         //         const myRe = new RegExp(link, 'i');
-//         //         allFound = allFound && myRe.test(nsPage);
-//         //     }
-//         //     allFound.should.be.true;
-//         // });
-//     });
-// };
-
-// Given an HTML file, does it validate?
-function validateHTML(file) { 
-    it(`should validate file ${file.name}`, function (done) {
-        const options = {
-            format: 'text',
-            data: file.text
-        };
-        validator(options, function (err, data) { 
-            data.should.contain('The document validates according to the specified schema');
-            done();
-        }); 
-    });
-}
 
 
 //
