@@ -127,6 +127,23 @@
                     } else {
                         return d.data.name;
                     }
+                })
+                .on("mouseover", function(d) {
+                    // This limits the mouseover event to just field elements (the leaf nodes)
+                    if (d.data.namespace) {
+                        d3.select(this).style("font-weight", "bold");
+                    }
+                })
+                .on("mouseout", function(d) {
+                    if (d.data.namespace) {
+                        d3.select(this).style("font-weight", "normal");
+                    }
+                })
+                .on("click", function(d) {
+                    // This limits the onclick event to just field elements (the leaf nodes)
+                    if (d.data.namespace) {
+                        window.location.href = d.data.link;
+                    }
                 });
 
         // UPDATE
