@@ -15,8 +15,8 @@ module.exports.register = function (Handlebars, options, params) {
       };
     }
     Handlebars.registerHelper('getValuesetLink', function(url, valuesetLookup, context) {
-        if (url.startsWith("urn:tbd:")) { 
-            return "TBD"
+        if (url.startsWith("urn:tbd:") || url.startsWith("urn:oid")) { 
+            return "Link TBD"
         } else { 
             var vs = valuesetLookup[url];
             return new Handlebars.SafeString(vs.shrLink);

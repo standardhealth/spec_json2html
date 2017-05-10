@@ -7,15 +7,20 @@
         {{#eq type "ValueSetIncludesFromCodeRule"}}
             All codes included in <a href="{{code.url}}"><code>{{code.code}}</code></a>
         {{else}}
-            {{ log "ERROR: This valueset's code type is not yet handled "}}
-            {{ log type }}
-            This is a new type of code and doesn't yet have defined code-parsing
+            {{#eq type "ValueSetIncludesFromCodeSystemRule"}}
+                All codes found in CodeSystem <a href="{{system}}"><code>{{system}}</code>
+            {{else}}
+                {{ log "ERROR: This valueset's code type is not yet handled "}}
+                {{ log type }}
+                This is a new type of code and doesn't yet have defined code-parsing
+            {{/eq}}
         {{/eq}}
     {{/eq}}
 {{/eq}}
 
 
-{{!-- Three different valueset types --}}
+{{!-- Four different valueset types --}}
 {{!-- [ 'ValueSetIncludesCodeRule',
   'ValueSetIncludesDescendentsRule',
+  'ValueSetIncludesFromCodeSystemRule'
   'ValueSetIncludesFromCodeRule' ] --}}

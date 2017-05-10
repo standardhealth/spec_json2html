@@ -356,32 +356,28 @@ module.exports = function(grunt) {
       mapNamespaceToCodesystems = {},
       mapURLtoCodesystem        = {};
 
+  // Make sure that every namespace has a valueset and a codesystem page
+  _.forEach(data.children[namespacesIndex].children, function (ns) { 
+      mapNamespaceToValuesets[ns.label]   = [];
+      mapNamespaceToCodesystems[ns.label] = [];
+  })
 
-  // For valuesets
+  // For all valuesets, add to map
   _.forEach(valuesets, function(vs) {
     var ns  = vs.namespace,
         url = vs.url; 
     vs.shrLink = '/shr/' + ns.split('.')[1] + '/vs/#' + vs.label
     mapURLtoValueset[url] = vs;
-    // add vs to namespace array if the array exists; else construct the array and add vs to it.
-    if (mapNamespaceToValuesets[ns] != undefined) { 
-      mapNamespaceToValuesets[ns].push(vs)
-    } else { 
-      mapNamespaceToValuesets[ns] = [vs]      
-    }
+    mapNamespaceToValuesets[ns].push(vs)
   });
-  // For codesystems
+  
+  // For all codesystems
   _.forEach(codesystems, function(cs) {
     var ns  = cs.namespace,
         url = cs.url; 
     cs.shrLink = '/shr/' + ns.split('.')[1] + '/cs/#' + cs.label
     mapURLtoCodesystem[url] = cs;
-    // add vs to namespace array if the array exists; else construct the array and add vs to it.
-    if (mapNamespaceToCodesystems[ns] != undefined) { 
-      mapNamespaceToCodesystems[ns].push(cs)
-    } else { 
-      mapNamespaceToCodesystems[ns] = [cs]      
-    }
+    mapNamespaceToCodesystems[ns].push(cs)
   });
   // Store mappings in data object
   data.children[valuesetIndex].index_by_url         = mapURLtoValueset;

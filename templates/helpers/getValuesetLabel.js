@@ -15,7 +15,7 @@ module.exports.register = function (Handlebars, options, params) {
       };
     }
     Handlebars.registerHelper('getValuesetLabel', function(url, valuesetLookup, context) {
-        if (url.startsWith("urn:tbd:")) { 
+        if (url.startsWith("urn:tbd:") || url.startsWith("urn:oid")) { 
             return "TBD"
         } else { 
             var vs = valuesetLookup[url];

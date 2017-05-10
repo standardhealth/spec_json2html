@@ -358,11 +358,18 @@ function valuesetByNamespaceTests(ns, lookup) {
                 if (vs.children) { 
                     for (ind in vs.children) { 
                         const codeObj = vs.children[ind];
-                        // Code is two levels deep on this.
-                        const code = codeObj.code.code;
-                        const specialChars = ['<','<=','>','>=']
-                        // If this code is one of the characters that will break the regex, skip
-                        if(specialChars.includes(code)) { continue;}
+                        let code
+                        if (codeObj.type == "ValueSetIncludesFromCodeSystemRule") { 
+                            // Looking to see that the codesystem itself is mentions on the page 
+                            // Since the codes aren't imported directly.
+                            code = codeObj.system; 
+                        } else { 
+                            // Code is two levels deep on this.
+                            code = codeObj.code.code;
+                            const specialChars = ['<','<=','>','>=']
+                            // If this code is one of the characters that will break the regex, skip
+                            if(specialChars.includes(code)) { continue;}
+                        }
                         const idPattern = codePatternElem(code);
                         const myRe = new RegExp(idPattern, 'i');
                         // Find it on the page

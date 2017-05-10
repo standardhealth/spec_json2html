@@ -1,6 +1,10 @@
 {{#if code.system}}
     <a href="{{getCodesystemLink code.system @root.csysLookup}}"><code>{{getCodesystemLabel code.system @root.csysLookup}}</code></a>
 {{else}}
-    No defined code system
+	{{#eq type "ValueSetIncludesFromCodeSystemRule"}}
+		<a href="{{system}}"><code>{{system}}</code>
+	{{else}}
+	    No defined code system
+	{{/eq}}
 {{/if}}
  

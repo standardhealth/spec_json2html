@@ -4836,9 +4836,9 @@
               },
               "basedOn": [
                 {
-                  "label": "Panel",
+                  "label": "BehavioralObservation",
                   "type": "Identifier",
-                  "namespace": "shr.observation"
+                  "namespace": "shr.behavior"
                 }
               ],
               "value": {
@@ -4875,9 +4875,9 @@
                     }
                   ],
                   "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
+                  "label": "shr.observation:ObservationCode",
                   "identifier": {
-                    "label": "PanelCode",
+                    "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
                   }
@@ -5312,7 +5312,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -5381,9 +5381,9 @@
               },
               "basedOn": [
                 {
-                  "label": "Panel",
+                  "label": "BehavioralObservation",
                   "type": "Identifier",
-                  "namespace": "shr.observation"
+                  "namespace": "shr.behavior"
                 }
               ],
               "value": {
@@ -5420,9 +5420,9 @@
                     }
                   ],
                   "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
+                  "label": "shr.observation:ObservationCode",
                   "identifier": {
-                    "label": "PanelCode",
+                    "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
                   }
@@ -5449,13 +5449,6 @@
                     "type": "Identifier",
                     "namespace": "shr.behavior"
                   }
-                },
-                {
-                  "min": 0,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "TBD",
-                  "text": "MetabolicEquivalent"
                 }
               ]
             },
@@ -5567,9 +5560,9 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "BehavioralObservation",
                   "type": "Identifier",
-                  "namespace": "shr.observation"
+                  "namespace": "shr.behavior"
                 }
               ],
               "value": {
@@ -5740,9 +5733,9 @@
               },
               "basedOn": [
                 {
-                  "label": "Panel",
+                  "label": "BehavioralObservation",
                   "type": "Identifier",
-                  "namespace": "shr.observation"
+                  "namespace": "shr.behavior"
                 }
               ],
               "value": {
@@ -5779,9 +5772,9 @@
                     }
                   ],
                   "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
+                  "label": "shr.observation:ObservationCode",
                   "identifier": {
-                    "label": "PanelCode",
+                    "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
                   }
@@ -13176,7 +13169,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -13384,28 +13377,6 @@
                 }
               ],
               "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "urn:tbd:TBD",
-                        "type": "Concept",
-                        "system": "urn:tbd",
-                        "code": "TBD",
-                        "url": ""
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
                 {
                   "min": 0,
                   "constraints": [],
@@ -13750,28 +13721,6 @@
               },
               "children": [
                 {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "http://loinc.org:83335-0",
-                        "type": "Concept",
-                        "system": "http://loinc.org",
-                        "code": "83335-0",
-                        "url": "http://s.details.loinc.org/LOINC/83335-0.html"
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
-                {
                   "min": 0,
                   "max": 1,
                   "constraints": [],
@@ -13996,28 +13945,6 @@
               ],
               "children": [
                 {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "urn:tbd:TBD",
-                        "type": "Concept",
-                        "system": "urn:tbd",
-                        "code": "TBD",
-                        "url": ""
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
-                {
                   "min": 0,
                   "max": 1,
                   "constraints": [],
@@ -14075,7 +14002,7 @@
               },
               "basedOn": [
                 {
-                  "label": "QuantitativeObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -14085,11 +14012,11 @@
                 "max": 1,
                 "constraints": [],
                 "type": "IdentifiableValue",
-                "label": "shr.core:Quantity",
+                "label": "primitive:positiveInt",
                 "identifier": {
-                  "label": "Quantity",
+                  "label": "positiveInt",
                   "type": "Identifier",
-                  "namespace": "shr.core"
+                  "namespace": "primitive"
                 }
               },
               "children": [
@@ -14387,7 +14314,7 @@
               },
               "basedOn": [
                 {
-                  "label": "QuantitativeObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -14397,11 +14324,11 @@
                 "max": 1,
                 "constraints": [],
                 "type": "IdentifiableValue",
-                "label": "shr.core:Quantity",
+                "label": "primitive:unsignedInt",
                 "identifier": {
-                  "label": "Quantity",
+                  "label": "unsignedInt",
                   "type": "Identifier",
-                  "namespace": "shr.core"
+                  "namespace": "primitive"
                 }
               },
               "children": [
@@ -14486,28 +14413,6 @@
                 }
               ],
               "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "urn:tbd:TBD",
-                        "type": "Concept",
-                        "system": "urn:tbd",
-                        "code": "TBD",
-                        "url": ""
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
                 {
                   "min": 0,
                   "max": 1,
@@ -15819,7 +15724,7 @@
           "children": [
             {
               "type": "DataElement",
-              "label": "CongenitalAbnormality",
+              "label": "CongenitalAbnormalities",
               "isEntry": true,
               "concepts": [
                 {
@@ -15838,14 +15743,13 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
               ],
               "value": {
                 "min": 1,
-                "max": 1,
                 "constraints": [
                   {
                     "type": "ValueSetConstraint",
@@ -15907,7 +15811,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -16225,6 +16129,8 @@
               ],
               "children": [
                 {
+                  "min": 1,
+                  "max": 1,
                   "constraints": [
                     {
                       "type": "CodeConstraint",
@@ -16239,9 +16145,9 @@
                     }
                   ],
                   "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
+                  "label": "shr.observation:ObservationCode",
                   "identifier": {
-                    "label": "PanelCode",
+                    "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
                   }
@@ -16397,7 +16303,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -16443,7 +16349,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -19171,7 +19077,7 @@
         {
           "label": "shr.oncology",
           "type": "Namespace",
-          "description": "SHR implementation of ASCO requirements.",
+          "description": "The SHR Oncology domain contains basic information central to diagnosis and treatment in oncology.",
           "grammarVersion": [
             {
               "major": 4,
@@ -19205,28 +19111,6 @@
               ],
               "children": [
                 {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "urn:tbd:TBD",
-                        "type": "Concept",
-                        "system": "urn:tbd",
-                        "code": "TBD",
-                        "url": ""
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
-                {
                   "min": 1,
                   "max": 1,
                   "constraints": [],
@@ -19255,9 +19139,9 @@
                   "max": 1,
                   "constraints": [],
                   "type": "IdentifiableValue",
-                  "label": "shr.oncology:HumanEpiduralGrowthFactorReceptor2Status",
+                  "label": "shr.oncology:HER2Status",
                   "identifier": {
-                    "label": "HumanEpiduralGrowthFactorReceptor2Status",
+                    "label": "HER2Status",
                     "type": "Identifier",
                     "namespace": "shr.oncology"
                   }
@@ -19590,34 +19474,6 @@
             },
             {
               "type": "DataElement",
-              "label": "Cellularity",
-              "isEntry": false,
-              "concepts": [
-                {
-                  "label": "http://ncimeta.nci.nih.gov:C4055283",
-                  "type": "Concept",
-                  "system": "http://ncimeta.nci.nih.gov",
-                  "code": "C4055283",
-                  "url": "https://uts.nlm.nih.gov/metathesaurus.html#C4055283;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
-                }
-              ],
-              "description": "The percentage of cells in a sample that are cancerous",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "QuantitativeObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "children": []
-            },
-            {
-              "type": "DataElement",
               "label": "EstrogenReceptorStatus",
               "isEntry": true,
               "concepts": [],
@@ -19683,17 +19539,9 @@
             },
             {
               "type": "DataElement",
-              "label": "HumanEpiduralGrowthFactorReceptor2Status",
+              "label": "HER2Status",
               "isEntry": true,
-              "concepts": [
-                {
-                  "label": "http://ncimeta.nci.nih.gov:C3810543",
-                  "type": "Concept",
-                  "system": "http://ncimeta.nci.nih.gov",
-                  "code": "C3810543",
-                  "url": "https://uts.nlm.nih.gov/metathesaurus.html#C3810543;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
-                }
-              ],
+              "concepts": [],
               "description": "HER2 is a member of the human epidermal growth factor receptor family of proteins and is encoded by the ERBB2 oncogene. HER2 is overexpressed in 20-30% of breast tumors,10 and is associated with an aggressive clinical course and poor prognosis. HER2 status (positive=present or overexpressed; negative=absent) is a factor in determining prognosis and treatment options.",
               "grammarVersion": {
                 "major": 4,
@@ -19713,11 +19561,11 @@
                     {
                       "type": "CodeConstraint",
                       "code": {
-                        "label": "http://ncimeta.nci.nih.gov:C3810543",
+                        "label": "urn:tbd:TBD",
                         "type": "Concept",
-                        "system": "http://ncimeta.nci.nih.gov",
-                        "code": "C3810543",
-                        "url": "https://uts.nlm.nih.gov/metathesaurus.html#C3810543;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
+                        "system": "urn:tbd",
+                        "code": "TBD",
+                        "url": ""
                       },
                       "path": ""
                     }
@@ -19753,58 +19601,6 @@
                   }
                 }
               ]
-            },
-            {
-              "type": "DataElement",
-              "label": "LargestLymphNodeSize",
-              "isEntry": false,
-              "concepts": [
-                {
-                  "label": "http://ncimeta.nci.nih.gov:C1285847",
-                  "type": "Concept",
-                  "system": "http://ncimeta.nci.nih.gov",
-                  "code": "C1285847",
-                  "url": "https://uts.nlm.nih.gov/metathesaurus.html#C1285847;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
-                }
-              ],
-              "description": "",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "QuantitativeObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "CodeConstraint",
-                    "code": {
-                      "label": "http://unitsofmeasure.org:mm",
-                      "type": "Concept",
-                      "system": "http://unitsofmeasure.org",
-                      "code": "mm",
-                      "url": "http://unitsofmeasure.org/ucum.html#section-Alphabetic-Index-By-Symbol"
-                    },
-                    "path": "shr.core.Units:shr.core.Coding"
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:Quantity",
-                "identifier": {
-                  "label": "Quantity",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
-                }
-              },
-              "children": []
             },
             {
               "type": "DataElement",
@@ -19948,26 +19744,6 @@
                   }
                 }
               ]
-            },
-            {
-              "type": "DataElement",
-              "label": "PercentageInSituCarcinoma",
-              "isEntry": false,
-              "concepts": [],
-              "description": "The percentage of the cancer that is in situ, as opposed to invading other tissues.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "QuantitativeObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "children": []
             },
             {
               "type": "DataElement",
@@ -20321,315 +20097,6 @@
                   "label": "unsignedInt",
                   "type": "Identifier",
                   "namespace": "primitive"
-                }
-              },
-              "children": []
-            },
-            {
-              "type": "DataElement",
-              "label": "SizeOfGrossTumorBed",
-              "isEntry": true,
-              "concepts": [
-                {
-                  "label": "urn:tbd:TBD",
-                  "type": "Concept",
-                  "system": "urn:tbd",
-                  "code": "TBD",
-                  "url": ""
-                }
-              ],
-              "description": "The largest dimension of the gross tumor bed/fibrotic area.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "QuantitativeObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "CodeConstraint",
-                    "code": {
-                      "label": "http://unitsofmeasure.org:mm",
-                      "type": "Concept",
-                      "system": "http://unitsofmeasure.org",
-                      "code": "mm",
-                      "url": "http://unitsofmeasure.org/ucum.html#section-Alphabetic-Index-By-Symbol"
-                    },
-                    "path": "shr.core.Units:shr.core.Coding"
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:Quantity",
-                "identifier": {
-                  "label": "Quantity",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
-                }
-              },
-              "children": []
-            },
-            {
-              "type": "DataElement",
-              "label": "TumorMargins",
-              "isEntry": false,
-              "concepts": [
-                {
-                  "label": "http://ncimeta.nci.nih.gov:C1269830",
-                  "type": "Concept",
-                  "system": "http://ncimeta.nci.nih.gov",
-                  "code": "C1269830",
-                  "url": "https://uts.nlm.nih.gov/metathesaurus.html#C1269830;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
-                }
-              ],
-              "description": "The edge or border of the tissue removed in cancer surgery. The margin is described as negative or clean when the pathologist finds no cancer cells at the edge of the tissue, suggesting that all of the cancer has been removed. The margin is described as positive or involved when the pathologist finds cancer cells at the edge of the tissue, suggesting that all of the cancer has not been removed.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "CodeableConceptObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "ValueSetConstraint",
-                    "valueset": "http://standardhealthrecord.org/shr/lab/vs/PositiveNegativeVS",
-                    "path": ""
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:CodeableConcept",
-                "identifier": {
-                  "label": "CodeableConcept",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
-                }
-              },
-              "children": []
-            },
-            {
-              "type": "DataElement",
-              "label": "TumorMeasurements",
-              "isEntry": true,
-              "concepts": [
-                {
-                  "label": "http://ncimeta.nci.nih.gov:C4086369",
-                  "type": "Concept",
-                  "system": "http://ncimeta.nci.nih.gov",
-                  "code": "C4086369",
-                  "url": "https://uts.nlm.nih.gov/metathesaurus.html#C4086369;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
-                }
-              ],
-              "description": "Measurements and assessment of tumor, in situ via imaging, or of removed tumor. See CDISC Table 3.3.2",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "Panel",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "http://ncimeta.nci.nih.gov:C4086369",
-                        "type": "Concept",
-                        "system": "http://ncimeta.nci.nih.gov",
-                        "code": "C4086369",
-                        "url": "https://uts.nlm.nih.gov/metathesaurus.html#C4086369;0;1;CUI;2016AB;EXACT_MATCH;CUI;*;"
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
-                {
-                  "min": 1,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.oncology:TumorPrimaryDimensionSize",
-                  "identifier": {
-                    "label": "TumorPrimaryDimensionSize",
-                    "type": "Identifier",
-                    "namespace": "shr.oncology"
-                  }
-                },
-                {
-                  "min": 0,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.oncology:TumorSecondaryDimensionSize",
-                  "identifier": {
-                    "label": "TumorSecondaryDimensionSize",
-                    "type": "Identifier",
-                    "namespace": "shr.oncology"
-                  }
-                },
-                {
-                  "min": 0,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.oncology:SizeOfGrossTumorBed",
-                  "identifier": {
-                    "label": "SizeOfGrossTumorBed",
-                    "type": "Identifier",
-                    "namespace": "shr.oncology"
-                  }
-                },
-                {
-                  "min": 0,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.oncology:TumorMargins",
-                  "identifier": {
-                    "label": "TumorMargins",
-                    "type": "Identifier",
-                    "namespace": "shr.oncology"
-                  }
-                },
-                {
-                  "min": 0,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.oncology:Cellularity",
-                  "identifier": {
-                    "label": "Cellularity",
-                    "type": "Identifier",
-                    "namespace": "shr.oncology"
-                  }
-                },
-                {
-                  "min": 0,
-                  "max": 1,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.oncology:PercentageInSituCarcinoma",
-                  "identifier": {
-                    "label": "PercentageInSituCarcinoma",
-                    "type": "Identifier",
-                    "namespace": "shr.oncology"
-                  }
-                }
-              ]
-            },
-            {
-              "type": "DataElement",
-              "label": "TumorPrimaryDimensionSize",
-              "isEntry": true,
-              "concepts": [],
-              "description": "The longest diameter of the primary tumor.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "QuantitativeObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "CodeConstraint",
-                    "code": {
-                      "label": "http://unitsofmeasure.org:mm",
-                      "type": "Concept",
-                      "system": "http://unitsofmeasure.org",
-                      "code": "mm",
-                      "url": "http://unitsofmeasure.org/ucum.html#section-Alphabetic-Index-By-Symbol"
-                    },
-                    "path": "shr.core.Units:shr.core.Coding"
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:Quantity",
-                "identifier": {
-                  "label": "Quantity",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
-                }
-              },
-              "children": []
-            },
-            {
-              "type": "DataElement",
-              "label": "TumorSecondaryDimensionSize",
-              "isEntry": true,
-              "concepts": [],
-              "description": "The longest perpendicular diameter of the primary tumor.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "QuantitativeObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "CodeConstraint",
-                    "code": {
-                      "label": "http://unitsofmeasure.org:mm",
-                      "type": "Concept",
-                      "system": "http://unitsofmeasure.org",
-                      "code": "mm",
-                      "url": "http://unitsofmeasure.org/ucum.html#section-Alphabetic-Index-By-Symbol"
-                    },
-                    "path": "shr.core.Units:shr.core.Coding"
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:Quantity",
-                "identifier": {
-                  "label": "Quantity",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
                 }
               },
               "children": []
@@ -21006,7 +20473,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -21700,37 +21167,6 @@
           "children": [
             {
               "type": "DataElement",
-              "label": "ContraceptiveMethod",
-              "isEntry": false,
-              "concepts": [],
-              "description": "A contraceptive method used by the subject.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "ValueSetConstraint",
-                    "valueset": "http://standardhealthrecord.org/shr/sex/vs/ContraceptiveMethodVS",
-                    "path": ""
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:CodeableConcept",
-                "identifier": {
-                  "label": "CodeableConcept",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
-                }
-              },
-              "children": []
-            },
-            {
-              "type": "DataElement",
               "label": "ContraceptiveMethodRecommendation",
               "isEntry": true,
               "concepts": [],
@@ -21791,7 +21227,7 @@
             },
             {
               "type": "DataElement",
-              "label": "ContraceptivesUsed",
+              "label": "ContraceptiveMethodsUsed",
               "isEntry": true,
               "concepts": [
                 {
@@ -21810,11 +21246,28 @@
               },
               "basedOn": [
                 {
-                  "label": "BooleanObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
               ],
+              "value": {
+                "min": 1,
+                "constraints": [
+                  {
+                    "type": "ValueSetConstraint",
+                    "valueset": "http://standardhealthrecord.org/shr/sex/vs/ContraceptiveMethodVS",
+                    "path": ""
+                  }
+                ],
+                "type": "IdentifiableValue",
+                "label": "shr.core:CodeableConcept",
+                "identifier": {
+                  "label": "CodeableConcept",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              },
               "children": [
                 {
                   "min": 1,
@@ -21838,17 +21291,6 @@
                     "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
-                  }
-                },
-                {
-                  "min": 0,
-                  "constraints": [],
-                  "type": "IdentifiableValue",
-                  "label": "shr.sex:ContraceptiveMethod",
-                  "identifier": {
-                    "label": "ContraceptiveMethod",
-                    "type": "Identifier",
-                    "namespace": "shr.sex"
                   }
                 },
                 {
@@ -21908,30 +21350,57 @@
                   "namespace": "shr.observation"
                 }
               ],
-              "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "http://loinc.org:82810-3",
-                        "type": "Concept",
-                        "system": "http://loinc.org",
-                        "code": "82810-3",
-                        "url": "http://s.details.loinc.org/LOINC/82810-3.html"
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:ObservationCode",
-                  "identifier": {
-                    "label": "ObservationCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
+              "value": {
+                "min": 1,
+                "max": 1,
+                "constraints": [],
+                "type": "IdentifiableValue",
+                "label": "primitive:boolean",
+                "identifier": {
+                  "label": "boolean",
+                  "type": "Identifier",
+                  "namespace": "primitive"
                 }
-              ]
+              },
+              "children": []
+            },
+            {
+              "type": "DataElement",
+              "label": "DifficultyWithIntercourse",
+              "isEntry": true,
+              "concepts": [],
+              "description": "Problem with sexual intercourse.",
+              "grammarVersion": {
+                "major": 4,
+                "minor": 1,
+                "patch": 0
+              },
+              "basedOn": [
+                {
+                  "label": "CodeableConceptObservation",
+                  "type": "Identifier",
+                  "namespace": "shr.observation"
+                }
+              ],
+              "value": {
+                "min": 1,
+                "max": 1,
+                "constraints": [
+                  {
+                    "type": "ValueSetConstraint",
+                    "valueset": "http://standardhealthrecord.org/shr/sex/vs/DifficultyWithIntercourseVS",
+                    "path": ""
+                  }
+                ],
+                "type": "IdentifiableValue",
+                "label": "shr.core:CodeableConcept",
+                "identifier": {
+                  "label": "CodeableConcept",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
+                }
+              },
+              "children": []
             },
             {
               "type": "DataElement",
@@ -21979,7 +21448,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -21991,44 +21460,6 @@
                   {
                     "type": "ValueSetConstraint",
                     "valueset": "http://standardhealthrecord.org/shr/sex/vs/GenderIdentityVS",
-                    "path": ""
-                  }
-                ],
-                "type": "IdentifiableValue",
-                "label": "shr.core:CodeableConcept",
-                "identifier": {
-                  "label": "CodeableConcept",
-                  "type": "Identifier",
-                  "namespace": "shr.core"
-                }
-              },
-              "children": []
-            },
-            {
-              "type": "DataElement",
-              "label": "IntercourseDifficulty",
-              "isEntry": true,
-              "concepts": [],
-              "description": "Problem with sexual intercourse.",
-              "grammarVersion": {
-                "major": 4,
-                "minor": 1,
-                "patch": 0
-              },
-              "basedOn": [
-                {
-                  "label": "CodeableConceptObservation",
-                  "type": "Identifier",
-                  "namespace": "shr.observation"
-                }
-              ],
-              "value": {
-                "min": 1,
-                "max": 1,
-                "constraints": [
-                  {
-                    "type": "ValueSetConstraint",
-                    "valueset": "http://standardhealthrecord.org/shr/sex/vs/IntercourseDifficultyVS",
                     "path": ""
                   }
                 ],
@@ -22068,30 +21499,19 @@
                   "namespace": "shr.observation"
                 }
               ],
-              "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "http://loinc.org:11638-4",
-                        "type": "Concept",
-                        "system": "http://loinc.org",
-                        "code": "11638-4",
-                        "url": "http://s.details.loinc.org/LOINC/11638-4.html"
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:ObservationCode",
-                  "identifier": {
-                    "label": "ObservationCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
+              "value": {
+                "min": 1,
+                "max": 1,
+                "constraints": [],
+                "type": "IdentifiableValue",
+                "label": "shr.core:Quantity",
+                "identifier": {
+                  "label": "Quantity",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
                 }
-              ]
+              },
+              "children": []
             },
             {
               "type": "DataElement",
@@ -22119,30 +21539,19 @@
                   "namespace": "shr.observation"
                 }
               ],
-              "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "http://loinc.org:75201-4",
-                        "type": "Concept",
-                        "system": "http://loinc.org",
-                        "code": "75201-4",
-                        "url": "http://s.details.loinc.org/LOINC/75201-4.html"
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:ObservationCode",
-                  "identifier": {
-                    "label": "ObservationCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
+              "value": {
+                "min": 1,
+                "max": 1,
+                "constraints": [],
+                "type": "IdentifiableValue",
+                "label": "shr.core:Quantity",
+                "identifier": {
+                  "label": "Quantity",
+                  "type": "Identifier",
+                  "namespace": "shr.core"
                 }
-              ]
+              },
+              "children": []
             },
             {
               "type": "DataElement",
@@ -22211,28 +21620,6 @@
                 }
               ],
               "children": [
-                {
-                  "constraints": [
-                    {
-                      "type": "CodeConstraint",
-                      "code": {
-                        "label": "http://loinc.org:10163-4",
-                        "type": "Concept",
-                        "system": "http://loinc.org",
-                        "code": "10163-4",
-                        "url": "http://s.details.loinc.org/LOINC/10163-4.html"
-                      },
-                      "path": ""
-                    }
-                  ],
-                  "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
-                  "identifier": {
-                    "label": "PanelCode",
-                    "type": "Identifier",
-                    "namespace": "shr.observation"
-                  }
-                },
                 {
                   "min": 1,
                   "max": 1,
@@ -22538,6 +21925,8 @@
               ],
               "children": [
                 {
+                  "min": 1,
+                  "max": 1,
                   "constraints": [
                     {
                       "type": "CodeConstraint",
@@ -22552,9 +21941,9 @@
                     }
                   ],
                   "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
+                  "label": "shr.observation:ObservationCode",
                   "identifier": {
-                    "label": "PanelCode",
+                    "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
                   }
@@ -22586,9 +21975,9 @@
                   "min": 0,
                   "constraints": [],
                   "type": "IdentifiableValue",
-                  "label": "shr.sex:IntercourseDifficulty",
+                  "label": "shr.sex:DifficultyWithIntercourse",
                   "identifier": {
-                    "label": "IntercourseDifficulty",
+                    "label": "DifficultyWithIntercourse",
                     "type": "Identifier",
                     "namespace": "shr.sex"
                   }
@@ -22615,6 +22004,8 @@
               ],
               "children": [
                 {
+                  "min": 1,
+                  "max": 1,
                   "constraints": [
                     {
                       "type": "CodeConstraint",
@@ -22629,9 +22020,9 @@
                     }
                   ],
                   "type": "IdentifiableValue",
-                  "label": "shr.observation:PanelCode",
+                  "label": "shr.observation:ObservationCode",
                   "identifier": {
-                    "label": "PanelCode",
+                    "label": "ObservationCode",
                     "type": "Identifier",
                     "namespace": "shr.observation"
                   }
@@ -22683,7 +22074,7 @@
               },
               "basedOn": [
                 {
-                  "label": "CodeableConceptObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -24582,7 +23973,7 @@
               },
               "basedOn": [
                 {
-                  "label": "QuantitativeObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -25094,7 +24485,7 @@
               },
               "basedOn": [
                 {
-                  "label": "QuantitativeObservation",
+                  "label": "Observation",
                   "type": "Identifier",
                   "namespace": "shr.observation"
                 }
@@ -34425,10 +33816,10 @@
           ]
         },
         {
-          "label": "IntercourseDifficultyVS",
+          "label": "DifficultyWithIntercourseVS",
           "namespace": "shr.sex",
           "type": "ValueSet",
-          "url": "http://standardhealthrecord.org/shr/sex/vs/IntercourseDifficultyVS",
+          "url": "http://standardhealthrecord.org/shr/sex/vs/DifficultyWithIntercourseVS",
           "concepts": [],
           "grammarVersion": {
             "major": 4,
