@@ -512,8 +512,8 @@ module.exports = function(grunt) {
     /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
     browserify: {
       vendor: {
-        src: ['hb_shr.js'],
-        dest: '<%= site.dest %>/<%= site.assets %>/app.js',
+        src: ['search.js'],
+        dest: '<%= site.dest %>/<%= site.assets %>/js/search.js',
         options: {
           browserifyOptions: {
             require: ['handlebars', 'fuse.js'],
@@ -620,7 +620,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: '<%= site.pages %>',
         src: 'index_all_elements.hbs',
-        dest: '<%= site.dest %>'
+        dest: '<%= site.dest %>/<%= site.dirNS %>/'
       },
       staticSHRIndex: {
         options : {
@@ -633,84 +633,84 @@ module.exports = function(grunt) {
         dest: '<%= site.dest %>/<%= site.dirNS %>/'
       }, 
       // SHR files
-      shrNamespacePages: { 
-        options : {
-          layout: '<%= site.layoutstatic %>', 
-          pages: namespace_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
-        }
-      },
-      shrValuesetIndex: { 
-        options: { 
-          layout: '<%= site.layoutstatic %>',  
-          pages:valueset_index
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/vs/': ['!*']
-        }
-      },
-      shrValuesetByNamespace: {
-        options : {
-          layout: '<%= site.layoutstatic %>',  
-          pages:valueset_ns_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
-        }
-      }, 
-      shrCodesystemIndex: { 
-        options: { 
-          layout: '<%= site.layoutstatic %>',  
-          pages:codesystem_index
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/cs/': ['!*']
-        }
-      },
-      shrCodesystemByNamespace: {
-        options : {
-          layout: '<%= site.layoutstatic %>',  
-          pages:codesystem_ns_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
-        }
-      }, 
-      shrIndexIncludingElements: {
-        options: {
-          layout: '<%= site.layoutstatic %>',  
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'index_all_elements.hbs',
-        dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
-      },
-      shrIndex: {
-        options: {
-          layout: '<%= site.layoutstatic %>',  
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'index.hbs',
-        dest: '<%= site.dest %>/<%= site.dirSHRFiles %>'  
-      },
-      shrGraphic: {
-        options: {
-          layout: '<%= site.layoutstatic %>',  
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'graphic.hbs',
-        dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
-      }
+      // shrNamespacePages: { 
+      //   options : {
+      //     layout: '<%= site.layoutstatic %>', 
+      //     pages: namespace_pages
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
+      //   }
+      // },
+      // shrValuesetIndex: { 
+      //   options: { 
+      //     layout: '<%= site.layoutstatic %>',  
+      //     pages:valueset_index
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/vs/': ['!*']
+      //   }
+      // },
+      // shrValuesetByNamespace: {
+      //   options : {
+      //     layout: '<%= site.layoutstatic %>',  
+      //     pages:valueset_ns_pages
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
+      //   }
+      // }, 
+      // shrCodesystemIndex: { 
+      //   options: { 
+      //     layout: '<%= site.layoutstatic %>',  
+      //     pages:codesystem_index
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/cs/': ['!*']
+      //   }
+      // },
+      // shrCodesystemByNamespace: {
+      //   options : {
+      //     layout: '<%= site.layoutstatic %>',  
+      //     pages:codesystem_ns_pages
+      //   },
+      //   files: {
+      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
+      //   }
+      // }, 
+      // shrIndexIncludingElements: {
+      //   options: {
+      //     layout: '<%= site.layoutstatic %>',  
+      //     data: {namespaces: data.children[namespacesIndex].children}
+      //   },
+      //   flatten: true,
+      //   expand: true,
+      //   cwd: '<%= site.pages %>',
+      //   src: 'index_all_elements.hbs',
+      //   dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
+      // },
+      // shrIndex: {
+      //   options: {
+      //     layout: '<%= site.layoutstatic %>',  
+      //     data: {namespaces: data.children[namespacesIndex].children}
+      //   },
+      //   flatten: true,
+      //   expand: true,
+      //   cwd: '<%= site.pages %>',
+      //   src: 'index.hbs',
+      //   dest: '<%= site.dest %>/<%= site.dirSHRFiles %>'  
+      // },
+      // shrGraphic: {
+      //   options: {
+      //     layout: '<%= site.layoutstatic %>',  
+      //     data: {namespaces: data.children[namespacesIndex].children}
+      //   },
+      //   flatten: true,
+      //   expand: true,
+      //   cwd: '<%= site.pages %>',
+      //   src: 'graphic.hbs',
+      //   dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
+      // }
     },
     mochaTest: {
       test: {
@@ -734,7 +734,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticGraphic', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
-  grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrGraphic', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
+  // grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticGraphic', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
+  // grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrGraphic', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
   grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }

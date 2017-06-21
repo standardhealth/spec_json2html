@@ -1,11 +1,74 @@
-<footer>
-<p>This is the footer</p>
-</footer>
+<footer id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 links">
+        <div class="row">
+          <div class="col-md-push-1 col-xs-4 landing-links ">
+            <ul class="list-unstyled">
+              <li class="scroll ">
+                <a href="/#sitehomepage">HOME</a>
+              </li>
+              <li>
+                <a href="/#about-landing">SHR COLLABORATIVE</a>
+              </li>
 
-<script src="/{{assets}}/js/material.min.js"></script>
-<script>
-$(document).ready(function(){
-    $.material.init()
-    $('[data-toggle="tooltip"]').tooltip(); 
-});
-</script>
+              <li>
+                <a href="/collaborative.html">INITIATIVES</a>
+              </li> 
+              <li>
+                <a href="/evidence.html">EVIDENCE</a>
+              </li>
+              <!--                <li>
+                <a href="/evidence.html">INTEROPERABILITY</a>
+              </li> --> 
+<!--               <li class="">
+                <a href="/spec.html">SPECIFICATION</a>
+              </li> -->
+            </ul>
+          </div>
+          <div class="col-xs-offset-1 col-xs-5 sister-links ">
+            <ul class="list-unstyled">
+              <li class="">
+                <a href="/shr/graphic.html" class="hidden-xs">SPEC VISUALIZATION</a>
+              </li>
+              <li class="">
+                <a href="/shr/">SHR SPEC</a>
+              </li>
+              <li class="">
+                <a href="/faq.html">FAQ</a>
+              </li>
+              <li class="scroll">
+                <a href="/#contact-landing">CONTACT</a>
+              </li>
+            </ul>
+          </div>
+        </div>  
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-xs-12"> 
+            <p class="logo">
+              <a href="https://www.mitre.org/">
+                <img src="/assets/img/MITRE.png" alt="MITRE Logo"> <span class="sr-only">MITRE Home Page</span>
+              </a>
+              <p class="copyright">Copyright © 2016 The MITRE Corporation | Approved for Public Release; Distribution Unlimited. Case Number 16&#8209;1988</p>
+              <p class="copyright">FHIR® is the registered trademark of HL7 and is used with the permission of HL7</p>
+            </p>
+          </div>  
+        </div> 
+      </div>
+    </div>
+  </div>
+  <!-- Scripts for rendering -->
+  <script src="/assets/js/material.min.js"></script>
+  <script src="/assets/js/ripples.min.js"></script>
+  <script src="/assets/js/snackbar.min.js"></script>
+
+  <script> 
+    $(document).ready(function(){
+      $.material.init()
+      $('[data-toggle="tooltip"]').tooltip(); 
+    });
+  </script>
+
+</footer>

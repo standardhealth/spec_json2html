@@ -1,47 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    {{> head }}
-  </head>
+  {{> head }}
   <body>
-{{!-- 
-    <div id="partials">
-    {{#each site.partials}}
-        <script id="{{this}}" src="assets/partials/{{this}}.hbs" type="text/x-handlebars-template"></script>
-    {{/each}}
-    </div>  
- --}}
     <a class="sr-only" href="#content">Skip to main content</a>
-    {{> nav-main }}
- 
-    
-    <div class="container">
-      <section id="spec-viewer">
-        {{!-- For dynamic Generation --}}
-        {{!-- <div style="width:40%;display:inline-block"> --}}
-          {{> body }}
-        {{!-- For dynamic Generation --}}
-        {{!-- <div id="dynamic_view" style="width:40%;display:inline-block">
-          <div id="dynamic_content"></div>
-          <button id="load_hierarchy">Click here to load the dynamic view</button>
-        </div> --}}
-      </section>
+    <div class="wrapper">
+      {{> nav-main }}
+      <div class="container">
+        <section id="spec-viewer">
+            {{> body }}
+        </section>
+      </div>
+      <div class="wrapper-padding">
+      </div>
     </div>
-{{!-- 
     <!-- Footer -->
     {{> footer }}
- --}}
-{{!-- 
-    <script src='{{assets}}/js/app.js'></script>
---}}
 
-    <script src='{{assets}}/js/material.js'></script>
-    <script type="text/javascript">   
-      $(document).ready(function(){
-        $.material.init()
-        $('[data-toggle="tooltip"]').tooltip(); 
-      });
-  </script>
+    <script type="text/javascript" src="/assets/js/typeahead.jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/main.js"></script>  
+    <script type="text/javascript" src="/assets/js/search.js"></script>
+    <script type="text/javascript" src="/assets/js/parse.js"></script> 
   </body>
 </html>
 

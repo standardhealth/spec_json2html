@@ -92,11 +92,11 @@ section:before {
 
 .wrapper {
     min-height: 100%;
-    margin-bottom: -135px
+    margin-bottom: -218px
 }
 
 .wrapper-padding {
-    height: 135px
+    height: 218px
 }
 
 #snackbar-container p,
@@ -726,7 +726,7 @@ footer {
 
 footer p.copyright {
     padding-top: 0px;
-    margin: -50px 15px 20px 15px;
+    margin: 0px 15px 20px 15px;
     font-size: 16.8px;
     color: #fff;
     text-align: left;
@@ -891,10 +891,6 @@ footer p.logo {
     h3 {
         font-size: 29.52px
     }
-    header nav.navbar #site-menu {
-        width: 500px;
-        padding-left: 243px
-    }
     header nav.navbar {
         background-color: rgba(255, 255, 255, 0.90196);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -904,27 +900,31 @@ footer p.logo {
         -ms-transition: all .4s ease-in-out;
         transition: all .4s ease-in-out
     }
+    header nav.navbar #site-menu {
+        width: 500px;
+        padding-left: 243px
+    }
     header nav.navbar .navbar-header .logo-banner {
         vertical-align: middle;
         position: relative;
         display: block;
+        margin-top: 10px;
         margin-left: auto;
         margin-right: auto;
-        width: 110px;
-        height: 90px
+        width: 90px;
+        height: 70px
     }
     header nav.navbar .navbar-header a img {
         left: 0px
     }
+    header nav.navbar.affix-top .navbar-header .logo-banner {
+        margin-top: 10px
+    }
     header nav.navbar.affix-top .navbar-header a img {
-        width: 70px
+        width: 50px
     }
     header nav.navbar.affix .navbar-header a img {
         width: 50px
-    }
-    header nav.navbar.affix .navbar-header .logo-banner {
-        width: 90px;
-        height: 70px
     }
     header nav.navbar.affix #site-menu li,
     header nav.navbar.affix-top #site-menu li {

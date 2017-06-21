@@ -104,7 +104,7 @@ Below you will find the structure of folders, with a brief description of what t
     ├── README.md               # README for project construction
     ├── _config.yml             # Configuration file, used in definining env variables
     ├── .travis.yml             # Configuration for Travis, our Continuous Integration engine 
-    ├── hb_shr.js               # The javascript used to build the website dynamically
+    ├── search.js               # The javascript used to build the search index
     ├── Gruntfile.js            # Gruntfile that configures all tasks from testing to buildilng
     ├── results.txt             # Output of the last test run
     | ...                       # Other configuration files for Git/Node

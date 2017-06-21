@@ -1,48 +1,53 @@
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="{{default (default namespace.description description) site.description}}">
+<head> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Standard Health Record Collaborative is working to create a single, high-quality health record for every individual in the United States.">
+    <meta name="keywords" content="HealthIT,medical errors,semantic interoperability,healthcare interoperability,interoperability,Electronic Health Record,Electronic Medical Record,EMR,EHR,synthetic patient,SyntheticMass,MITRE,Personal Health Record,Universal Health Record,National Health Record">
 
-<title>
-  {{default title page.basename}} | {{site.title}}
-</title>
+    <!-- Favicons -->
+    <link rel="icon" href="/{{assets}}/img/favicon.ico" type="image/x-icon">
+    
+    <!-- Material Design fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/{{assets}}/css/bootstrap.min.css" type="text/css">
+    <!-- Bootstrap Material Design -->
+    <link rel="stylesheet" href="/{{assets}}/css/bootstrap-material-design.css" type="text/css">
+    <link rel="stylesheet" href="/{{assets}}/css/ripples.min.css" type="text/css">
+    <link rel="stylesheet" href="/{{assets}}/css/snackbar.css">
+    <!-- Font Awesome for Icons  -->
+    <link rel="stylesheet" href="/{{assets}}/css/font-awesome.min.css">
+    {{!-- The set of SSVE specific css changes --}}
+    <link rel="stylesheet" href="/{{assets}}/css/ssve.css">
+    {{!-- A subset of shr.org css for all spec viewer items --}}
+    <link rel="stylesheet" href="/{{assets}}/css/styles.css">
+    <link rel="stylesheet" href="/{{assets}}/css/shr-github-markdown.css">
+    {{!-- <link rel="stylesheet" href="{{assets}}/css/font-awesome.min.css"> --}}
+    <script src="https://use.fontawesome.com/b7720aa37b.js"></script>
 
-<!-- Stylesheets -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:light">
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- JS -->
+    <!-- Jquery 2.2.4-->
+    <script src="/{{assets}}/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/{{assets}}/js/bootstrap.min.js"></script>
+    <!-- Lodash -->
+    <script src="/{{assets}}/js/lodash.min.js"></script>
+    {{!-- TyepAhead by Twitter--}}
+    <script src="/{{assets}}/js/typeahead.jquery.js"></script>
+    <!-- D3.js -->
+    <script src="/{{assets}}/js/d3.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="{{ assets }}/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
 
-<link rel="stylesheet" type="text/css" href="/{{assets}}/css/bootstrap-material-design.css">
-{{!-- The set of SSVE specific css changes --}}
-<link rel="stylesheet" href="/{{assets}}/css/ssve.css">
-{{!-- A subset of shr.org css for all spec viewer items --}}
-<link rel="stylesheet" href="/{{assets}}/css/shr_css.css">
-<link rel="stylesheet" href="/{{assets}}/css/shr-markdown.css">
-{{!-- <link rel="stylesheet" href="{{assets}}/css/font-awesome.min.css"> --}}
-<script src="https://use.fontawesome.com/b7720aa37b.js"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 
-
-<!-- JS -->
-<!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- Lodash -->
-<script src="http://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
-{{!-- TyepAhead by Twitter--}}
-<script src="/{{assets}}/js/typeahead.jquery.js"></script>
-<!-- D3 -->
-<script src="https://d3js.org/d3.v4.min.js"></script>
-
-<!--[if lt IE 9]>
-  <script src="{{ assets }}/js/ie8-responsive-file-warning.js"></script>
-<![endif]-->
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-<![endif]-->
-
-<!-- Local JS -->
-<script src="/{{assets}}/app.js"></script>
-
+    <title>
+      Standard Health Record Specification
+    </title>
+</head>
