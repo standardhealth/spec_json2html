@@ -241,7 +241,8 @@ module.exports = function(grunt) {
           //console.log(basedOn.namespace + " / " + basedOn.label);
           createFieldList(concreteDataelement, basedOn.namespace, namespaces[basedOn.namespace].index[basedOn.label]);
         } else if (basedOn.type === "TBD") {
-          console.log("The basedOn Element %s has yet to be defined, so we cannot expand it", basedOn);
+          console.log("ERROR 6: The basedOn Element has yet to be defined, so we cannot expand it");
+          console.log(dataelement.basedOn);
         } else {
           console.log("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". Based on:");
           console.log(dataelement.basedOn);

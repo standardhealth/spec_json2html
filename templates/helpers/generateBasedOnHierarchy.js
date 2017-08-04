@@ -54,28 +54,38 @@ module.exports.register = function (Handlebars, options, params) {
 
                     if (de.value) {
 
-                        var fieldLink = getLink(de.value.identifier.label, de.value.identifier.namespace);
-
-                        if (currentNamespace === de.value.identifier.namespace) {
-                            fieldNode = {
-                                name: de.value.identifier.label,
-                                link: fieldLink,
-                                namespace: de.value.identifier.namespace,
-                                isDifferentNamespace: false,
-                                children: []
-                            };
+                        var addValueNode = function(val) {
+                                var fieldLink = getLink(val.identifier.label, val.identifier.namespace);
+                                if (currentNamespace === val.identifier.namespace) {
+                                    fieldNode = {
+                                        name: val.identifier.label,
+                                        link: fieldLink,
+                                        namespace: val.identifier.namespace,
+                                        isDifferentNamespace: false,
+                                        children: []
+                                    };
+                                }
+                                else {
+                                    fieldNode = {
+                                        name: val.identifier.label,
+                                        link: fieldLink,
+                                        namespace: val.identifier.namespace,
+                                        isDifferentNamespace: true,
+                                        children: []
+                                    };
+                                }
+                                entryNode.children.push(fieldNode); 
+                            }
+                            
+                        if (de.value.type !== "ChoiceValue") {
+                            addValueNode(de.value);
+                        } else {
+                            _.forEach(de.value.value, function (val) {
+                                addValueNode(val);
+                            });
                         }
-                        else {
-                            fieldNode = {
-                                name: de.value.identifier.label,
-                                link: fieldLink,
-                                namespace: de.value.identifier.namespace,
-                                isDifferentNamespace: true,
-                                children: []
-                            };
-                        }
-                        entryNode.children.push(fieldNode);
                     }
+                    
                     _.forEach(de.fieldList, function (field) {
 
                         var fieldListLink = getLink(field.label, field.namespace);
