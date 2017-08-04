@@ -2,6 +2,10 @@
     <a class='paddedId' id="{{label}}"></a>{{label}}
 	{{#if isEntry}}
 		[<a href="/shr/base/index.html#Entry">Entry</a>]
+	{{else}}
+		{{#if isAbstract}}
+			[Abstract]
+    	{{/if}}
     {{/if}}
 </h3>
 <p>
