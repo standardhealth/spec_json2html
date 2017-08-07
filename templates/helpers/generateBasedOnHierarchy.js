@@ -54,7 +54,7 @@ module.exports.register = function (Handlebars, options, params) {
 
                     if (de.value) {
 
-                        var addValueNode = function(val) {
+                        var addValueNode = function(val, parent) {
                                 var fieldLink = getLink(val.identifier.label, val.identifier.namespace);
                                 if (currentNamespace === val.identifier.namespace) {
                                     fieldNode = {
@@ -74,15 +74,25 @@ module.exports.register = function (Handlebars, options, params) {
                                         children: []
                                     };
                                 }
-                                entryNode.children.push(fieldNode); 
+                                parent.children.push(fieldNode); 
                             }
                             
                         if (de.value.type !== "ChoiceValue") {
-                            addValueNode(de.value);
+                            addValueNode(de.value, entryNode);
                         } else {
+                            var parentLink = getLink(de.label, de.namespace);
+                            var parentNode = {
+                                name: "Value choices",
+                                link: parentLink,
+                                isDifferentNamespace: false,
+                                children: []
+                            };
+
                             _.forEach(de.value.value, function (val) {
-                                addValueNode(val);
+                                addValueNode(val, parentNode);
                             });
+
+                            entryNode.children.push(parentNode);
                         }
                     }
                     
