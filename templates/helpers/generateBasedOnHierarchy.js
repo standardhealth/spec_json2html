@@ -56,9 +56,10 @@ module.exports.register = function (Handlebars, options, params) {
 
                         var addValueNode = function(val, parent) {
                                 var fieldLink = getLink(val.identifier.label, val.identifier.namespace);
+                                var fieldName = "Value: " + val.identifier.label;
                                 if (currentNamespace === val.identifier.namespace) {
                                     fieldNode = {
-                                        name: val.identifier.label,
+                                        name: fieldName,
                                         link: fieldLink,
                                         namespace: val.identifier.namespace,
                                         isDifferentNamespace: false,
@@ -67,7 +68,7 @@ module.exports.register = function (Handlebars, options, params) {
                                 }
                                 else {
                                     fieldNode = {
-                                        name: val.identifier.label,
+                                        name: fieldName,
                                         link: fieldLink,
                                         namespace: val.identifier.namespace,
                                         isDifferentNamespace: true,
@@ -80,11 +81,8 @@ module.exports.register = function (Handlebars, options, params) {
                         if (de.value.type !== "ChoiceValue") {
                             addValueNode(de.value, entryNode);
                         } else {
-                            var parentLink = getLink(de.label, de.namespace);
                             var parentNode = {
                                 name: "Value choices",
-                                link: parentLink,
-                                isDifferentNamespace: false,
                                 children: []
                             };
 
