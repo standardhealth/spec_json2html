@@ -9,6 +9,19 @@
 		{{/if}}
 	{{else}}
 		{{#eq type "ValueSetConstraint"}}
+			{{#if bindingStrength}}
+				{{#eq bindingStrength "REQUIRED"}}
+				must be 
+				{{else}}
+					{{#eq bindingStrength "PREFERRED"}}
+					should be 
+					{{else}}
+						{{#eq bindingStrength "EXAMPLE"}}
+						could be 
+						{{/eq}}
+					{{/eq}}
+				{{/eq}}
+			{{/if}}					
 			{{#if valueset}}
 				{{#if (isSHRValueSet valueset)}}
 					{{#eq (getValuesetLink valueset @root.vsetsLookup) "TBD"}}
@@ -21,7 +34,12 @@
 				{{/if}}
 			{{else}}
 			  from valueset <code>TBD</code>
-			{{/if}}								
+			{{/if}}
+			{{#if bindingStrength}}  
+				{{#eq bindingStrength "EXTENSIBLE"}}
+				(if covered)
+				{{/eq}}
+			{{/if}}					  
 		{{else}}
 			{{#eq type "IncludesCodeConstraint"}}
 				includes {{> shr_concept code}} 

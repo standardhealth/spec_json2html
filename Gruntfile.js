@@ -237,10 +237,12 @@ module.exports = function(grunt) {
     // follow the inheritance hierarchy up adding to the fields for the current concreteDataelement
     if (dataelement.basedOn) { // add parent fields
       _.forEach(dataelement.basedOn, function(basedOn) {
-        if (basedOn.label) {
+        if (basedOn.label && basedOn.namespace) {
           //console.log(basedOn.namespace + " / " + basedOn.label);
           createFieldList(concreteDataelement, basedOn.namespace, namespaces[basedOn.namespace].index[basedOn.label]);
         } else if (basedOn.type === "TBD") {
+          console.log("ERROR 6: The basedOn Element has yet to be defined, so we cannot expand it");
+          console.log(dataelement.basedOn);
         } else {
           console.log("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". Based on:");
           console.log(dataelement.basedOn);
