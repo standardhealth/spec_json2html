@@ -45,7 +45,7 @@
 				includes {{> shr_concept code}} 
 			{{else}}
 				{{#eq type "TypeConstraint"}}
-					must be a {{> shr_label namespace=isA._namespace label=isA._name }}
+					must be a {{> shr_label namespace=isA.namespace label=isA.label }}
 				{{else}}
 					{{#eq type "CardConstraint"}}
 					{{else}}
