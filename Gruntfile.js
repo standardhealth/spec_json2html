@@ -167,8 +167,8 @@ module.exports = function(grunt) {
           if (field.constraints && field.constraints.length > 0) {
             _.forEach(field.constraints, function (c) {
               if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
-                if (concreteDataelement.fieldMap[c.isA._name]) { // if we have a field for new type then make it subordinate to this one
-                  var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA._name});
+                if (concreteDataelement.fieldMap[c.isA.label]) { // if we have a field for new type then make it subordinate to this one
+                  var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA.label});
                   var isafield = concreteDataelement.fieldList[isafieldindex];
                   concreteDataelement.fieldList.splice(isafieldindex, 1); // remove is a field from concrete data element's field list
                   //console.log(isafield);
