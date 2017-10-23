@@ -125,7 +125,7 @@ Below you will find a comprehensive list of the central technologies and tools t
 - [Chai](http://chaijs.com/), a BDD / TDD assertion library for node, used to define the checks that mocha uses in its test cases.
 - [jQuery](https://jquery.com/), a JavaScript library enabling quick navigation and manipulation of HTML, used throughout to write efficient and capable JavaScript that can directly modify and alter the DOM.
 - [Travis](https://travis-ci.com/), a continuous integration service, used to continually run tests on any new pushes made to Github.
-- [Browserify] (http://browserify.org/), lets you require('modules') in the browser by bundling up all of your dependencies much like you can do in Node.js
+- [Browserify](http://browserify.org/), lets you require('modules') in the browser by bundling up all of your dependencies much like you can do in Node.js
 
 
 <a id="team"></a>
