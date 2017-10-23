@@ -28,7 +28,7 @@ git clone https://github.com/standardhealth/spec_json2html.git
 that will create a directory called spec_json2html within the current working directory. Future instructions below will reference the spec_json2html directory. 
 
 <a id="environment"> </a>
-##Setting Up the Environment
+## Setting Up the Environment
 This project has been developed and tested with Node.js 6.6, although other versions _may_ work.  If you do not have Node.js installed, go to  and download the appropriate version of Node.
 
 After installing Node.js, change to the central project directory, `spec_json2html/`, and _npm install_ the command line interface for grunt (globally) and the project's dependencies:
@@ -40,7 +40,7 @@ You may need to use sudo (for OSX, *nix, BSD etc) or run your command shell as A
 
 
 <a id="building"> </a>
-##Building the Project
+## Building the Project
 To assemble the project, run the default grunt command in `spec_json2html/`:
 ```
 grunt
@@ -71,7 +71,7 @@ Providing these references to all of the component Handlebars templates and part
 
 
 <a id="testing"> </a>
-##Testing the Project
+## Testing the Project
 To run tests on this project, run the following in `spec_json2html/`:
 ```
 grunt test
@@ -113,7 +113,7 @@ Below you will find the structure of folders, with a brief description of what t
 
 
 <a id="technologies"></a>
-##Technologies Used
+## Technologies Used
 Below you will find a comprehensive list of the central technologies and tools the SSVE is built with, along with brief descriptions and links for learning more:
 
 - [Nodejs.org](https://nodejs.org/en/), the JavaScript Runtime we use, providing a mechanism for downloading and running JavaScript tools for bundling, building and testing our site.
@@ -129,7 +129,7 @@ Below you will find a comprehensive list of the central technologies and tools t
 
 
 <a id="team"></a>
-##About the Team Behind The Standard Health Record
+## About the Team Behind The Standard Health Record
 
 ###[The MITRE Corporation](https://www.mitre.org/)
 
