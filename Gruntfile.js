@@ -9,87 +9,92 @@
  */
 var _ = require('lodash');
 function msgLog (msg, ...vars) { 
-  console.log(msg);
-  _.forEach(vars, function(elem) {
-    console.log(elem); 
-  });   
-  console.log('');
+    console.log(msg);
+    _.forEach(vars, function(elem) {
+         console.log(elem); 
+    });   
+    console.log('');
 };
 
 String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
+      return this.charAt(0).toUpperCase() + this.slice(1);
 }
 module.exports = function(grunt) {
-  'use strict';
-  const site = grunt.file.readYAML('_config.yml');
-  // For timing tasks
-  require('time-grunt')(grunt);   
+    'use strict';
+    const site = grunt.file.readYAML('_config.yml');
+    // For timing tasks
+    require('time-grunt')(grunt);   
 
-  // start GQ created
-  var getDescription = function(field) {
-    if (field.description) return field.description;
-    if (field.identifier) {
-      //console.log("identifier: " + field.identifier.namespace);
-      if (field.identifier.namespace === "primitive") return "";
-      var element = namespaces[field.identifier.namespace].index[field.identifier.label];
-      if (element) {
-        return element.description;
-      } else {
-        return "no description";
-      }
-    } else {
-      if (field.type == 'ChoiceValue') { 
-        return "";
-      } else { 
-        // msgLog('Corner case for getDescription', field);
-        return "Description TBD";
-      }
+    // start GQ created
+    var getDescription = function(field) {
+        if (field.description) return field.description;
+        // Else, if the element has an id, get description from original namespace
+        if (field.identifier) {
+            // Prims have no description now
+            if (field.identifier.namespace === "primitive") return "";
+            var element = namespaces[field.identifier.namespace].index[field.identifier.label];
+            if (element) {
+                return element.description;
+            } else {
+                return "no description";
+            }
+        } else {
+            if (field.type == 'ChoiceValue') { 
+                return "";
+            } else { 
+                return "Description TBD";
+            }
+        }
     }
-  }
   
-  var combineArraysIntoIdentifierList = function(namespaceList, nameList) {
-    var namespace, name;
-    var result = [];
-    for (var i = 0, j = namespaceList.length; i < j; i++) {
-      namespace = namespaceList[i];
-      name = nameList[i];
-      result.push({ namespace: namespace, label: name});
+    var combineArraysIntoIdentifierList = function(namespaceList, nameList) {
+        var namespace, name;
+        var combinedArrays = [];
+        numberOfNamespaces = namespaceList.length
+        for (var i = 0; i < numberOfNamespaces; i++) {
+            namespace = namespaceList[i];
+            name = nameList[i];
+            result.push({ 
+                namespace: namespace, 
+                label: name
+            });
+        }
+        return result;
     }
-    return result;
-  }
   
-  // create the initial record for the specified field within the element concretedataelement
-  // not that in addition to the fields initialized below, the field record can have a values attribute which is a list of subordinate records
-  var newRecord = function(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
-    if (fieldName && fieldName.constructor === Array) {
-      //console.log(field);
-      return {  foundin: [ foundin ], 
-              concretedataelement: concretedataelement,
-              isValue: isValue, 
-              isChoice: isChoice,
-              isSubElement: isSubElement,
-              namespace: fieldNamespace[fieldNamespace.length - 1],
-              label: fieldName[fieldName.length - 1], 
-              identifierList: combineArraysIntoIdentifierList(fieldNamespace.slice(0, -1), fieldName.slice(0, -1)), 
-              isTBD: field.type === "TBD",
-              constraints: field.constraints.slice(), 
-              cardinality : [  { min: field.min, max: field.max } ], 
-              description : getDescription(field) };    
-    } else {
-      return {  foundin: [ foundin ], 
-              concretedataelement: concretedataelement,
-              isValue: isValue, 
-              isChoice: isChoice,
-              isSubElement: isSubElement,
-              namespace: fieldNamespace,
-              label: fieldName, 
-              isTBD: field.type === "TBD",
-              constraints: field.constraints.slice(), 
-              cardinality : [  { min: field.min, max: field.max } ], 
-              description : getDescription(field) 
-          };
+    // create the initial record for the specified field within the element concretedataelement
+    // note that in addition to the fields initialized below, the field record can have a values attribute which is a list of subordinate records
+    var newRecord = function(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
+        if (fieldName && fieldName.constructor === Array) {
+            return {  
+                foundin:                [ foundin ], 
+                concretedataelement:    concretedataelement,
+                isValue:                isValue, 
+                isChoice:               isChoice,
+                isSubElement:           isSubElement,
+                namespace:              fieldNamespace[fieldNamespace.length - 1],
+                label:                  fieldName[fieldName.length - 1], 
+                identifierList:         combineArraysIntoIdentifierList(fieldNamespace.slice(0, -1), fieldName.slice(0, -1)), 
+                isTBD:                  field.type === "TBD",
+                constraints:            field.constraints.slice(), 
+                cardinality :           [ { min: field.min, max: field.max } ], 
+                description :           getDescription(field) 
+            };    
+        } else {
+          return {  foundin: [ foundin ], 
+                  concretedataelement:  concretedataelement,
+                  isValue:              isValue, 
+                  isChoice:             isChoice,
+                  isSubElement:         isSubElement,
+                  namespace:            fieldNamespace,
+                  label:                fieldName, 
+                  isTBD:                field.type === "TBD",
+                  constraints:          field.constraints.slice(), 
+                  cardinality :         [  { min: field.min, max: field.max } ], 
+                  description :         getDescription(field) 
+              };
+        }
     }
-  }
 
   // create a record of the value for the concrete data element based on the specified dataelement within the specified namespace
   var createValueRecord = function(concreteDataelement, namespace, dataelement) {
@@ -497,12 +502,6 @@ module.exports = function(grunt) {
           dest:'<%= site.dest %>/<%= site.assets %>'
         }] 
       },
-      // partials: {
-      //   expand:true, 
-      //   flatten: true, 
-      //   src: ['<%= site.includes %>'], 
-      //   dest:'<%= site.dest %>/<%= site.assets %>/partials'
-      // },
       data: { 
         expand:true, 
         flatten: true, 
@@ -558,15 +557,6 @@ module.exports = function(grunt) {
           '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
         }
       }, 
-      // valuesetByVSPages: {
-      //   options : {
-      //     layout: '<%= site.layoutdefault %>',
-      //     pages:valueset_pages
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
-      //   }
-      // }, 
       codesystemIndex: { 
         options: { 
           layout: '<%= site.layoutdefault %>',
@@ -634,85 +624,6 @@ module.exports = function(grunt) {
         src: 'index.hbs',
         dest: '<%= site.dest %>/<%= site.dirNS %>/'
       }, 
-      // SHR files
-      // shrNamespacePages: { 
-      //   options : {
-      //     layout: '<%= site.layoutstatic %>', 
-      //     pages: namespace_pages
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
-      //   }
-      // },
-      // shrValuesetIndex: { 
-      //   options: { 
-      //     layout: '<%= site.layoutstatic %>',  
-      //     pages:valueset_index
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/vs/': ['!*']
-      //   }
-      // },
-      // shrValuesetByNamespace: {
-      //   options : {
-      //     layout: '<%= site.layoutstatic %>',  
-      //     pages:valueset_ns_pages
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
-      //   }
-      // }, 
-      // shrCodesystemIndex: { 
-      //   options: { 
-      //     layout: '<%= site.layoutstatic %>',  
-      //     pages:codesystem_index
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/cs/': ['!*']
-      //   }
-      // },
-      // shrCodesystemByNamespace: {
-      //   options : {
-      //     layout: '<%= site.layoutstatic %>',  
-      //     pages:codesystem_ns_pages
-      //   },
-      //   files: {
-      //     '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/': ['!*']
-      //   }
-      // }, 
-      // shrIndexIncludingElements: {
-      //   options: {
-      //     layout: '<%= site.layoutstatic %>',  
-      //     data: {namespaces: data.children[namespacesIndex].children}
-      //   },
-      //   flatten: true,
-      //   expand: true,
-      //   cwd: '<%= site.pages %>',
-      //   src: 'index_all_elements.hbs',
-      //   dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
-      // },
-      // shrIndex: {
-      //   options: {
-      //     layout: '<%= site.layoutstatic %>',  
-      //     data: {namespaces: data.children[namespacesIndex].children}
-      //   },
-      //   flatten: true,
-      //   expand: true,
-      //   cwd: '<%= site.pages %>',
-      //   src: 'index.hbs',
-      //   dest: '<%= site.dest %>/<%= site.dirSHRFiles %>'  
-      // },
-      // shrGraphic: {
-      //   options: {
-      //     layout: '<%= site.layoutstatic %>',  
-      //     data: {namespaces: data.children[namespacesIndex].children}
-      //   },
-      //   flatten: true,
-      //   expand: true,
-      //   cwd: '<%= site.pages %>',
-      //   src: 'graphic.hbs',
-      //   dest: '<%= site.dest %>/<%= site.dirSHRFiles %>/<%= site.dirNS %>/'  
-      // }
     },
     mochaTest: {
       test: {
