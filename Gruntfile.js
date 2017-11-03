@@ -131,7 +131,7 @@ module.exports = function(grunt) {
     }
   
     // add field records to the field list for the concrete data element based on the element data element (which could be the concrete one or an ancestor)
-    var createFieldListPerDataElement = function(concreteDataelement, namespace, dataelement) {
+    var createFieldList = function(concreteDataelement, namespace, dataelement) {
         var fieldName, fieldNamespace;
         //if (concreteDataelement.fieldList) { // if the data element we're building field list for has a field list already, add to it
         var record, subrecord;
