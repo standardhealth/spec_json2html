@@ -113,7 +113,6 @@ module.exports = function(grunt) {
                     concreteDataelement.valueRecord = newRecord("Choice", "", dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
                     concreteDataelement.valueRecord.values = [];
                     _.forEach(dataelement.value.value, function(item) {
-                        //console.log(item);
                         if (item.identifier) {
                             subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
                         } else {
@@ -413,17 +412,10 @@ module.exports = function(grunt) {
     // 
     //   Create Assemble pages needed for generating namespace, valueset_by_namespace, and 
     // valueset pages.
-    var ns_template       = grunt.file.read(`./${site.pages}/namespace.hbs`);  
     
-    var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
-    var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
-    var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
-    
-    var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
-    var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
-    var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);  
     // Namespace page construction
     //
+    var ns_template       = grunt.file.read(`./${site.pages}/namespace.hbs`);  
     var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
         return {
             filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
@@ -437,6 +429,9 @@ module.exports = function(grunt) {
     });
     // Valueset page construction 
     //
+    var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
+    var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
+    var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
     var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
         return {
             filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
@@ -455,6 +450,9 @@ module.exports = function(grunt) {
     }];
     // Codesystem page construction
     //
+    var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
+    var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
+    var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);      
     var codesystem_ns_pages = _.map(mapNamespaceToCodesystems, function(codesystems, ns) {
         return {
             filename:ns.split('.')[1] + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
