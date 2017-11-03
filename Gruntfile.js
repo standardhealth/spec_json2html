@@ -96,36 +96,39 @@ module.exports = function(grunt) {
         }
     }
 
-  // create a record of the value for the concrete data element based on the specified dataelement within the specified namespace
-  var createValueRecord = function(concreteDataelement, namespace, dataelement) {
-    var subrecord;
-    if (dataelement.value) {
-      if (concreteDataelement.valueRecord) {
-        concreteDataelement.valueRecord.foundin.unshift(dataelement.label);
-        if (dataelement.value.constraints) { concreteDataelement.valueRecord.constraints.unshift(dataelement.value.constraints); } else { concreteDataelement.valueRecord.constraints.unshift([]); }
-        concreteDataelement.valueRecord.cardinality.unshift({min : dataelement.value.min, max: dataelement.value.max});
-      } else {
-      if (dataelement.value.type == "ChoiceValue") {
-        concreteDataelement.valueRecord = newRecord("Choice", "", dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
-        concreteDataelement.valueRecord.values = [];
-        _.forEach(dataelement.value.value, function(item) {
-          //console.log(item);
-          if (item.identifier) {
-            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
-          } else {
-            subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
-          }
-          concreteDataelement.valueRecord.values.push(subrecord);
-        });
-        //console.log(concreteDataelement.valueRecord);
-      } else if (dataelement.value.type == "TBD") {
-        concreteDataelement.valueRecord = newRecord(dataelement.value.text, undefined, dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
-      } else {
-        concreteDataelement.valueRecord = newRecord(dataelement.value.identifier.label, dataelement.value.identifier.namespace, dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
-      }
-      }
+    // create a record of the value for the concrete data element based on the specified dataelement within the specified namespace
+    var createValueRecord = function(concreteDataelement, namespace, dataelement) {
+        var subrecord;
+        if (dataelement.value) {
+            if (concreteDataelement.valueRecord) {
+                concreteDataelement.valueRecord.foundin.unshift(dataelement.label);
+                if (dataelement.value.constraints) { 
+                    concreteDataelement.valueRecord.constraints.unshift(dataelement.value.constraints); 
+                } else { 
+                    concreteDataelement.valueRecord.constraints.unshift([]); 
+                }
+                concreteDataelement.valueRecord.cardinality.unshift({min : dataelement.value.min, max: dataelement.value.max});
+            } else {
+                if (dataelement.value.type == "ChoiceValue") {
+                    concreteDataelement.valueRecord = newRecord("Choice", "", dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
+                    concreteDataelement.valueRecord.values = [];
+                    _.forEach(dataelement.value.value, function(item) {
+                        //console.log(item);
+                        if (item.identifier) {
+                            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
+                        } else {
+                            subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
+                        }
+                        concreteDataelement.valueRecord.values.push(subrecord);
+                    });
+                } else if (dataelement.value.type == "TBD") {
+                    concreteDataelement.valueRecord = newRecord(dataelement.value.text, undefined, dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
+                } else {
+                    concreteDataelement.valueRecord = newRecord(dataelement.value.identifier.label, dataelement.value.identifier.namespace, dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
+                }
+            }
+        }
     }
-  }
   
   // add field records to the field list for the concrete data element based on the element data element (which could be the concrete one or an ancestor)
   var createFieldList = function(concreteDataelement, namespace, dataelement) {
