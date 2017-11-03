@@ -279,398 +279,389 @@ module.exports = function(grunt) {
         }
     }
 
-  var createFieldListPerDataElement = function(namespace) {
-    //console.log("**** namespace " + namespace.label);
-    // for each dataelement
-    _.forEach(namespace.children, function(dataelement) {
-      //console.log("****  dataelement " + dataelement.label);
-      createFieldList(dataelement, namespace, dataelement);
+    var createFieldListPerDataElement = function(namespace) {
+        // for each dataelement
+        _.forEach(namespace.children, function(dataelement) {
+            createFieldList(dataelement, namespace, dataelement);
+        });
+    }
+    // end GQ created
+
+    var data = grunt.file.readJSON(`./${site.assets}/${site.data}/${site.dataFile}`);
+    var namespacesIndex = _.findIndex(data.children, {type: "Namespaces"})
+    var valuesetIndex   = _.findIndex(data.children, {type: "ValueSets"})
+    var codesystemIndex = _.findIndex(data.children, {type: "CodeSystems"})
+    
+    // for each namespace:
+    var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
+    _.map(data.children[namespacesIndex].children,function(namespace) {
+        namespace.index = _.keyBy(namespace.children,"label");
     });
-  }
-  // end GQ created
+    
+    // GQ created
+    // for each namespace:
+    _.forEach(data.children[namespacesIndex].children, function(namespace) {
+        createFieldListPerDataElement(namespace); // for each element within the specified namespace, create its field list
+    });
+  
+    //console.log("PHASE 2: effective cardinalities");
+    // now go through all fields and figure out its effective cardinality and handle CardConstraints
+    //  while building a map from element to namespace -- this is more economical than passing the whole 
+    //  hierarchy when building namespace pages
+    
+    // mapElementstoNamespace  - lookup table mapping every SHR Element to the namespace it's from
+    var mapElementstoNamespace = {}; 
+    var index;
+    _.forEach(data.children[namespacesIndex].children, function(namespace) {
+        //console.log("!2!2!2 " + namespace);
+        _.forEach(namespace.children, function(dataelement) {
+            dataelement.namespace = namespace.label; 
+            // For each element, make a namespace mapping;
+            var nsLabel = namespace.label;
+            mapElementstoNamespace[dataelement.label] = nsLabel;
 
-  var data = grunt.file.readJSON(`./${site.assets}/${site.data}/${site.dataFile}`);
-  var namespacesIndex = _.findIndex(data.children, {type: "Namespaces"})
-  var valuesetIndex   = _.findIndex(data.children, {type: "ValueSets"})
-  var codesystemIndex = _.findIndex(data.children, {type: "CodeSystems"})
-  
-  // for each namespace:
-  var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
-  _.map(data.children[namespacesIndex].children,function(namespace) {
-    namespace.index = _.keyBy(namespace.children,"label");
-  });
-  
-  // GQ created
-  // for each namespace:
-  _.forEach(data.children[namespacesIndex].children, function(namespace) {
-    createFieldListPerDataElement(namespace); // for each element within the specified namespace, create its field list
-  });
-  
-  //console.log("PHASE 2: effective cardinalities");
-  // now go through all fields and figure out its effective cardinality and handle CardConstraints
-  //  while building a map from element to namespace -- this is more economical than passing the whole 
-  //  hierarchy when building namespace pages
-  
-  // mapElementstoNamespace  - lookup table mapping every SHR Element to the namespace it's from
-  var mapElementstoNamespace = {}; 
-  var index;
-  _.forEach(data.children[namespacesIndex].children, function(namespace) {
-    //console.log("!2!2!2 " + namespace);
-    _.forEach(namespace.children, function(dataelement) {
-      dataelement.namespace = namespace.label; 
-        // For each element, make a namespace mapping;
-      var nsLabel = namespace.label;
-      mapElementstoNamespace[dataelement.label] = nsLabel;
-
-      //console.log("!2!2!2 " + dataelement.label);
-      _.forEach(dataelement.fieldList, function(record) {
-        if (record) {
-          if (record.cardinality && record.cardinality.length > 0) {
-            index = record.cardinality.length - 1;
-            while (index >= 0 && record.cardinality[index].min === undefined && record.cardinality[index].max === undefined) {
-              index--;
-            }
-            if (index < 0) {
-              console.log("ERROR 1: No cardinalities found. namespace: " + namespace.label + "/element " + dataelement.label + "/" + record.label);
-              console.log(record);
-            } else {
-              record.effectivecardinality = {};
-              record.effectivecardinality.min = record.cardinality[index].min;
-              record.effectivecardinality.max = record.cardinality[index].max;
-            }
-          } else {
-            console.log("ERROR 2: Field has no cardinalities. namespace " + namespace.label + "/element " + dataelement.label + "/" + record.label);
-            console.log(record);
-          }
-          if (record.values) {
-            //console.log(record.values);
-            _.forEach(record.values, function (subrecord) {
-             //console.log(subrecord);
-             subrecord.effectivecardinality = {};
-             subrecord.effectivecardinality.min = subrecord.cardinality[0].min;
-             subrecord.effectivecardinality.max = subrecord.cardinality[0].max;
+            _.forEach(dataelement.fieldList, function(record) {
+                if (record) {
+                    if (record.cardinality && record.cardinality.length > 0) {
+                        index = record.cardinality.length - 1;
+                        while (index >= 0 && record.cardinality[index].min === undefined && record.cardinality[index].max === undefined) {
+                            index--;
+                        }
+                        if (index < 0) {
+                            console.log("ERROR 1: No cardinalities found. namespace: " + namespace.label + "/element " + dataelement.label + "/" + record.label);
+                            console.log(record);
+                        } else {
+                            record.effectivecardinality = {};
+                            record.effectivecardinality.min = record.cardinality[index].min;
+                            record.effectivecardinality.max = record.cardinality[index].max;
+                        }
+                    } else {
+                        console.log("ERROR 2: Field has no cardinalities. namespace " + namespace.label + "/element " + dataelement.label + "/" + record.label);
+                        console.log(record);
+                    }
+                    if (record.values) {
+                        _.forEach(record.values, function (subrecord) {
+                            subrecord.effectivecardinality = {};
+                            subrecord.effectivecardinality.min = subrecord.cardinality[0].min;
+                            subrecord.effectivecardinality.max = subrecord.cardinality[0].max;
+                        });
+                    }
+                } else {
+                    console.log("ERROR 4: Undefined record in field list: namespace " + namespace.label + "/element " + dataelement.label + "/record=" + record);
+                }
             });
-          }
-        } else {
-          console.log("ERROR 4: Undefined record in field list: namespace " + namespace.label + "/element " + dataelement.label + "/record=" + record);
-        }
-      });
-      if (dataelement.valueRecord) {
-         if (dataelement.valueRecord.values) {
-          //console.log(record.values);
-          _.forEach(dataelement.valueRecord.values, function (subrecord) {
-           //console.log(subrecord);
-           subrecord.effectivecardinality = {};
-           subrecord.effectivecardinality.min = subrecord.cardinality[0].min;
-           subrecord.effectivecardinality.max = subrecord.cardinality[0].max;
-          });
-        }
-      }
+            if (dataelement.valueRecord) {
+                if (dataelement.valueRecord.values) {
+                    _.forEach(dataelement.valueRecord.values, function (subrecord) {
+                        subrecord.effectivecardinality = {};
+                        subrecord.effectivecardinality.min = subrecord.cardinality[0].min;
+                        subrecord.effectivecardinality.max = subrecord.cardinality[0].max;
+                    });
+                }
+            }
+        });
     });
-  });
-  // end GQ created
+    // end GQ created
 
-  //
-  /// Making Valueset, Codesystem  and Data Element lookup tables
-  // 
-  // 1. mapNamespaceToValuesets   - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
-  //      an array of all of that namespace's associated valuesets
-  // 2. mapURLtoValueset          - lookup table mapping every FHIR IG url to the valueset it uniquely identifies
-  // 3. mapNamespaceToCodesystems - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
-  //      an array of all of that namespace's associated codesystems
-  // 4. mapURLtoCodesystem        - lookup table mapping every FHIR IG url to the codesystem it uniquely identifies
-  var valuesets                 = data.children[valuesetIndex].children,
-      mapURLtoValueset          = {},
-      mapNamespaceToValuesets   = {},
-      codesystems               = data.children[codesystemIndex].children,
-      mapNamespaceToCodesystems = {},
-      mapURLtoCodesystem        = {};
-
-  // Make sure that every namespace has a valueset and a codesystem page
-  _.forEach(data.children[namespacesIndex].children, function (ns) { 
-      mapNamespaceToValuesets[ns.label]   = [];
-      mapNamespaceToCodesystems[ns.label] = [];
-  })
-
-  // For all valuesets, add to map
-  _.forEach(valuesets, function(vs) {
-    var ns  = vs.namespace,
-        url = vs.url; 
-    vs.shrLink = '/shr/' + ns.split('.')[1] + '/vs/#' + vs.label
-    mapURLtoValueset[url] = vs;
-    mapNamespaceToValuesets[ns].push(vs)
-  });
+    //
+    /// Making Valueset, Codesystem  and Data Element lookup tables
+    // 
+    // 1. mapNamespaceToValuesets   - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+    //      an array of all of that namespace's associated valuesets
+    // 2. mapURLtoValueset          - lookup table mapping every FHIR IG url to the valueset it uniquely identifies
+    // 3. mapNamespaceToCodesystems - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+    //      an array of all of that namespace's associated codesystems
+    // 4. mapURLtoCodesystem        - lookup table mapping every FHIR IG url to the codesystem it uniquely identifies
+    var valuesets                 = data.children[valuesetIndex].children,
+        mapURLtoValueset          = {},
+        mapNamespaceToValuesets   = {},
+        codesystems               = data.children[codesystemIndex].children,
+        mapNamespaceToCodesystems = {},
+        mapURLtoCodesystem        = {};
   
-  // For all codesystems
-  _.forEach(codesystems, function(cs) {
-    var ns  = cs.namespace,
-        url = cs.url; 
-    cs.shrLink = '/shr/' + ns.split('.')[1] + '/cs/#' + cs.label
-    mapURLtoCodesystem[url] = cs;
-    mapNamespaceToCodesystems[ns].push(cs)
-  });
-  // Store mappings in data object
-  data.children[valuesetIndex].index_by_url         = mapURLtoValueset;
-  data.children[valuesetIndex].index_by_namespace   = mapNamespaceToValuesets;
-  data.children[codesystemIndex].index_by_url       = mapURLtoCodesystem;
-  data.children[codesystemIndex].index_by_namespace = mapNamespaceToCodesystems;
-
-  //
-  // Making Valueset and Namespace pages
-  // 
-  //   Create the assemble pages needed for generating namespace pages, valueset_by_namespace pages, and 
-  // valueset pages.
-  var ns_template       = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+    // Make sure that every namespace has a valueset and a codesystem page
+    _.forEach(data.children[namespacesIndex].children, function (ns) { 
+        mapNamespaceToValuesets[ns.label]   = [];
+        mapNamespaceToCodesystems[ns.label] = [];
+    })
   
-  var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
-  var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
-  var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
+    // For all valuesets, add to map
+    _.forEach(valuesets, function(vs) {
+        var ns  = vs.namespace,
+            url = vs.url; 
+        vs.shrLink = '/shr/' + ns.split('.')[1] + '/vs/#' + vs.label
+        mapURLtoValueset[url] = vs;
+        mapNamespaceToValuesets[ns].push(vs)
+    });
+    
+    // For all codesystems
+    _.forEach(codesystems, function(cs) {
+        var ns  = cs.namespace,
+            url = cs.url; 
+        cs.shrLink = '/shr/' + ns.split('.')[1] + '/cs/#' + cs.label
+        mapURLtoCodesystem[url] = cs;
+        mapNamespaceToCodesystems[ns].push(cs)
+    });
+    // Store mappings in data object
+    data.children[valuesetIndex].index_by_url         = mapURLtoValueset;
+    data.children[valuesetIndex].index_by_namespace   = mapNamespaceToValuesets;
+    data.children[codesystemIndex].index_by_url       = mapURLtoCodesystem;
+    data.children[codesystemIndex].index_by_namespace = mapNamespaceToCodesystems;
   
-  var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
-  var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
-  var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);  
-  // Namespace page construction
-  //
-  var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
-    return {
-      filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:{namespace: item, elemsToNamespace: mapElementstoNamespace, vsetsLookup: mapURLtoValueset},
-      content:ns_template
-    }
-  });
-  // Valueset page construction 
-  //
-  // var valueset_pages = _.map(valuesets, function(vs) {
-  //   return {
-  //     filename:vs.namespace.split('.')[1] + '/vs/' + vs.label + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-  //     data:vs,
-  //     content:vs_template
-  //   }
-  // });
-  var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
-    return {
-      filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:{ namespace: ns, vsets: valuesets, csysLookup: mapURLtoCodesystem},
-      content:vs_by_ns_template 
-    }
-  });
-  var valueset_index = [{
-      filename:'index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data: {vsetsByNamespace: mapNamespaceToValuesets},
-      content:vs_index_template
+    //
+    // Making Valueset and Namespace pages
+    // 
+    //   Create Assemble pages needed for generating namespace, valueset_by_namespace, and 
+    // valueset pages.
+    var ns_template       = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+    
+    var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
+    var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
+    var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
+    
+    var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
+    var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
+    var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);  
+    // Namespace page construction
+    //
+    var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
+        return {
+            filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+            data: {
+                namespace: item, 
+                elemsToNamespace: mapElementstoNamespace, 
+                vsetsLookup: mapURLtoValueset
+            },
+            content:ns_template
+        }
+    });
+    // Valueset page construction 
+    //
+    var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
+        return {
+            filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+            data: { 
+                namespace: ns, 
+                vsets: valuesets, 
+                csysLookup: mapURLtoCodesystem
+            },
+            content:vs_by_ns_template 
+        }
+    });
+    var valueset_index = [{
+        filename:'index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+        data: {vsetsByNamespace: mapNamespaceToValuesets},
+        content:vs_index_template
     }];
-  // Codesystem page construction
-  //
-  var codesystem_ns_pages = _.map(mapNamespaceToCodesystems, function(codesystems, ns) {
-    return {
-      filename:ns.split('.')[1] + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-      data:{ namespace: ns, csys: codesystems},
-      content:cs_by_ns_template 
-    }
-  });
-  var codesystem_index = [{
-    filename:'index',
-    data: {csysByNamespace: mapNamespaceToCodesystems},
-    content:cs_index_template
-  }]
-
-  // For writing to disk any of the output files
-  // grunt.file.write('./assets/availDataFiles/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
-
-
-  // Project Configuration
-  grunt.initConfig({
-    // Project metadata
-    pkg:    grunt.file.readJSON('package.json'),
-    site:   grunt.file.readYAML('_config.yml'),
-
-    // Before generation, remove files from previous build
-    clean: {
-      example: ['<%= site.dest %>']
-    },
-    copy: {
-      js: {
-        files: [{
-          expand:true, 
-          flatten: false, 
-          cwd: '<%= site.assets %>', 
-          src: ['js/**'], 
-          dest:'<%= site.dest %>/<%= site.assets %>'
-        }]
-      },
-      img: {
-        files: [{
-          expand:true, 
-          flatten: false, 
-          cwd: '<%= site.assets %>', 
-          src: ['img/**'], 
-          dest:'<%= site.dest %>/<%= site.assets %>'
-        }]
-      },
-      css: {
-        files: [{
-          expand:true, 
-          flatten: false, 
-          cwd: '<%= site.assets %>', 
-          src: ['css/*.css'], 
-          dest:'<%= site.dest %>/<%= site.assets %>'
-        }]
-      },
-      fonts: {
-        files: [{
-          expand:true, 
-          flatten: false, 
-          cwd: '<%= site.assets %>', 
-          src: ['fonts/*'], 
-          dest:'<%= site.dest %>/<%= site.assets %>'
-        }] 
-      },
-      data: { 
-        expand:true, 
-        flatten: true, 
-        src: ['<%= site.assets %>/<%= site.data %>/<%= site.dataFile %>'], 
-        dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
-      }
-    },
-
-    /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
-    browserify: {
-      vendor: {
-        src: ['search.js'],
-        dest: '<%= site.dest %>/<%= site.assets %>/js/search.js',
-        options: {
-          browserifyOptions: {
-            require: ['handlebars', 'fuse.js'],
-            paths: ['./node_modules']
-          }
+    // Codesystem page construction
+    //
+    var codesystem_ns_pages = _.map(mapNamespaceToCodesystems, function(codesystems, ns) {
+        return {
+            filename:ns.split('.')[1] + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+            data: { 
+                namespace: ns, 
+                csys: codesystems
+            },
+            content:cs_by_ns_template 
         }
-      }
-    },
-    assemble: {
-      options: {
-        pkg: '<%= pkg %>',
-        site: '<%= site %>',
-        assets: '<%= site.assets %>',
-        // data: data,
+    });
+    var codesystem_index = [{
+        filename:'index',
+        data: {csysByNamespace: mapNamespaceToCodesystems},
+        content:cs_index_template
+    }]
 
-        // Templates
-        partials: '<%= site.includes %>',
-        layoutdir: '<%= site.layouts %>',
-        layout: '<%= site.layoutdefault %>',
+    // For writing to disk any of the output files
+    // grunt.file.write('./assets/availDataFiles/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
+  
+    // Project Configuration
+    grunt.initConfig({
+        // Project metadata
+        pkg:    grunt.file.readJSON('package.json'),
+        site:   grunt.file.readYAML('_config.yml'),
+    
+        // Before generation, remove files from previous build
+        clean: {
+            example: ['<%= site.dest %>']
+        },
+        copy: {
+            js: {
+                files: [{
+                    expand:true, 
+                    flatten: false, 
+                    cwd: '<%= site.assets %>', 
+                    src: ['js/**'], 
+                    dest:'<%= site.dest %>/<%= site.assets %>'
+                }]
+            },
+            img: {
+                files: [{
+                    expand:true, 
+                    flatten: false, 
+                    cwd: '<%= site.assets %>', 
+                    src: ['img/**'], 
+                    dest:'<%= site.dest %>/<%= site.assets %>'
+                }]
+            },
+            css: {
+                files: [{
+                    expand:true, 
+                    flatten: false, 
+                    cwd: '<%= site.assets %>', 
+                    src: ['css/*.css'], 
+                    dest:'<%= site.dest %>/<%= site.assets %>'
+                }]
+            },
+            fonts: {
+                files: [{
+                    expand:true, 
+                    flatten: false, 
+                    cwd: '<%= site.assets %>', 
+                    src: ['fonts/*'], 
+                    dest:'<%= site.dest %>/<%= site.assets %>'
+                }] 
+            },
+            data: { 
+                expand:true, 
+                flatten: true, 
+                src: ['<%= site.assets %>/<%= site.data %>/<%= site.dataFile %>'], 
+                dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
+            }
+        },
+    
+        /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
+        browserify: {
+            vendor: {
+                src: ['search.js'],
+                dest: '<%= site.dest %>/<%= site.assets %>/js/search.js',
+                options: {
+                    browserifyOptions: {
+                        require: ['handlebars', 'fuse.js'],
+                        paths: ['./node_modules']
+                    }
+                }
+            }
+        },
+        assemble: {
+            options: {
+                pkg: '<%= pkg %>',
+                site: '<%= site %>',
+                assets: '<%= site.assets %>',
+                // Templates
+                partials: '<%= site.includes %>',
+                layoutdir: '<%= site.layouts %>',
+                layout: '<%= site.layoutdefault %>',
+                // Extensions
+                helpers: '<%= site.helpers %>',
+                plugins: '<%= site.plugins %>'
+            },
+            valuesetIndex: { 
+                options: { 
+                    layout: '<%= site.layoutdefault %>',
+                    pages:valueset_index
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/vs/': ['!*']
+                }
+            },
+            valuesetByNamespace: {
+                options : {
+                    layout: '<%= site.layoutdefault %>',
+                    pages:valueset_ns_pages
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+                }
+            }, 
+            codesystemIndex: { 
+                options: { 
+                    layout: '<%= site.layoutdefault %>',
+                    pages:codesystem_index
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/cs/': ['!*']
+                }
+            },
+            codesystemByNamespace: {
+                options : {
+                    layout: '<%= site.layoutdefault %>',
+                    pages:codesystem_ns_pages
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+                }
+            }, 
+            staticNamespacePages: {
+                options : {
+                    layout: '<%= site.layoutdefault %>',
+                    pages:namespace_pages
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+                }
+            },
+            staticIndex: {
+                options : {
+                    data: {namespaces: data.children[namespacesIndex].children}
+                },
+                flatten: true,
+                expand: true,
+                cwd: '<%= site.pages %>',
+                src: 'index.hbs',
+                dest: '<%= site.dest %>'
+            }, 
+            staticGraphic: {
+                options : {
+                    data: {namespaces: data.children[namespacesIndex].children}
+                },
+                flatten: true,
+                expand: true,
+                cwd: '<%= site.pages %>',
+                src: 'graphic.hbs',
+                dest: '<%= site.dest %>/<%= site.dirNS %>/'
+            }, 
+            staticIndexIncludingElements: {
+                options : {
+                    data: {namespaces: data.children[namespacesIndex].children}
+                },
+                flatten: true,
+                expand: true,
+                cwd: '<%= site.pages %>',
+                src: 'index_all_elements.hbs',
+                dest: '<%= site.dest %>/<%= site.dirNS %>/'
+            },
+            staticSHRIndex: {
+                options : {
+                    data: {namespaces: data.children[namespacesIndex].children}
+                },
+                flatten: true,
+                expand: true,
+                cwd: '<%= site.pages %>',
+                src: 'index.hbs',
+                dest: '<%= site.dest %>/<%= site.dirNS %>/'
+            }, 
+        },
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'spec',
+                    timeout: 10000, 
+                    captureFile: 'results.txt', // Optionally capture the reporter output to a file 
+                    quiet: false,               // Optionally suppress output to standard out (defaults to false) 
+                    clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false) 
+                    noFail: false               // Optionally set to not fail on failed tests (will still fail on other errors) 
+                },
+                src: ['test.js']
+            }
+        }
+    });
 
-        // Extensions
-        helpers: '<%= site.helpers %>',
-        plugins: '<%= site.plugins %>'
-      },
-      valuesetIndex: { 
-        options: { 
-          layout: '<%= site.layoutdefault %>',
-          pages:valueset_index
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirNS %>/vs/': ['!*']
-        }
-      },
-      valuesetByNamespace: {
-        options : {
-          layout: '<%= site.layoutdefault %>',
-          pages:valueset_ns_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
-        }
-      }, 
-      codesystemIndex: { 
-        options: { 
-          layout: '<%= site.layoutdefault %>',
-          pages:codesystem_index
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirNS %>/cs/': ['!*']
-        }
-      },
-      codesystemByNamespace: {
-        options : {
-          layout: '<%= site.layoutdefault %>',
-          pages:codesystem_ns_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
-        }
-      }, 
-      staticNamespacePages: {
-        options : {
-          layout: '<%= site.layoutdefault %>',
-          pages:namespace_pages
-        },
-        files: {
-          '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
-        }
-      },
-      staticIndex: {
-        options : {
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'index.hbs',
-        dest: '<%= site.dest %>'
-      }, 
-      staticGraphic: {
-        options : {
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'graphic.hbs',
-        dest: '<%= site.dest %>/<%= site.dirNS %>/'
-      }, 
-      staticIndexIncludingElements: {
-        options : {
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'index_all_elements.hbs',
-        dest: '<%= site.dest %>/<%= site.dirNS %>/'
-      },
-      staticSHRIndex: {
-        options : {
-          data: {namespaces: data.children[namespacesIndex].children}
-        },
-        flatten: true,
-        expand: true,
-        cwd: '<%= site.pages %>',
-        src: 'index.hbs',
-        dest: '<%= site.dest %>/<%= site.dirNS %>/'
-      }, 
-    },
-    mochaTest: {
-      test: {
-        options: {
-          reporter: 'spec',
-          timeout: 10000, 
-          captureFile: 'results.txt', // Optionally capture the reporter output to a file 
-          quiet: false,               // Optionally suppress output to standard out (defaults to false) 
-          clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false) 
-          noFail: false              // Optionally set to not fail on failed tests (will still fail on other errors) 
-        },
-        src: ['test.js']
-      }
-    }
-  });
-
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-assemble');
-  grunt.loadNpmTasks('grunt-mocha-test');
-
-  grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
-  // grunt.registerTask('static',['clean', 'browserify', 'copy',  'assemble:staticIndex', 'assemble:staticGraphic', 'assemble:staticSHRIndex', 'assemble:staticIndexIncludingElements', 'assemble:valuesetIndex',  'assemble:codesystemIndex', 'assemble:staticNamespacePages', 'assemble:valuesetByNamespace', 'assemble:codesystemByNamespace']);
-  // grunt.registerTask('shr',['clean', 'browserify', 'copy', 'assemble:shrIndex', 'assemble:shrGraphic', 'assemble:shrIndexIncludingElements', 'assemble:shrNamespacePages','assemble:shrValuesetByNamespace','assemble:shrValuesetIndex','assemble:shrCodesystemIndex','assemble:shrCodesystemByNamespace']);
-  grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-assemble');
+    grunt.loadNpmTasks('grunt-mocha-test');
+  
+    grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
+    grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
