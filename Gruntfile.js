@@ -130,134 +130,154 @@ module.exports = function(grunt) {
         }
     }
   
-  // add field records to the field list for the concrete data element based on the element data element (which could be the concrete one or an ancestor)
-  var createFieldList = function(concreteDataelement, namespace, dataelement) {
-    var fieldName, fieldNamespace;
-    //if (concreteDataelement.fieldList) { // if the data element we're building field list for has a field list already, add to it
-      var record, subrecord;
-      var index = 0;
-      _.forEach(dataelement.children, function(field) {
-        index = index + 1;
-        if (field.type != "Incomplete") {
-          var fieldValues = [];
-          if (field.type === "ChoiceValue") {
-              fieldName = "Choice";
-              fieldNamespace = "";
-              record = undefined;
-          } else {
-              if (field.identifier) { fieldName = field.identifier.label ; fieldNamespace = field.identifier.namespace } else { fieldName = field.text; fieldNamespace = ""; }
-              if (concreteDataelement.fieldMap) {
-                record = concreteDataelement.fieldMap[fieldName];  
-              } else {
-                record = undefined;
-              }
-          }
-          if (record) { // found existing record for field so update it
-            record.foundin.unshift(dataelement.label);
-            if (field.constraints) { record.constraints.unshift(field.constraints); } else { record.constraints.unshift([]); }
-            record.cardinality.unshift({min: field.min, max:field.max});
-          } else { // record not found so create it on concrete data element
-            record = newRecord(fieldName, fieldNamespace, field, dataelement.label, false, false, false, concreteDataelement.label);
-            if (concreteDataelement.fieldList === undefined) concreteDataelement.fieldList = [];
-            concreteDataelement.fieldList.push(record);
-          }
-          
-          if (field.type === "ChoiceValue") {
-            _.forEach(field.value, function(item) {
-              if (item.identifier) {
-                subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
-              } else {
-                subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
-              }
-              fieldValues.push(subrecord);
-            });
-          }
-          if (field.constraints && field.constraints.length > 0) {
-            _.forEach(field.constraints, function (c) {
-              if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
-                if (concreteDataelement.fieldMap[c.isA.label]) { // if we have a field for new type then make it subordinate to this one
-                  var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA.label});
-                  var isafield = concreteDataelement.fieldList[isafieldindex];
-                  concreteDataelement.fieldList.splice(isafieldindex, 1); // remove is a field from concrete data element's field list
-                  //console.log(isafield);
-                  isafield.isSubElement = true;
-                  fieldValues.push(isafield); // put it as a subfield to current field instead
-                }
-              }
-              if (c.path && c.path.length > 0) {
-                if (c.path === 'shr.core.Coding' || c.path ==='code' || c.path === 'shr.core.CodeableConcept') {               
+    // add field records to the field list for the concrete data element based on the element data element (which could be the concrete one or an ancestor)
+    var createFieldListPerDataElement = function(concreteDataelement, namespace, dataelement) {
+        var fieldName, fieldNamespace;
+        //if (concreteDataelement.fieldList) { // if the data element we're building field list for has a field list already, add to it
+        var record, subrecord;
+        var index = 0;
+        _.forEach(dataelement.children, function(field) {
+            index = index + 1;
+            if (field.type != "Incomplete") {
+                var fieldValues = [];
+                if (field.type === "ChoiceValue") {
+                    fieldName = "Choice";
+                    fieldNamespace = "";
+                    record = undefined;
                 } else {
-                //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
+                    if (field.identifier) { 
+                        fieldName = field.identifier.label; 
+                        fieldNamespace = field.identifier.namespace; 
+                    } else { 
+                        fieldName = field.text; 
+                        fieldNamespace = ""; 
+                    }
+                    if (concreteDataelement.fieldMap) {
+                        record = concreteDataelement.fieldMap[fieldName];  
+                    } else {
+                        record = undefined;
+                    }
+                }
                 
-                var pieces, pname, pnamespace, subfield, subrecord;
-                var elementPieces = c.path.split(':');
-                // need a list of name and namespace and then use last subfield as field in newRecord
-                var nameList = [], namespaceList = [];
-                _.forEach(elementPieces, function(elementPiece) {
-                  pieces = elementPiece.split('.');
-                  pname = pieces.pop();
-                  pnamespace = pieces.join('.');
-                  nameList.push(pname);
-                  namespaceList.push(pnamespace);
-                  subfield = namespaces[pnamespace].index[pname];
-                  if (subfield.constraints === undefined) {
-                    subfield.constraints = [];
-                  }
-                  if (c.type === "CardConstraint") {
-                    subfield.min = c.min;
-                    subfield.max = c.max;
-                  } else {
-                    subfield.constraints.push(c);
-                  }
-                });
-                if (nameList.length == 1) {
-                  subrecord = newRecord(pname, pnamespace, subfield, dataelement.label, false, false, true, record.concretedataelement);
+                if (record) { // found existing record for field so update it
+                    record.foundin.unshift(dataelement.label);
+                    if (field.constraints) { 
+                        record.constraints.unshift(field.constraints); 
+                    } else {
+                        record.constraints.unshift([]); 
+                    }
+                    record.cardinality.unshift({min: field.min, max:field.max});
+                } else { // record not found so create it on concrete data element
+                    record = newRecord(fieldName, fieldNamespace, field, dataelement.label, false, false, false, concreteDataelement.label);
+                    if (concreteDataelement.fieldList === undefined) {
+                        concreteDataelement.fieldList = [];
+                    }
+                    concreteDataelement.fieldList.push(record);
+                }
+              
+                if (field.type === "ChoiceValue") {
+                    _.forEach(field.value, function(item) {
+                        if (item.identifier) {
+                            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
+                        } else {
+                            subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
+                        }
+                        fieldValues.push(subrecord);
+                    });
+                }
+                if (field.constraints && field.constraints.length > 0) {
+                    _.forEach(field.constraints, function (c) {
+                        if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
+                            // if we have a field for new type then make it subordinate to this one
+                            if (concreteDataelement.fieldMap[c.isA.label]) { 
+                                var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA.label});
+                                var isafield = concreteDataelement.fieldList[isafieldindex];
+                                // remove is a field from concrete data element's field list
+                                concreteDataelement.fieldList.splice(isafieldindex, 1); 
+                                isafield.isSubElement = true;
+                                // put it as a subfield to current field instead
+                                fieldValues.push(isafield); 
+                            }
+                        }
+                        if (c.path && c.path.length > 0) {
+                            if (c.path === 'shr.core.Coding' || c.path ==='code' || c.path === 'shr.core.CodeableConcept') {               
+                                // console.log("We do not have a mechanism for handling these in terms of a sub-record")  
+                            } else {
+                                //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
+                                var pieces, 
+                                    pname, 
+                                    pnamespace, 
+                                    subfield, 
+                                    subrecord;
+                                var elementPieces = c.path.split(':');
+                                // need a list of name and namespace and then use last subfield as field in newRecord
+                                var nameList = [], 
+                                    namespaceList = [];
+                                _.forEach(elementPieces, function(elementPiece) {
+                                    pieces = elementPiece.split('.');
+                                    pname = pieces.pop();
+                                    pnamespace = pieces.join('.');
+                                    nameList.push(pname);
+                                    namespaceList.push(pnamespace);
+                                    subfield = namespaces[pnamespace].index[pname];
+                                    if (subfield.constraints === undefined) {
+                                        subfield.constraints = [];
+                                    }
+                                    if (c.type === "CardConstraint") {
+                                        subfield.min = c.min;
+                                        subfield.max = c.max;
+                                    } else {
+                                        subfield.constraints.push(c);
+                                    }
+                                });
+                                if (nameList.length == 1) {
+                                    subrecord = newRecord(pname, pnamespace, subfield, dataelement.label, false, false, true, record.concretedataelement);
+                                } else {
+                                    subrecord = newRecord(nameList, namespaceList, subfield, dataelement.label, false, false, true, record.concretedataelement);
+                                }
+                                if (c.type === 'CardConstraint') {
+                                    subrecord.effectivecardinality = {};
+                                    subrecord.effectivecardinality.min = c.min;
+                                    subrecord.effectivecardinality.max = c.max;
+                                } else {
+                                    // do we need to remove constraint from current field since it is on subfield now
+                                    // we are looping over those constraints though. ideally just remove from record instead
+                                    // TODO
+                                }
+                                fieldValues.push(subrecord);
+                            }
+                        }
+                    });
+                }
+                if (fieldValues.length > 0) {
+                  record.values = fieldValues;
+                }
+            } else {
+                console.log("ERROR 5: Incomplete type for " + dataelement.label + ":");
+                console.log(field);
+            }
+        });
+        // build or add to record for value of data element
+        createValueRecord(concreteDataelement, namespace, dataelement);
+        
+        // rebuild the map of fields for the element from the field list
+        concreteDataelement.fieldMap = _.keyBy(concreteDataelement.fieldList, 'label');
+        
+        // follow the inheritance hierarchy up adding to the fields for the current concreteDataelement
+        if (dataelement.basedOn) { // add parent fields
+            _.forEach(dataelement.basedOn, function(basedOn) {
+                if (basedOn.label && basedOn.namespace) {
+                    createFieldList(concreteDataelement, basedOn.namespace, namespaces[basedOn.namespace].index[basedOn.label]);
+                } else if (basedOn.type === "TBD") {
+                    console.log("ERROR 6: The basedOn Element has yet to be defined, so we cannot expand it");
+                    console.log(dataelement.basedOn);
                 } else {
-                  subrecord = newRecord(nameList, namespaceList, subfield, dataelement.label, false, false, true, record.concretedataelement);
+                    console.log("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". Based on:");
+                    console.log(dataelement.basedOn);
                 }
-                if (c.type === 'CardConstraint') {
-                  subrecord.effectivecardinality = {};
-                  subrecord.effectivecardinality.min = c.min;
-                  subrecord.effectivecardinality.max = c.max;
-                } else {
-                  // do we need to remove constraint from current field since it is on subfield now
-                  // we are looping over those constraints though. ideally just remove from record instead
-                  // TODO
-                }
-                //console.log(subrecord);
-                fieldValues.push(subrecord);
-                }
-              }
             });
-          }
-          if (fieldValues.length > 0) {
-            record.values = fieldValues;
-          }
-        } else {
-          console.log("ERROR 5: Incomplete type for " + dataelement.label + ":");
-          console.log(field);
         }
-      });
-    // build or add to record for value of data element
-    createValueRecord(concreteDataelement, namespace, dataelement);
-    // rebuild the map of fields for the element from the field list
-    concreteDataelement.fieldMap = _.keyBy(concreteDataelement.fieldList, 'label');
-    // follow the inheritance hierarchy up adding to the fields for the current concreteDataelement
-    if (dataelement.basedOn) { // add parent fields
-      _.forEach(dataelement.basedOn, function(basedOn) {
-        if (basedOn.label && basedOn.namespace) {
-          //console.log(basedOn.namespace + " / " + basedOn.label);
-          createFieldList(concreteDataelement, basedOn.namespace, namespaces[basedOn.namespace].index[basedOn.label]);
-        } else if (basedOn.type === "TBD") {
-          console.log("ERROR 6: The basedOn Element has yet to be defined, so we cannot expand it");
-          console.log(dataelement.basedOn);
-        } else {
-          console.log("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". Based on:");
-          console.log(dataelement.basedOn);
-        }
-      });
     }
-  }
 
   var createFieldListPerDataElement = function(namespace) {
     //console.log("**** namespace " + namespace.label);
