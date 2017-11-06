@@ -693,6 +693,5 @@ module.exports = function(grunt) {
         grunt.task.run(['assemble']);
         grunt.task.run(['copy:shrOutData', 'copy:shrOutSearch', 'copy:shrOutSHR'])
     });
-    // grunt.registerTask('default', ['copy:afterAssemble']);
     grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
