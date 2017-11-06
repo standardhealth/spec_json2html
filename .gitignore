@@ -16,6 +16,7 @@ results
 results.txt
 build
 dist
+shrOut
 npm-debug.log
 TODO.md
 

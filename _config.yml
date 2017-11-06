@@ -8,6 +8,8 @@ assets:         assets
 pages:          pages
 data:           data
 dataFile:       data.json
+shrOut:         shrOut
+searchFile:     search.js
 
 templates:      templates
 includes:       <%= site.templates %>/partials/**.hbs
