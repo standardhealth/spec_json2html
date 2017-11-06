@@ -524,6 +524,33 @@ module.exports = function(grunt) {
                 flatten: true, 
                 src: ['<%= site.assets %>/<%= site.data %>/<%= site.dataFile %>'], 
                 dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
+            },
+            shrOutData: {
+                files: [{
+                    expand: true,
+                    flatten: false,
+                    cwd: '<%= site.assets %>/<%= site.data %>',
+                    src: ['<%= site.dataFile %>'],
+                    dest: '<%= site.shrOut %>'
+                }]
+            },
+            shrOutSearch: {
+                files: [{
+                    expand: true,
+                    flatten: false,
+                    cwd: '<%= site.dest %>/<%= site.assets %>/js',
+                    src: ['<%= site.searchFile %>'],
+                    dest: '<%= site.shrOut %>'
+                }]
+            },
+            shrOutSHR: {
+                files: [{
+                    expand: true,
+                    flatten: false,
+                    cwd: '<%= site.dest %>/<%= site.dirNS %>',
+                    src: ['*', '**'],
+                    dest: '<%= site.shrOut %>/<%= site.dirNS %>'
+                }]
             }
         },
     
@@ -660,6 +687,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-assemble');
     grunt.loadNpmTasks('grunt-mocha-test');
   
-    grunt.registerTask('default',['clean', 'browserify', 'copy', 'assemble']);
+    grunt.registerTask('default', function() {
+        grunt.task.run(['clean', 'browserify']);
+        grunt.task.run(['copy:js', 'copy:img', 'copy:css', 'copy:fonts', 'copy:data']);
+        grunt.task.run(['assemble']);
+        grunt.task.run(['copy:shrOutData', 'copy:shrOutSearch', 'copy:shrOutSHR'])
+    });
     grunt.registerTask('test', ['clean', 'browserify', 'copy', 'assemble', 'mochaTest']);
 }
