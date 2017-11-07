@@ -48,19 +48,19 @@ module.exports = function(grunt) {
     }
   
     function combineArraysIntoIdentifierList (namespaceList, nameList) {
-        let name = "", 
+        var name = "", 
             namespace = {},
             combinedArrays = [];
         numberOfNamespaces = namespaceList.length
         for (var i = 0; i < numberOfNamespaces; i++) {
             namespace = namespaceList[i];
             name = nameList[i];
-            result.push({ 
+            combinedArrays.push({ 
                 namespace: namespace, 
                 label: name
             });
         }
-        return result;
+        return combinedArrays;
     }
   
     // create the initial record for the specified field within the element concretedataelement
