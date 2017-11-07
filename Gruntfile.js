@@ -47,9 +47,10 @@ module.exports = function(grunt) {
         }
     }
   
-    var combineArraysIntoIdentifierList = function(namespaceList, nameList) {
-        var namespace, name;
-        var combinedArrays = [];
+    function combineArraysIntoIdentifierList (namespaceList, nameList) {
+        let name = "", 
+            namespace = {},
+            combinedArrays = [];
         numberOfNamespaces = namespaceList.length
         for (var i = 0; i < numberOfNamespaces; i++) {
             namespace = namespaceList[i];
@@ -64,7 +65,7 @@ module.exports = function(grunt) {
   
     // create the initial record for the specified field within the element concretedataelement
     // note that in addition to the fields initialized below, the field record can have a values attribute which is a list of subordinate records
-    var newRecord = function(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
+     function newRecord(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
         if (fieldName && fieldName.constructor === Array) {
             return {  
                 foundin:                [ foundin ], 
@@ -81,23 +82,24 @@ module.exports = function(grunt) {
                 description :           getDescription(field) 
             };    
         } else {
-          return {  foundin: [ foundin ], 
-                  concretedataelement:  concretedataelement,
-                  isValue:              isValue, 
-                  isChoice:             isChoice,
-                  isSubElement:         isSubElement,
-                  namespace:            fieldNamespace,
-                  label:                fieldName, 
-                  isTBD:                field.type === "TBD",
-                  constraints:          field.constraints.slice(), 
-                  cardinality :         [  { min: field.min, max: field.max } ], 
-                  description :         getDescription(field) 
+            return {  
+                foundin:              [ foundin ], 
+                concretedataelement:  concretedataelement,
+                isValue:              isValue, 
+                isChoice:             isChoice,
+                isSubElement:         isSubElement,
+                namespace:            fieldNamespace,
+                label:                fieldName, 
+                isTBD:                field.type === "TBD",
+                constraints:          field.constraints.slice(), 
+                cardinality :         [  { min: field.min, max: field.max } ], 
+                description :         getDescription(field) 
               };
         }
     }
 
     // create a record of the value for the concrete data element based on the specified dataelement within the specified namespace
-    var createValueRecord = function(concreteDataelement, namespace, dataelement) {
+    function createValueRecord (concreteDataelement, namespace, dataelement) {
         var subrecord;
         if (dataelement.value) {
             if (concreteDataelement.valueRecord) {
@@ -200,9 +202,9 @@ module.exports = function(grunt) {
                         }
                         if (c.path && c.path.length > 0) {
                             if (c.path === 'shr.core.Coding' || c.path ==='code' || c.path === 'shr.core.CodeableConcept') {               
-                                // console.log("We do not have a mechanism for handling these in terms of a sub-record")  
+                                console.log("We do not have a mechanism for handling these in terms of a sub-record")  
                             } else {
-                                //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
+                                // console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
                                 var pieces, 
                                     pname, 
                                     pnamespace, 
@@ -252,8 +254,8 @@ module.exports = function(grunt) {
                   record.values = fieldValues;
                 }
             } else {
-                console.log("ERROR 5: Incomplete type for " + dataelement.label + ":");
-                console.log(field);
+                console.error("ERROR 5: Incomplete type for current field");
+                // console.log(field);
             }
         });
         // build or add to record for value of data element
@@ -268,11 +270,10 @@ module.exports = function(grunt) {
                 if (basedOn.label && basedOn.namespace) {
                     createFieldList(concreteDataelement, basedOn.namespace, namespaces[basedOn.namespace].index[basedOn.label]);
                 } else if (basedOn.type === "TBD") {
-                    console.log("ERROR 6: The basedOn Element has yet to be defined, so we cannot expand it");
-                    console.log(dataelement.basedOn);
+                    console.error("ERROR 6: The basedOn element \"" + basedOn.label + "\" has yet to be defined, so we cannot expand it");
                 } else {
-                    console.log("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". Based on:");
-                    console.log(dataelement.basedOn);
+                    console.error("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". BasedOn element that failed was...");
+                    console.error(basedOn);
                 }
             });
         }
@@ -327,16 +328,14 @@ module.exports = function(grunt) {
                             index--;
                         }
                         if (index < 0) {
-                            console.log("ERROR 1: No cardinalities found. namespace: " + namespace.label + "/element " + dataelement.label + "/" + record.label);
-                            console.log(record);
+                            console.error("ERROR 1: No cardinalities found for namespace/" + namespace.label + " element/" + dataelement.label + " record/" + record.label);
                         } else {
                             record.effectivecardinality = {};
                             record.effectivecardinality.min = record.cardinality[index].min;
                             record.effectivecardinality.max = record.cardinality[index].max;
                         }
                     } else {
-                        console.log("ERROR 2: Field has no cardinalities. namespace " + namespace.label + "/element " + dataelement.label + "/" + record.label);
-                        console.log(record);
+                        console.error("ERROR 2: Field has no cardinalities for namespace/" + namespace.label + " element/" + dataelement.label + " record/" + record.label);
                     }
                     if (record.values) {
                         _.forEach(record.values, function (subrecord) {
@@ -346,7 +345,7 @@ module.exports = function(grunt) {
                         });
                     }
                 } else {
-                    console.log("ERROR 4: Undefined record in field list: namespace " + namespace.label + "/element " + dataelement.label + "/record=" + record);
+                    console.error("ERROR 4: Undefined record in field list for namespace/" + namespace.label + " element/" + dataelement.label + " record/" + record.label);
                 }
             });
             if (dataelement.valueRecord) {
