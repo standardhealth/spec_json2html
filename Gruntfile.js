@@ -102,7 +102,10 @@ module.exports = function(grunt) {
         }
     }
 
-    // create a record of the value for the concrete data element based on the specified dataelement within the specified namespace
+    /*
+     * Create a record of the concreteDataElement's value using the currently specified dataelement 
+     * whichc is found within the specified namespace 
+     */
     function createValueRecord (concreteDataelement, namespace, dataelement) {
         var subrecord;
         if (dataelement.value) {
@@ -115,6 +118,7 @@ module.exports = function(grunt) {
                 }
                 concreteDataelement.valueRecord.cardinality.unshift({min : dataelement.value.min, max: dataelement.value.max});
             } else {
+                // If it's a choice, create a choice record and add the options as "values" on that record.
                 if (dataelement.value.type == "ChoiceValue") {
                     concreteDataelement.valueRecord = newRecord(
                         "Choice",                   // fieldName
@@ -128,7 +132,7 @@ module.exports = function(grunt) {
                     );
                     concreteDataelement.valueRecord.values = [];
                     _.forEach(dataelement.value.value, function(item) {
-
+                        // If there is an identifier, the value is defined -- use it to define the subrecord
                         if (item.identifier) {
                             subrecord = newRecord(
                                 item.identifier.label,      // fieldName
@@ -140,6 +144,7 @@ module.exports = function(grunt) {
                                 false,                      // isSubElement
                                 concreteDataelement.label   // concretedataelement
                             );
+                        // Else the choice value is TBD -- use .text instead of .label
                         } else {
                             subrecord = newRecord(
                                 item.text,                  // fieldName
@@ -154,6 +159,7 @@ module.exports = function(grunt) {
                         }
                         concreteDataelement.valueRecord.values.push(subrecord);
                     });
+                // If the element is TBD, 
                 } else if (dataelement.value.type == "TBD") {
                     concreteDataelement.valueRecord = newRecord(
                         dataelement.value.text,     // fieldName
