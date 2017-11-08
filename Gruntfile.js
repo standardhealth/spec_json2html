@@ -389,9 +389,9 @@ module.exports = function(grunt) {
         _.forEach(namespace.children, function(dataelement) {
             createFieldList(dataelement, namespace, dataelement);
             // FIXME: Figure out if choices should be in the field map
-            console.log('\n')
-            console.log(dataelement.label)
-            console.log(dataelement.fieldMap["Choice"])
+            // console.log('\n')
+            // console.log(dataelement.label)
+            // console.log(dataelement.fieldMap["Choice"])
 
         });
     }
