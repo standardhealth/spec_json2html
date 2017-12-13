@@ -32,8 +32,9 @@ module.exports = function(grunt) {
         if (field.identifier) {
             // Prims have no description now
             if (field.identifier.namespace === "primitive") return "";
-            // Otherwise find the element and return its description
+            // Handle Incomplete Values
             if (field.type === "Incomplete") return "";
+            // Otherwise find the element and return its description
             var element = namespaces[field.identifier.namespace].index[field.identifier.label];
             if (element) {
                 return element.description;
