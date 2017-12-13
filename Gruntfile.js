@@ -32,39 +32,46 @@ module.exports = function(grunt) {
         if (field.identifier) {
             // Prims have no description now
             if (field.identifier.namespace === "primitive") return "";
+            // Handle Incomplete Values
+            if (field.type === "Incomplete") return "";
+            // Otherwise find the element and return its description
             var element = namespaces[field.identifier.namespace].index[field.identifier.label];
             if (element) {
                 return element.description;
             } else {
-                return "no description";
+                // There is no descripion -- use placeholder text
+                return "No description";
             }
         } else {
+            // If field is a choice, it's subsidiaries need descriptions, it shouldn't have one
             if (field.type == 'ChoiceValue') { 
                 return "";
+            // Else, there is no identifier, no element, and not a choice -- it's TBD
             } else { 
                 return "Description TBD";
             }
         }
     }
   
-    var combineArraysIntoIdentifierList = function(namespaceList, nameList) {
-        var namespace, name;
-        var combinedArrays = [];
-        numberOfNamespaces = namespaceList.length
+    function combineArraysIntoIdentifierList (namespaceList, nameList) {
+        var name = "", 
+            namespace = {},
+            combinedArrays = [];
+        var numberOfNamespaces = namespaceList.length
         for (var i = 0; i < numberOfNamespaces; i++) {
             namespace = namespaceList[i];
             name = nameList[i];
-            result.push({ 
+            combinedArrays.push({ 
                 namespace: namespace, 
                 label: name
             });
         }
-        return result;
+        return combinedArrays;
     }
   
     // create the initial record for the specified field within the element concretedataelement
     // note that in addition to the fields initialized below, the field record can have a values attribute which is a list of subordinate records
-    var newRecord = function(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
+     function newRecord(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
         if (fieldName && fieldName.constructor === Array) {
             return {  
                 foundin:                [ foundin ], 
@@ -81,23 +88,27 @@ module.exports = function(grunt) {
                 description :           getDescription(field) 
             };    
         } else {
-          return {  foundin: [ foundin ], 
-                  concretedataelement:  concretedataelement,
-                  isValue:              isValue, 
-                  isChoice:             isChoice,
-                  isSubElement:         isSubElement,
-                  namespace:            fieldNamespace,
-                  label:                fieldName, 
-                  isTBD:                field.type === "TBD",
-                  constraints:          field.constraints.slice(), 
-                  cardinality :         [  { min: field.min, max: field.max } ], 
-                  description :         getDescription(field) 
+            return {  
+                foundin:              [ foundin ], 
+                concretedataelement:  concretedataelement,
+                isValue:              isValue, 
+                isChoice:             isChoice,
+                isSubElement:         isSubElement,
+                namespace:            fieldNamespace,
+                label:                fieldName, 
+                isTBD:                field.type === "TBD",
+                constraints:          field.constraints.slice(), 
+                cardinality :         [  { min: field.min, max: field.max } ], 
+                description :         getDescription(field) 
               };
         }
     }
 
-    // create a record of the value for the concrete data element based on the specified dataelement within the specified namespace
-    var createValueRecord = function(concreteDataelement, namespace, dataelement) {
+    /*
+     * Create a record of the concreteDataElement's value using the currently specified dataelement 
+     * whichc is found within the specified namespace 
+     */
+    function createValueRecord (concreteDataelement, namespace, dataelement) {
         var subrecord;
         if (dataelement.value) {
             if (concreteDataelement.valueRecord) {
@@ -109,45 +120,102 @@ module.exports = function(grunt) {
                 }
                 concreteDataelement.valueRecord.cardinality.unshift({min : dataelement.value.min, max: dataelement.value.max});
             } else {
+                // If it's a choice, create a choice record and add the options as "values" on that record.
                 if (dataelement.value.type == "ChoiceValue") {
-                    concreteDataelement.valueRecord = newRecord("Choice", "", dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
+                    concreteDataelement.valueRecord = newRecord(
+                        "Choice",                   // fieldName
+                        "",                         // fieldNamespace
+                        dataelement.value,          // field
+                        dataelement.label,          // foundin
+                        true,                       // isValue
+                        false,                      // isChoice
+                        false,                      // isSubElement
+                        concreteDataelement.label   // concretedataelement
+                    );
                     concreteDataelement.valueRecord.values = [];
                     _.forEach(dataelement.value.value, function(item) {
+                        // If there is an identifier, the value is defined -- use it to define the subrecord
                         if (item.identifier) {
-                            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
+                            subrecord = newRecord(
+                                item.identifier.label,      // fieldName
+                                item.identifier.namespace,  // fieldNamespace
+                                item,                       // field
+                                dataelement.label,          // foundin
+                                false,                      // isValue
+                                true,                       // isChoice
+                                false,                      // isSubElement
+                                concreteDataelement.label   // concretedataelement
+                            );
+                        // Else the choice value is TBD -- use .text instead of .label
                         } else {
-                            subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
+                            subrecord = newRecord(
+                                item.text,                  // fieldName
+                                undefined,                  // fieldNamespace
+                                item,                       // field
+                                dataelement.label,          // foundin
+                                false,                      // isValue
+                                true,                       // isChoice
+                                false,                      // isSubElement
+                                concreteDataelement.label   // concretedataelement
+                            );
                         }
                         concreteDataelement.valueRecord.values.push(subrecord);
                     });
+                // If the element is TBD, 
                 } else if (dataelement.value.type == "TBD") {
-                    concreteDataelement.valueRecord = newRecord(dataelement.value.text, undefined, dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
+                    concreteDataelement.valueRecord = newRecord(
+                        dataelement.value.text,     // fieldName
+                        undefined,                  // fieldNamespace
+                        dataelement.value,          // field
+                        dataelement.label,          // foundin
+                        true,                       // isValue
+                        false,                      // isChoice
+                        false,                      // isSubElement
+                        concreteDataelement.label   // concretedataelement
+                    );
                 } else {
-                    concreteDataelement.valueRecord = newRecord(dataelement.value.identifier.label, dataelement.value.identifier.namespace, dataelement.value, dataelement.label, true, false, false, concreteDataelement.label);
+                    concreteDataelement.valueRecord = newRecord(
+                        dataelement.value.identifier.label,     // fieldName
+                        dataelement.value.identifier.namespace, // fieldNamespace
+                        dataelement.value,                      // field
+                        dataelement.label,                      // foundin
+                        true,                                   // isValue
+                        false,                                  // isChoice
+                        false,                                  // isSubElement
+                        concreteDataelement.label               // concretedataelement
+                    );
                 }
             }
         }
     }
   
     // add field records to the field list for the concrete data element based on the element data element (which could be the concrete one or an ancestor)
-    var createFieldList = function(concreteDataelement, namespace, dataelement) {
+    function createFieldList (concreteDataelement, namespace, dataelement) {
         var fieldName, fieldNamespace;
-        //if (concreteDataelement.fieldList) { // if the data element we're building field list for has a field list already, add to it
         var record, subrecord;
         var index = 0;
         _.forEach(dataelement.children, function(field) {
             index = index + 1;
             if (field.type != "Incomplete") {
                 var fieldValues = [];
-                if (field.type === "ChoiceValue") {
+                /*
+                 * Determine what the fieldName, fieldNamespace and associated record 
+                 * are for each of the fields on a dataelement. If the dataelement is a choice or or 
+                 *
+                 */
+                // If the field is a choice among many types, we can use "choice" as the field name
+                if (field.type === "ChoiceValue") { 
                     fieldName = "Choice";
                     fieldNamespace = "";
                     record = undefined;
-                } else {
-                    if (field.identifier) { 
+                // Else, it's a dataelement; use it directly 
+                } else { 
+                    // If there's an identifier, use to define the field
+                    if (field.identifier) {
                         fieldName = field.identifier.label; 
                         fieldNamespace = field.identifier.namespace; 
-                    } else { 
+                    // Else, the data element hasn't been defined yet; use "text" in lieu of label for now
+                    } else {
                         fieldName = field.text; 
                         fieldNamespace = ""; 
                     }
@@ -157,8 +225,9 @@ module.exports = function(grunt) {
                         record = undefined;
                     }
                 }
-                
-                if (record) { // found existing record for field so update it
+
+                // If there is a record for field, update it
+                if (record) {
                     record.foundin.unshift(dataelement.label);
                     if (field.constraints) { 
                         record.constraints.unshift(field.constraints); 
@@ -166,8 +235,18 @@ module.exports = function(grunt) {
                         record.constraints.unshift([]); 
                     }
                     record.cardinality.unshift({min: field.min, max:field.max});
-                } else { // record not found so create it on concrete data element
-                    record = newRecord(fieldName, fieldNamespace, field, dataelement.label, false, false, false, concreteDataelement.label);
+                // Else, create a record for the  on concrete data element
+                } else { 
+                    record = newRecord(
+                        fieldName,                  // fieldName
+                        fieldNamespace,             // fieldNamespace
+                        field,                      // field
+                        dataelement.label,          // foundin
+                        false,                      // isValue
+                        false,                      // isChoice
+                        false,                      // isSubElement
+                        concreteDataelement.label   // concretedataelement
+                    );
                     if (concreteDataelement.fieldList === undefined) {
                         concreteDataelement.fieldList = [];
                     }
@@ -177,9 +256,27 @@ module.exports = function(grunt) {
                 if (field.type === "ChoiceValue") {
                     _.forEach(field.value, function(item) {
                         if (item.identifier) {
-                            subrecord = newRecord(item.identifier.label, item.identifier.namespace, item, dataelement.label, false, true, false, concreteDataelement.label);
+                            subrecord = newRecord(
+                                item.identifier.label,      // fieldName
+                                item.identifier.namespace,  // fieldNamespace
+                                item,                       // field
+                                dataelement.label,          // foundin
+                                false,                      // isValue
+                                true,                       // isChoice
+                                false,                      // isSubElement
+                                concreteDataelement.label   // concretedataelement
+                            );
                         } else {
-                            subrecord = newRecord(item.text, undefined, item, dataelement.label, false, true, false, concreteDataelement.label);
+                            subrecord = newRecord(
+                                item.text,                  // fieldName
+                                undefined,                  // fieldNamespace
+                                item,                       // field
+                                dataelement.label,          // foundin
+                                false,                      // isValue
+                                true,                       // isChoice
+                                false,                      // isSubElement
+                                concreteDataelement.label   // concretedataelement
+                            );
                         }
                         fieldValues.push(subrecord);
                     });
@@ -202,7 +299,7 @@ module.exports = function(grunt) {
                             if (c.path === 'shr.core.Coding' || c.path ==='code' || c.path === 'shr.core.CodeableConcept') {               
                                 // console.log("We do not have a mechanism for handling these in terms of a sub-record")  
                             } else {
-                                //console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
+                                // console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
                                 var pieces, 
                                     pname, 
                                     pnamespace, 
@@ -230,9 +327,27 @@ module.exports = function(grunt) {
                                     }
                                 });
                                 if (nameList.length == 1) {
-                                    subrecord = newRecord(pname, pnamespace, subfield, dataelement.label, false, false, true, record.concretedataelement);
+                                    subrecord = newRecord(
+                                        pname,                      // fieldName
+                                        pnamespace,                 // fieldNamespace
+                                        subfield,                   // field
+                                        dataelement.label,          // foundin
+                                        false,                      // isValue
+                                        false,                      // isChoice
+                                        true,                       // isSubElement
+                                        record.concretedataelement  // concretedataelement
+                                    );
                                 } else {
-                                    subrecord = newRecord(nameList, namespaceList, subfield, dataelement.label, false, false, true, record.concretedataelement);
+                                    subrecord = newRecord(
+                                        nameList,                   // fieldName
+                                        namespaceList,              // fieldNamespace
+                                        subfield,                   // field
+                                        dataelement.label,          // foundin
+                                        false,                      // isValue
+                                        false,                      // isChoice
+                                        true,                       // isSubElement
+                                        record.concretedataelement  // concretedataelement
+                                    );
                                 }
                                 if (c.type === 'CardConstraint') {
                                     subrecord.effectivecardinality = {};
@@ -252,8 +367,8 @@ module.exports = function(grunt) {
                   record.values = fieldValues;
                 }
             } else {
-                console.log("ERROR 5: Incomplete type for " + dataelement.label + ":");
-                console.log(field);
+                console.error("ERROR 5: Incomplete type for current field");
+                // console.log(field);
             }
         });
         // build or add to record for value of data element
@@ -268,20 +383,24 @@ module.exports = function(grunt) {
                 if (basedOn.label && basedOn.namespace) {
                     createFieldList(concreteDataelement, basedOn.namespace, namespaces[basedOn.namespace].index[basedOn.label]);
                 } else if (basedOn.type === "TBD") {
-                    console.log("ERROR 6: The basedOn Element has yet to be defined, so we cannot expand it");
-                    console.log(dataelement.basedOn);
+                    console.error("ERROR 6: The basedOn element \"" + basedOn.label + "\" has yet to be defined, so we cannot expand it");
                 } else {
-                    console.log("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". Based on:");
-                    console.log(dataelement.basedOn);
+                    console.error("ERROR 3: Invalid based on for element " + dataelement.label + " while building field list for " + concreteDataelement.label + ". BasedOn element that failed was...");
+                    console.error(basedOn);
                 }
             });
         }
     }
 
-    var createFieldListPerDataElement = function(namespace) {
+    function createFieldListPerDataElement (namespace) {
         // for each dataelement
         _.forEach(namespace.children, function(dataelement) {
             createFieldList(dataelement, namespace, dataelement);
+            // FIXME: Figure out if choices should be in the field map
+            // console.log('\n')
+            // console.log(dataelement.label)
+            // console.log(dataelement.fieldMap["Choice"])
+
         });
     }
     // end GQ created
@@ -293,7 +412,7 @@ module.exports = function(grunt) {
     
     // for each namespace:
     var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
-    _.map(data.children[namespacesIndex].children,function(namespace) {
+    _.map(data.children[namespacesIndex].children, function(namespace) {
         namespace.index = _.keyBy(namespace.children,"label");
     });
     
@@ -327,16 +446,14 @@ module.exports = function(grunt) {
                             index--;
                         }
                         if (index < 0) {
-                            console.log("ERROR 1: No cardinalities found. namespace: " + namespace.label + "/element " + dataelement.label + "/" + record.label);
-                            console.log(record);
+                            console.error("ERROR 1: No cardinalities found for namespace/" + namespace.label + " element/" + dataelement.label + " record/" + record.label);
                         } else {
                             record.effectivecardinality = {};
                             record.effectivecardinality.min = record.cardinality[index].min;
                             record.effectivecardinality.max = record.cardinality[index].max;
                         }
                     } else {
-                        console.log("ERROR 2: Field has no cardinalities. namespace " + namespace.label + "/element " + dataelement.label + "/" + record.label);
-                        console.log(record);
+                        console.error("ERROR 2: Field has no cardinalities for namespace/" + namespace.label + " element/" + dataelement.label + " record/" + record.label);
                     }
                     if (record.values) {
                         _.forEach(record.values, function (subrecord) {
@@ -346,7 +463,7 @@ module.exports = function(grunt) {
                         });
                     }
                 } else {
-                    console.log("ERROR 4: Undefined record in field list: namespace " + namespace.label + "/element " + dataelement.label + "/record=" + record);
+                    console.error("ERROR 4: Undefined record in field list for namespace/" + namespace.label + " element/" + dataelement.label + " record/" + record.label);
                 }
             });
             if (dataelement.valueRecord) {
