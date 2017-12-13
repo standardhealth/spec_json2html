@@ -33,6 +33,7 @@ module.exports = function(grunt) {
             // Prims have no description now
             if (field.identifier.namespace === "primitive") return "";
             // Otherwise find the element and return its description
+            if (field.type === "Incomplete") return "";
             var element = namespaces[field.identifier.namespace].index[field.identifier.label];
             if (element) {
                 return element.description;
@@ -55,7 +56,7 @@ module.exports = function(grunt) {
         var name = "", 
             namespace = {},
             combinedArrays = [];
-        numberOfNamespaces = namespaceList.length
+        var numberOfNamespaces = namespaceList.length
         for (var i = 0; i < numberOfNamespaces; i++) {
             namespace = namespaceList[i];
             name = nameList[i];
