@@ -3,9 +3,9 @@
 {{else}}
 	{{#eq type "CodeConstraint"}}
 		{{#if path}}
-			{{pathtodisplay path}} is {{> shr_concept code}}
+			{{pathtodisplay path}} is {{> shr_concept code}} <br>
 		{{else}}
-			is {{> shr_concept code}}
+			is {{> shr_concept code}} <br>
 		{{/if}}
 	{{else}}
 		{{#eq type "ValueSetConstraint"}}
@@ -25,35 +25,39 @@
 			{{#if valueset}}
 				{{#if (isSHRValueSet valueset)}}
 					{{#eq (getValuesetLink valueset @root.vsetsLookup) "TBD"}}
-            			from <a><code data-toggle="tooltip" data-placement="top" title="Valueset not yet available" data-original-title="Valueset not yet available">{{valueset}}</code></a>
+            			from <a><code data-toggle="tooltip" data-placement="top" title="Valueset not yet available" data-original-title="Valueset not yet available">{{valueset}}</code></a> <br>
 					{{else}}
-						from <a href="{{getValuesetLink valueset @root.vsetsLookup}}"><code>{{getValuesetLabel valueset @root.vsetsLookup}}</code></a>
+						from <a href="{{getValuesetLink valueset @root.vsetsLookup}}"><code>{{getValuesetLabel valueset @root.vsetsLookup}}</code></a> <br>
 					{{/eq}}
 				{{else}}
-					from <a href="{{valueset}}"><code>{{valueset}}</code></a>
+					from <a href="{{valueset}}"><code>{{valueset}}</code></a> <br>
 				{{/if}}
 			{{else}}
-			  from valueset <code>TBD</code>
+			  from valueset <code>TBD</code> <br>
 			{{/if}}
 			{{#if bindingStrength}}  
 				{{#eq bindingStrength "EXTENSIBLE"}}
-				(if covered)
+				(if covered) <br>
 				{{/eq}}
-			{{/if}}					  
+			{{/if}}
 		{{else}}
 			{{#eq type "IncludesCodeConstraint"}}
-				includes {{> shr_concept code}} 
+				includes {{> shr_concept code}} <br>
 			{{else}}
 				{{#eq type "TypeConstraint"}}
-					must be a {{> shr_label namespace=isA.namespace label=isA.label }}
+					must be a {{> shr_label namespace=isA.namespace label=isA.label }} <br>
 				{{else}}
-					{{#eq type "CardConstraint"}}
+					{{#eq type "IncludesTypeConstraint"}}
+						includes {{> shr_cardinality min=this.min max=this.max }} {{> shr_label namespace=isA.namespace label=isA.label}} <br>
 					{{else}}
-						{{#eq type undefined}}
+						{{#eq type "CardConstraint"}}
 						{{else}}
-							{{log "unknown constraint type"}}
-							{{log type}}
-							{{type}}
+							{{#eq type undefined}}
+							{{else}}
+								{{log "unknown constraint type"}}
+								{{log type}}
+								{{type}}
+							{{/eq}}
 						{{/eq}}
 					{{/eq}}
 				{{/eq}}
