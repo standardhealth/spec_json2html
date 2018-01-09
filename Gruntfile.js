@@ -132,6 +132,10 @@ module.exports = function(grunt) {
                         false,                      // isSubElement
                         concreteDataelement.label   // concretedataelement
                     );
+                    concreteDataelement.valueRecord.effectivecardinality = {}; //manually setting this prevents crashes
+                    concreteDataelement.valueRecord.effectivecardinality.min = concreteDataelement.valueRecord.cardinality[0].min; 
+                    concreteDataelement.valueRecord.effectivecardinality.max = concreteDataelement.valueRecord.cardinality[0].max; 
+
                     concreteDataelement.valueRecord.values = [];
                     _.forEach(dataelement.value.value, function(item) {
                         // If there is an identifier, the value is defined -- use it to define the subrecord
@@ -196,7 +200,6 @@ module.exports = function(grunt) {
         var index = 0;
         _.forEach(dataelement.children, function(field) {
             index = index + 1;
-            if (field.type != "Incomplete") {
                 var fieldValues = [];
                 /*
                  * Determine what the fieldName, fieldNamespace and associated record 
@@ -251,8 +254,9 @@ module.exports = function(grunt) {
                         concreteDataelement.fieldList = [];
                     }
                     concreteDataelement.fieldList.push(record);
-                }
-              
+            }
+
+            if (field.type != "Incomplete") {
                 if (field.type === "ChoiceValue") {
                     _.forEach(field.value, function(item) {
                         if (item.identifier) {
@@ -282,7 +286,7 @@ module.exports = function(grunt) {
                     });
                 }
                 if (field.constraints && field.constraints.length > 0) {
-                    _.forEach(field.constraints, function (c) {
+                    for (const c of field.constraints) { //using foreach iterator removes `this` reference without much added benefit, for loop is better
                         if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
                             // if we have a field for new type then make it subordinate to this one
                             if (concreteDataelement.fieldMap[c.isA.label]) { 
@@ -296,8 +300,9 @@ module.exports = function(grunt) {
                             }
                         }
                         if (c.path && c.path.length > 0) {
-                            if (c.path === 'shr.core.Coding' || c.path ==='code' || c.path === 'shr.core.CodeableConcept') {               
-                                // console.log("We do not have a mechanism for handling these in terms of a sub-record")  
+                            if (c.path.endsWith('shr.core.Coding') || c.path.endsWith('code') || c.path.endsWith('shr.core.CodeableConcept')) {               
+                                // console.log("We do not have a mechanism for handling these in terms of a sub-record") 
+                                continue;
                             } else {
                                 // console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
                                 var pieces, 
@@ -315,7 +320,9 @@ module.exports = function(grunt) {
                                     pnamespace = pieces.join('.');
                                     nameList.push(pname);
                                     namespaceList.push(pnamespace);
-                                    subfield = namespaces[pnamespace].index[pname];
+                                    // subfield = namespaces[pnamespace].index[pname];
+                                    // subfield.constraints = []
+                                    subfield = Object.assign({}, namespaces[pnamespace].index[pname]);  //this prevents duplicated constraints across unrelated fields/elements
                                     if (subfield.constraints === undefined) {
                                         subfield.constraints = [];
                                     }
@@ -353,22 +360,55 @@ module.exports = function(grunt) {
                                     subrecord.effectivecardinality = {};
                                     subrecord.effectivecardinality.min = c.min;
                                     subrecord.effectivecardinality.max = c.max;
-                                } else {
-                                    // do we need to remove constraint from current field since it is on subfield now
-                                    // we are looping over those constraints though. ideally just remove from record instead
-                                    // TODO
+                                } else {                                    
+                                    fieldValues.push(subrecord); //TODO: check if placing this in 'else' this has meaningful adverse effects in displaying subfield constraint info
+                                    concreteDataelement.fieldList.find(f => f.label == fieldName).constraints = concreteDataelement.fieldList.find(f => f.label == fieldName).constraints.filter(con => con != c);
                                 }
-                                fieldValues.push(subrecord);
                             }
                         }
-                    });
-                }
-                if (fieldValues.length > 0) {
-                  record.values = fieldValues;
+                    };
                 }
             } else {
-                console.error("ERROR 5: Incomplete type for current field");
-                // console.log(field);
+                // console.error("ERROR 5: Incomplete type for current field %s", field.label);
+
+                if (field.constraints && field.constraints.length > 0) {
+                    for (let c of field.constraints) {
+                        if (c.path === 'shr.core.Coding' || c.path === 'code' || c.path === 'shr.core.CodeableConcept') continue;
+
+                        if (c.type != "CardConstraint") {
+                            let subrecord;
+
+                            let cPieces = c.path.split('.')
+                            let cName = cPieces.pop();
+                            let cNamespace = cPieces.join('.');
+
+                            let fieldcopy = Object.assign({}, field);
+                            fieldcopy.constraints = field.constraints.filter(con => con == c);
+                            // fieldcopy.effectivecardinality = {"min": c.min, "max": c.max};
+                            concreteDataelement.fieldList.find(f => f.label == fieldName).constraints = concreteDataelement.fieldList.find(f => f.label == fieldName).constraints.filter(con => con != c);
+
+                            subrecord = newRecord(
+                                cName,      // fieldName
+                                cNamespace,  // fieldNamespace
+                                fieldcopy,                       // field
+                                dataelement.label,          // foundin
+                                false,                      // isValue
+                                false,                       // isChoice
+                                true,                      // isSubElement
+                                concreteDataelement.label   // concretedataelement
+                            );
+
+                            if (subrecord) fieldValues.push(subrecord);
+                        }
+
+                    };
+
+                }
+            }
+
+            if (fieldValues.length > 0) {
+                if (!record.values) record.values = [];
+                record.values.push(...fieldValues);
             }
         });
         // build or add to record for value of data element
@@ -418,9 +458,9 @@ module.exports = function(grunt) {
     
     // GQ created
     // for each namespace:
-    _.forEach(data.children[namespacesIndex].children, function(namespace) {
+    for (let namespace of data.children[namespacesIndex].children) {
         createFieldListPerDataElement(namespace); // for each element within the specified namespace, create its field list
-    });
+    };
   
     //console.log("PHASE 2: effective cardinalities");
     // now go through all fields and figure out its effective cardinality and handle CardConstraints
@@ -532,7 +572,10 @@ module.exports = function(grunt) {
     
     // Namespace page construction
     //
-    var ns_template       = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+    //if debugging:
+    //var namespace_pages = _.map(data.children[namespacesIndex].children.filter(c => c/*.label == "shr.finding" || c.label == "shr.core" */),function(item) {
+
+    var ns_template     = grunt.file.read(`./${site.pages}/namespace.hbs`);  
     var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
         return {
             filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
