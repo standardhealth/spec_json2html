@@ -618,7 +618,7 @@ module.exports = function(grunt) {
             let redirURL = urlParts.join('/')
     
             valueset_redirect_pages.push({
-                filename: ns.split('.')[1] + '/vs/' + vs.label,
+                filename: ns.split('.')[1] + '/vs/' + vs.label + '/index.html',
                 data: {
                     redirPath: redirURL
                 },
@@ -657,7 +657,7 @@ module.exports = function(grunt) {
             let redirURL = urlParts.join('/')
     
             codesystem_redirect_pages.push({
-                filename: ns.split('.')[1] + '/cs/' + cs.label,
+                filename: ns.split('.')[1] + '/cs/' + cs.label + '/index.html',
                 data: {
                     redirPath: redirURL
                 },
