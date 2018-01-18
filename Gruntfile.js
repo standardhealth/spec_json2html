@@ -592,6 +592,7 @@ module.exports = function(grunt) {
     var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
     var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
     var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
+    var vs_redir_template = grunt.file.read(`./${site.pages}/redirect.hbs`);  
     var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
         return {
             filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
@@ -608,11 +609,30 @@ module.exports = function(grunt) {
         data: {vsetsByNamespace: mapNamespaceToValuesets},
         content:vs_index_template
     }];
+    var valueset_redirect_pages = [];
+    for (const ns in mapNamespaceToValuesets) {
+        let VSs = mapNamespaceToValuesets[ns];
+        for (const vs of VSs) {
+            let urlParts = vs.url.split('/')
+            urlParts[urlParts.length - 1] = '#' + urlParts[urlParts.length - 1]
+            let redirURL = urlParts.join('/')
+    
+            valueset_redirect_pages.push({
+                filename: ns.split('.')[1] + '/vs/' + vs.label + '/index.html',
+                data: {
+                    redirPath: redirURL
+                },
+                content:vs_redir_template
+            })
+        }
+    }
+
     // Codesystem page construction
     //
     var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
     var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
     var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);      
+    var cs_redir_template = grunt.file.read(`./${site.pages}/redirect.hbs`);      
     var codesystem_ns_pages = _.map(mapNamespaceToCodesystems, function(codesystems, ns) {
         return {
             filename:ns.split('.')[1] + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
@@ -628,6 +648,23 @@ module.exports = function(grunt) {
         data: {csysByNamespace: mapNamespaceToCodesystems},
         content:cs_index_template
     }]
+    var codesystem_redirect_pages = [];
+    for (const ns in mapNamespaceToCodesystems) {
+        let CSs = mapNamespaceToCodesystems[ns];
+        for (const cs of CSs) {
+            let urlParts = cs.url.split('/')
+            urlParts[urlParts.length - 1] = '#' + urlParts[urlParts.length - 1]
+            let redirURL = urlParts.join('/')
+    
+            codesystem_redirect_pages.push({
+                filename: ns.split('.')[1] + '/cs/' + cs.label + '/index.html',
+                data: {
+                    redirPath: redirURL
+                },
+                content:cs_redir_template
+            })
+        }
+    }
 
     // For writing to disk any of the output files
     // grunt.file.write('./assets/availDataFiles/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
@@ -758,6 +795,15 @@ module.exports = function(grunt) {
                     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
                 }
             }, 
+            valuesetRedirects: {
+                options : {
+                    layout: '<%= site.layoutstatic %>',
+                    pages:valueset_redirect_pages
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+                }
+            }, 
             codesystemIndex: { 
                 options: { 
                     layout: '<%= site.layoutdefault %>',
@@ -771,6 +817,15 @@ module.exports = function(grunt) {
                 options : {
                     layout: '<%= site.layoutdefault %>',
                     pages:codesystem_ns_pages
+                },
+                files: {
+                    '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
+                }
+            },
+            codesystemRedirects: {
+                options : {
+                    layout: '<%= site.layoutstatic %>',
+                    pages:codesystem_redirect_pages
                 },
                 files: {
                     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
