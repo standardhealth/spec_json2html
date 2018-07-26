@@ -7,6 +7,7 @@ h6,
 p,
 li,
 a,
+ol,
 input {
     font-family: 'Roboto Condensed', sans-serif;
     color: #000
@@ -40,12 +41,16 @@ h3 {
 }
 
 p {
-    font-size: 18.48px
+    font-size: 24.48px
 }
 
 a {
     color: #295677;
-    font-size: 18.48px
+    font-size: 24.48px
+}
+
+ol {
+  font-size: 24.48px
 }
 
 a:focus {
@@ -56,6 +61,10 @@ a:focus {
 section {
     padding-top: 45px;
     margin-bottom: 0px
+}
+
+.col-sm-3 {
+  font-size: 20.48px;
 }
 
 .section-heading {
@@ -99,6 +108,13 @@ section:before {
     height: 218px
 }
 
+#row {
+  font-size: 24.48px;
+}
+
+#row .section-heading {
+  text-align: left;
+}
 #snackbar-container p,
 #snackbar-container a {
     color: #fff
