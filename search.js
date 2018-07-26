@@ -33,11 +33,11 @@ var App = window.App = {
                 switch (sectionType) {
                     case "ValueSets":
                         // We want to search on valueset names, nothing else
-                        link = "/shr/" + subSection.namespace.split('.')[1].lowerCase() + "/vs/#" + subSection.label;
+                        link = "/shr/" + subSection.namespace + "/vs/#" + subSection.label;
                         addObjToSearch(subSection.label,
                             subSection.description,
                             sectionType,
-                            subSection.namespace.split('.')[1].capitalize(),
+                            subSection.namespace,
                             link,
                             list);
                         break;
@@ -45,13 +45,13 @@ var App = window.App = {
                         // We want to search on individual codes
                         ns = subSection.namespace;
                         _.forEach(subSection.children, function (curElement) {
-                            link = "/shr/" + ns.split('.')[1].lowerCase() + "/cs/#" + curElement.code;
+                            link = "/shr/" + ns + "/cs/#" + curElement.code;
                             // Current Elements can be an individual codes contained in a codesystem
                             // N.B. the code servs the role of label, and display servces the role of description.
                             addObjToSearch(curElement.code,
                                 curElement.display,
                                 sectionType,
-                                ns.split('.')[1].capitalize(),
+                                ns,
                                 link,
                                 list);
                         });
@@ -59,21 +59,21 @@ var App = window.App = {
                     case "Namespaces":
                         // We want to search on namespace names
                         ns = subSection.label;
-                        link = "/shr/" + ns.split('.')[1].lowerCase() + "/";
+                        link = "/shr/" + ns + "/";
                         addObjToSearch(subSection.label,
                             subSection.description,
                             sectionType,
-                            ns.split('.')[1].capitalize(),
+                            ns.lowerCase(),
                             link,
                             list);
                         _.forEach(subSection.children, function (curElement) {
-                            link = "/shr/" + ns.split('.')[1].lowerCase() + "/#" + curElement.label;
+                            link = "/shr/" + ns + "/#" + curElement.label;
 
                             // We want to be able to search each individaul data element
                             addObjToSearch(curElement.label,
                                 curElement.description,
                                 curElement.type,
-                                ns.split('.')[1].capitalize(),
+                                ns,
                                 link,
                                 list);
                         });
@@ -104,7 +104,7 @@ var App = window.App = {
     };
     //
     //
-    // Returns a function that takes a query and a callback, uses the query 
+    // Returns a function that takes a query and a callback, uses the query
     // to run a search on fuse, reformats fuses list to fit with typeahead formatting
     // and passes that array onto the typeahead callback
     //
@@ -128,11 +128,11 @@ var App = window.App = {
             let result;
             result = fuse.search(query);
             if (result.length > 0) {
-                let optionLength = result.length; 
+                let optionLength = result.length;
                 let limit = ($(window).width() > 480) ? 6 : 3;
                 console.log(limit);
                 console.log(optionLength);
-                if (optionLength > limit) { 
+                if (optionLength > limit) {
                     result.length = limit;
                     result.push({label: "More elements...", link: '/shr'});
                 }
@@ -205,4 +205,3 @@ var App = window.App = {
         }
     });
 })();
-

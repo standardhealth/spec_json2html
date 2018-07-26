@@ -8,11 +8,11 @@
  * Licensed under the Apache 2.0 license.
  */
 var _ = require('lodash');
-function msgLog (msg, ...vars) { 
+function msgLog (msg, ...vars) {
     console.log(msg);
     _.forEach(vars, function(elem) {
-         console.log(elem); 
-    });   
+         console.log(elem);
+    });
     console.log('');
 };
 
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     'use strict';
     const site = grunt.file.readYAML('_config.yml');
     // For timing tasks
-    require('time-grunt')(grunt);   
+    require('time-grunt')(grunt);
 
     // start GQ created
     var getDescription = function(field) {
@@ -44,79 +44,79 @@ module.exports = function(grunt) {
             }
         } else {
             // If field is a choice, it's subsidiaries need descriptions, it shouldn't have one
-            if (field.type == 'ChoiceValue') { 
+            if (field.type == 'ChoiceValue') {
                 return "";
             // Else, there is no identifier, no element, and not a choice -- it's TBD
-            } else { 
+            } else {
                 return "Description TBD";
             }
         }
     }
-  
+
     function combineArraysIntoIdentifierList (namespaceList, nameList) {
-        var name = "", 
+        var name = "",
             namespace = {},
             combinedArrays = [];
         var numberOfNamespaces = namespaceList.length
         for (var i = 0; i < numberOfNamespaces; i++) {
             namespace = namespaceList[i];
             name = nameList[i];
-            combinedArrays.push({ 
-                namespace: namespace, 
+            combinedArrays.push({
+                namespace: namespace,
                 label: name
             });
         }
         return combinedArrays;
     }
-  
+
     // create the initial record for the specified field within the element concretedataelement
     // note that in addition to the fields initialized below, the field record can have a values attribute which is a list of subordinate records
      function newRecord(fieldName, fieldNamespace, field, foundin, isValue, isChoice, isSubElement, concretedataelement) {
         if (fieldName && fieldName.constructor === Array) {
-            return {  
-                foundin:                [ foundin ], 
+            return {
+                foundin:                [ foundin ],
                 concretedataelement:    concretedataelement,
-                isValue:                isValue, 
+                isValue:                isValue,
                 isChoice:               isChoice,
                 isSubElement:           isSubElement,
                 namespace:              fieldNamespace[fieldNamespace.length - 1],
-                label:                  fieldName[fieldName.length - 1], 
-                identifierList:         combineArraysIntoIdentifierList(fieldNamespace.slice(0, -1), fieldName.slice(0, -1)), 
+                label:                  fieldName[fieldName.length - 1],
+                identifierList:         combineArraysIntoIdentifierList(fieldNamespace.slice(0, -1), fieldName.slice(0, -1)),
                 isTBD:                  field.type === "TBD",
-                constraints:            field.constraints.slice(), 
-                cardinality :           [ { min: field.min, max: field.max } ], 
-                description :           getDescription(field) 
-            };    
+                constraints:            field.constraints.slice(),
+                cardinality :           [ { min: field.min, max: field.max } ],
+                description :           getDescription(field)
+            };
         } else {
-            return {  
-                foundin:              [ foundin ], 
+            return {
+                foundin:              [ foundin ],
                 concretedataelement:  concretedataelement,
-                isValue:              isValue, 
+                isValue:              isValue,
                 isChoice:             isChoice,
                 isSubElement:         isSubElement,
                 namespace:            fieldNamespace,
-                label:                fieldName, 
+                label:                fieldName,
                 isTBD:                field.type === "TBD",
-                constraints:          field.constraints.slice(), 
-                cardinality :         [  { min: field.min, max: field.max } ], 
-                description :         getDescription(field) 
+                constraints:          field.constraints.slice(),
+                cardinality :         [  { min: field.min, max: field.max } ],
+                description :         getDescription(field)
               };
         }
     }
 
     /*
-     * Create a record of the concreteDataElement's value using the currently specified dataelement 
-     * whichc is found within the specified namespace 
+     * Create a record of the concreteDataElement's value using the currently specified dataelement
+     * whichc is found within the specified namespace
      */
     function createValueRecord (concreteDataelement, namespace, dataelement) {
         var subrecord;
         if (dataelement.value) {
             if (concreteDataelement.valueRecord) {
                 concreteDataelement.valueRecord.foundin.unshift(dataelement.label);
-                if (dataelement.value.constraints) { 
-                    concreteDataelement.valueRecord.constraints.unshift(dataelement.value.constraints); 
-                } else { 
-                    concreteDataelement.valueRecord.constraints.unshift([]); 
+                if (dataelement.value.constraints) {
+                    concreteDataelement.valueRecord.constraints.unshift(dataelement.value.constraints);
+                } else {
+                    concreteDataelement.valueRecord.constraints.unshift([]);
                 }
                 concreteDataelement.valueRecord.cardinality.unshift({min : dataelement.value.min, max: dataelement.value.max});
             } else {
@@ -133,8 +133,8 @@ module.exports = function(grunt) {
                         concreteDataelement.label   // concretedataelement
                     );
                     concreteDataelement.valueRecord.effectivecardinality = {}; //manually setting this prevents crashes
-                    concreteDataelement.valueRecord.effectivecardinality.min = concreteDataelement.valueRecord.cardinality[0].min; 
-                    concreteDataelement.valueRecord.effectivecardinality.max = concreteDataelement.valueRecord.cardinality[0].max; 
+                    concreteDataelement.valueRecord.effectivecardinality.min = concreteDataelement.valueRecord.cardinality[0].min;
+                    concreteDataelement.valueRecord.effectivecardinality.max = concreteDataelement.valueRecord.cardinality[0].max;
 
                     concreteDataelement.valueRecord.values = [];
                     _.forEach(dataelement.value.value, function(item) {
@@ -165,7 +165,7 @@ module.exports = function(grunt) {
                         }
                         concreteDataelement.valueRecord.values.push(subrecord);
                     });
-                // If the element is TBD, 
+                // If the element is TBD,
                 } else if (dataelement.value.type == "TBD") {
                     concreteDataelement.valueRecord = newRecord(
                         dataelement.value.text,     // fieldName
@@ -192,7 +192,7 @@ module.exports = function(grunt) {
             }
         }
     }
-  
+
     // add field records to the field list for the concrete data element based on the element data element (which could be the concrete one or an ancestor)
     function createFieldList (concreteDataelement, namespace, dataelement) {
         var fieldName, fieldNamespace;
@@ -202,28 +202,28 @@ module.exports = function(grunt) {
             index = index + 1;
                 var fieldValues = [];
                 /*
-                 * Determine what the fieldName, fieldNamespace and associated record 
-                 * are for each of the fields on a dataelement. If the dataelement is a choice or or 
+                 * Determine what the fieldName, fieldNamespace and associated record
+                 * are for each of the fields on a dataelement. If the dataelement is a choice or or
                  *
                  */
                 // If the field is a choice among many types, we can use "choice" as the field name
-                if (field.type === "ChoiceValue") { 
+                if (field.type === "ChoiceValue") {
                     fieldName = "Choice";
                     fieldNamespace = "";
                     record = undefined;
-                // Else, it's a dataelement; use it directly 
-                } else { 
+                // Else, it's a dataelement; use it directly
+                } else {
                     // If there's an identifier, use to define the field
                     if (field.identifier) {
-                        fieldName = field.identifier.label; 
-                        fieldNamespace = field.identifier.namespace; 
+                        fieldName = field.identifier.label;
+                        fieldNamespace = field.identifier.namespace;
                     // Else, the data element hasn't been defined yet; use "text" in lieu of label for now
                     } else {
-                        fieldName = field.text; 
-                        fieldNamespace = ""; 
+                        fieldName = field.text;
+                        fieldNamespace = "";
                     }
                     if (concreteDataelement.fieldMap) {
-                        record = concreteDataelement.fieldMap[fieldName];  
+                        record = concreteDataelement.fieldMap[fieldName];
                     } else {
                         record = undefined;
                     }
@@ -232,14 +232,14 @@ module.exports = function(grunt) {
                 // If there is a record for field, update it
                 if (record) {
                     record.foundin.unshift(dataelement.label);
-                    if (field.constraints) { 
-                        record.constraints.unshift(field.constraints); 
+                    if (field.constraints) {
+                        record.constraints.unshift(field.constraints);
                     } else {
-                        record.constraints.unshift([]); 
+                        record.constraints.unshift([]);
                     }
                     record.cardinality.unshift({min: field.min, max:field.max});
                 // Else, create a record for the  on concrete data element
-                } else { 
+                } else {
                     record = newRecord(
                         fieldName,                  // fieldName
                         fieldNamespace,             // fieldNamespace
@@ -289,30 +289,30 @@ module.exports = function(grunt) {
                     for (const c of field.constraints) { //using foreach iterator removes `this` reference without much added benefit, for loop is better
                         if (concreteDataelement.fieldMap && c.type == "TypeConstraint") {
                             // if we have a field for new type then make it subordinate to this one
-                            if (concreteDataelement.fieldMap[c.isA.label]) { 
+                            if (concreteDataelement.fieldMap[c.isA.label]) {
                                 var isafieldindex = _.findIndex(concreteDataelement.fieldList, {label: c.isA.label});
                                 var isafield = concreteDataelement.fieldList[isafieldindex];
                                 // remove is a field from concrete data element's field list
-                                concreteDataelement.fieldList.splice(isafieldindex, 1); 
+                                concreteDataelement.fieldList.splice(isafieldindex, 1);
                                 isafield.isSubElement = true;
                                 // put it as a subfield to current field instead
-                                fieldValues.push(isafield); 
+                                fieldValues.push(isafield);
                             }
                         }
                         if (c.path && c.path.length > 0) {
-                            if (c.path.endsWith('shr.core.Coding') || c.path.endsWith('code') || c.path.endsWith('shr.core.CodeableConcept')) {               
-                                // console.log("We do not have a mechanism for handling these in terms of a sub-record") 
+                            if (c.path.endsWith('shr.core.Coding') || c.path.endsWith('code') || c.path.endsWith('shr.core.CodeableConcept')) {
+                                // console.log("We do not have a mechanism for handling these in terms of a sub-record")
                                 continue;
                             } else {
                                 // console.log(concreteDataelement.label + ". processing: " + dataelement.label + " field " + field.identifier.label + " path = " + c.path);
-                                var pieces, 
-                                    pname, 
-                                    pnamespace, 
-                                    subfield, 
+                                var pieces,
+                                    pname,
+                                    pnamespace,
+                                    subfield,
                                     subrecord;
                                 var elementPieces = c.path.split(':');
                                 // need a list of name and namespace and then use last subfield as field in newRecord
-                                var nameList = [], 
+                                var nameList = [],
                                     namespaceList = [];
                                 _.forEach(elementPieces, function(elementPiece) {
                                     pieces = elementPiece.split('.');
@@ -360,7 +360,7 @@ module.exports = function(grunt) {
                                     subrecord.effectivecardinality = {};
                                     subrecord.effectivecardinality.min = c.min;
                                     subrecord.effectivecardinality.max = c.max;
-                                } else {                                    
+                                } else {
                                     fieldValues.push(subrecord); //TODO: check if placing this in 'else' this has meaningful adverse effects in displaying subfield constraint info
                                     concreteDataelement.fieldList.find(f => f.label == fieldName).constraints = concreteDataelement.fieldList.find(f => f.label == fieldName).constraints.filter(con => con != c);
                                 }
@@ -413,10 +413,10 @@ module.exports = function(grunt) {
         });
         // build or add to record for value of data element
         createValueRecord(concreteDataelement, namespace, dataelement);
-        
+
         // rebuild the map of fields for the element from the field list
         concreteDataelement.fieldMap = _.keyBy(concreteDataelement.fieldList, 'label');
-        
+
         // follow the inheritance hierarchy up adding to the fields for the current concreteDataelement
         if (dataelement.basedOn) { // add parent fields
             _.forEach(dataelement.basedOn, function(basedOn) {
@@ -449,31 +449,31 @@ module.exports = function(grunt) {
     var namespacesIndex = _.findIndex(data.children, {type: "Namespaces"})
     var valuesetIndex   = _.findIndex(data.children, {type: "ValueSets"})
     var codesystemIndex = _.findIndex(data.children, {type: "CodeSystems"})
-    
+
     // for each namespace:
     var namespaces = _.keyBy(data.children[namespacesIndex].children,"label");
     _.map(data.children[namespacesIndex].children, function(namespace) {
         namespace.index = _.keyBy(namespace.children,"label");
     });
-    
+
     // GQ created
     // for each namespace:
     for (let namespace of data.children[namespacesIndex].children) {
         createFieldListPerDataElement(namespace); // for each element within the specified namespace, create its field list
     };
-  
+
     //console.log("PHASE 2: effective cardinalities");
     // now go through all fields and figure out its effective cardinality and handle CardConstraints
-    //  while building a map from element to namespace -- this is more economical than passing the whole 
+    //  while building a map from element to namespace -- this is more economical than passing the whole
     //  hierarchy when building namespace pages
-    
+
     // mapElementstoNamespace  - lookup table mapping every SHR Element to the namespace it's from
-    var mapElementstoNamespace = {}; 
+    var mapElementstoNamespace = {};
     var index;
     _.forEach(data.children[namespacesIndex].children, function(namespace) {
         //console.log("!2!2!2 " + namespace);
         _.forEach(namespace.children, function(dataelement) {
-            dataelement.namespace = namespace.label; 
+            dataelement.namespace = namespace.label;
             // For each element, make a namespace mapping;
             var nsLabel = namespace.label;
             mapElementstoNamespace[dataelement.label] = nsLabel;
@@ -521,11 +521,11 @@ module.exports = function(grunt) {
 
     //
     /// Making Valueset, Codesystem  and Data Element lookup tables
-    // 
-    // 1. mapNamespaceToValuesets   - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+    //
+    // 1. mapNamespaceToValuesets   - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'),
     //      an array of all of that namespace's associated valuesets
     // 2. mapURLtoValueset          - lookup table mapping every FHIR IG url to the valueset it uniquely identifies
-    // 3. mapNamespaceToCodesystems - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'), 
+    // 3. mapNamespaceToCodesystems - lookup table containing, for each namespace (id'ed by 'label, e.g. 'shr.actor'),
     //      an array of all of that namespace's associated codesystems
     // 4. mapURLtoCodesystem        - lookup table mapping every FHIR IG url to the codesystem it uniquely identifies
     var valuesets                 = data.children[valuesetIndex].children,
@@ -534,27 +534,27 @@ module.exports = function(grunt) {
         codesystems               = data.children[codesystemIndex].children,
         mapNamespaceToCodesystems = {},
         mapURLtoCodesystem        = {};
-  
+
     // Make sure that every namespace has a valueset and a codesystem page
-    _.forEach(data.children[namespacesIndex].children, function (ns) { 
+    _.forEach(data.children[namespacesIndex].children, function (ns) {
         mapNamespaceToValuesets[ns.label]   = [];
         mapNamespaceToCodesystems[ns.label] = [];
     })
-  
+
     // For all valuesets, add to map
     _.forEach(valuesets, function(vs) {
         var ns  = vs.namespace,
-            url = vs.url; 
-        vs.shrLink = '/shr/' + ns.split('.')[1] + '/vs/#' + vs.label
+            url = vs.url;
+        vs.shrLink = '/shr/' + ns + '/vs/#' + vs.label
         mapURLtoValueset[url] = vs;
         mapNamespaceToValuesets[ns].push(vs)
     });
-    
+
     // For all codesystems
     _.forEach(codesystems, function(cs) {
         var ns  = cs.namespace,
-            url = cs.url; 
-        cs.shrLink = '/shr/' + ns.split('.')[1] + '/cs/#' + cs.label
+            url = cs.url;
+        cs.shrLink = '/shr/' + ns + '/cs/#' + cs.label
         mapURLtoCodesystem[url] = cs;
         mapNamespaceToCodesystems[ns].push(cs)
     });
@@ -563,45 +563,45 @@ module.exports = function(grunt) {
     data.children[valuesetIndex].index_by_namespace   = mapNamespaceToValuesets;
     data.children[codesystemIndex].index_by_url       = mapURLtoCodesystem;
     data.children[codesystemIndex].index_by_namespace = mapNamespaceToCodesystems;
-  
+
     //
     // Making Valueset and Namespace pages
-    // 
-    //   Create Assemble pages needed for generating namespace, valueset_by_namespace, and 
+    //
+    //   Create Assemble pages needed for generating namespace, valueset_by_namespace, and
     // valueset pages.
-    
+
     // Namespace page construction
     //
     //if debugging:
     //var namespace_pages = _.map(data.children[namespacesIndex].children.filter(c => c/*.label == "shr.finding" || c.label == "shr.core" */),function(item) {
 
-    var ns_template     = grunt.file.read(`./${site.pages}/namespace.hbs`);  
+    var ns_template     = grunt.file.read(`./${site.pages}/namespace.hbs`);
     var namespace_pages = _.map(data.children[namespacesIndex].children,function(item) {
         return {
-            filename:item.label.split('.')[1] + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+            filename:item.label + '/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
             data: {
-                namespace: item, 
-                elemsToNamespace: mapElementstoNamespace, 
+                namespace: item,
+                elemsToNamespace: mapElementstoNamespace,
                 vsetsLookup: mapURLtoValueset
             },
             content:ns_template
         }
     });
-    // Valueset page construction 
+    // Valueset page construction
     //
-    var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);  
-    var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);  
-    var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);  
-    var vs_redir_template = grunt.file.read(`./${site.pages}/redirect.hbs`);  
+    var vs_template       = grunt.file.read(`./${site.pages}/valueset.hbs`);
+    var vs_by_ns_template = grunt.file.read(`./${site.pages}/valueset_by_namespace.hbs`);
+    var vs_index_template = grunt.file.read(`./${site.pages}/index_valueset.hbs`);
+    var vs_redir_template = grunt.file.read(`./${site.pages}/redirect.hbs`);
     var valueset_ns_pages = _.map(mapNamespaceToValuesets, function(valuesets, ns) {
         return {
-            filename:ns.split('.')[1] + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-            data: { 
-                namespace: ns, 
-                vsets: valuesets, 
+            filename:ns + '/vs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+            data: {
+                namespace: ns,
+                vsets: valuesets,
                 csysLookup: mapURLtoCodesystem
             },
-            content:vs_by_ns_template 
+            content:vs_by_ns_template
         }
     });
     var valueset_index = [{
@@ -616,9 +616,9 @@ module.exports = function(grunt) {
             let urlParts = vs.url.split('/')
             urlParts[urlParts.length - 1] = '#' + urlParts[urlParts.length - 1]
             let redirURL = urlParts.join('/')
-    
+
             valueset_redirect_pages.push({
-                filename: ns.split('.')[1] + '/vs/' + vs.label + '/index.html',
+                filename: ns + '/vs/' + vs.label + '/index.html',
                 data: {
                     redirPath: redirURL
                 },
@@ -629,18 +629,18 @@ module.exports = function(grunt) {
 
     // Codesystem page construction
     //
-    var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);  
-    var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);  
-    var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);      
-    var cs_redir_template = grunt.file.read(`./${site.pages}/redirect.hbs`);      
+    var cs_template       = grunt.file.read(`./${site.pages}/codesystem.hbs`);
+    var cs_by_ns_template = grunt.file.read(`./${site.pages}/codesystem_by_namespace.hbs`);
+    var cs_index_template = grunt.file.read(`./${site.pages}/index_codesystem.hbs`);
+    var cs_redir_template = grunt.file.read(`./${site.pages}/redirect.hbs`);
     var codesystem_ns_pages = _.map(mapNamespaceToCodesystems, function(codesystems, ns) {
         return {
-            filename:ns.split('.')[1] + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
-            data: { 
-                namespace: ns, 
+            filename:ns + '/cs/index',  // labels are shr.namespace; put each index.html in folder with name of namespace
+            data: {
+                namespace: ns,
                 csys: codesystems
             },
-            content:cs_by_ns_template 
+            content:cs_by_ns_template
         }
     });
     var codesystem_index = [{
@@ -655,9 +655,9 @@ module.exports = function(grunt) {
             let urlParts = cs.url.split('/')
             urlParts[urlParts.length - 1] = '#' + urlParts[urlParts.length - 1]
             let redirURL = urlParts.join('/')
-    
+
             codesystem_redirect_pages.push({
-                filename: ns.split('.')[1] + '/cs/' + cs.label + '/index.html',
+                filename: ns + '/cs/' + cs.label + '/index.html',
                 data: {
                     redirPath: redirURL
                 },
@@ -668,13 +668,13 @@ module.exports = function(grunt) {
 
     // For writing to disk any of the output files
     // grunt.file.write('./assets/availDataFiles/modified-hier.json', JSON.stringify(data.children[namespacesIndex].children[5]))
-  
+
     // Project Configuration
     grunt.initConfig({
         // Project metadata
         pkg:    grunt.file.readJSON('package.json'),
         site:   grunt.file.readYAML('_config.yml'),
-    
+
         // Before generation, remove files from previous build
         clean: {
             example: ['<%= site.dest %>']
@@ -682,44 +682,44 @@ module.exports = function(grunt) {
         copy: {
             js: {
                 files: [{
-                    expand:true, 
-                    flatten: false, 
-                    cwd: '<%= site.assets %>', 
-                    src: ['js/**'], 
+                    expand:true,
+                    flatten: false,
+                    cwd: '<%= site.assets %>',
+                    src: ['js/**'],
                     dest:'<%= site.dest %>/<%= site.assets %>'
                 }]
             },
             img: {
                 files: [{
-                    expand:true, 
-                    flatten: false, 
-                    cwd: '<%= site.assets %>', 
-                    src: ['img/**'], 
+                    expand:true,
+                    flatten: false,
+                    cwd: '<%= site.assets %>',
+                    src: ['img/**'],
                     dest:'<%= site.dest %>/<%= site.assets %>'
                 }]
             },
             css: {
                 files: [{
-                    expand:true, 
-                    flatten: false, 
-                    cwd: '<%= site.assets %>', 
-                    src: ['css/*.css'], 
+                    expand:true,
+                    flatten: false,
+                    cwd: '<%= site.assets %>',
+                    src: ['css/*.css'],
                     dest:'<%= site.dest %>/<%= site.assets %>'
                 }]
             },
             fonts: {
                 files: [{
-                    expand:true, 
-                    flatten: false, 
-                    cwd: '<%= site.assets %>', 
-                    src: ['fonts/*'], 
+                    expand:true,
+                    flatten: false,
+                    cwd: '<%= site.assets %>',
+                    src: ['fonts/*'],
                     dest:'<%= site.dest %>/<%= site.assets %>'
-                }] 
+                }]
             },
-            data: { 
-                expand:true, 
-                flatten: true, 
-                src: ['<%= site.assets %>/<%= site.data %>/<%= site.dataFile %>'], 
+            data: {
+                expand:true,
+                flatten: true,
+                src: ['<%= site.assets %>/<%= site.data %>/<%= site.dataFile %>'],
                 dest:'<%= site.dest %>/<%= site.assets %>/<%= site.data %>'
             },
             shrOutData: {
@@ -750,7 +750,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
-    
+
         /* want to bundle up the handlebars stuff to load into the browser to render hierarchies dynamically */
         browserify: {
             vendor: {
@@ -777,8 +777,8 @@ module.exports = function(grunt) {
                 helpers: '<%= site.helpers %>',
                 plugins: '<%= site.plugins %>'
             },
-            valuesetIndex: { 
-                options: { 
+            valuesetIndex: {
+                options: {
                     layout: '<%= site.layoutdefault %>',
                     pages:valueset_index
                 },
@@ -794,7 +794,7 @@ module.exports = function(grunt) {
                 files: {
                     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
                 }
-            }, 
+            },
             valuesetRedirects: {
                 options : {
                     layout: '<%= site.layoutstatic %>',
@@ -803,9 +803,9 @@ module.exports = function(grunt) {
                 files: {
                     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
                 }
-            }, 
-            codesystemIndex: { 
-                options: { 
+            },
+            codesystemIndex: {
+                options: {
                     layout: '<%= site.layoutdefault %>',
                     pages:codesystem_index
                 },
@@ -830,7 +830,7 @@ module.exports = function(grunt) {
                 files: {
                     '<%= site.dest %>/<%= site.dirNS %>/': ['!*']
                 }
-            }, 
+            },
             staticNamespacePages: {
                 options : {
                     layout: '<%= site.layoutdefault %>',
@@ -849,7 +849,7 @@ module.exports = function(grunt) {
                 cwd: '<%= site.pages %>',
                 src: 'index.hbs',
                 dest: '<%= site.dest %>'
-            }, 
+            },
             staticGraphic: {
                 options : {
                     data: {namespaces: data.children[namespacesIndex].children}
@@ -859,7 +859,7 @@ module.exports = function(grunt) {
                 cwd: '<%= site.pages %>',
                 src: 'graphic.hbs',
                 dest: '<%= site.dest %>/<%= site.dirNS %>/'
-            }, 
+            },
             staticIndexIncludingElements: {
                 options : {
                     data: {namespaces: data.children[namespacesIndex].children}
@@ -879,17 +879,17 @@ module.exports = function(grunt) {
                 cwd: '<%= site.pages %>',
                 src: 'index.hbs',
                 dest: '<%= site.dest %>/<%= site.dirNS %>/'
-            }, 
+            },
         },
         mochaTest: {
             test: {
                 options: {
                     reporter: 'spec',
-                    timeout: 10000, 
-                    captureFile: 'results.txt', // Optionally capture the reporter output to a file 
-                    quiet: false,               // Optionally suppress output to standard out (defaults to false) 
-                    clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false) 
-                    noFail: false               // Optionally set to not fail on failed tests (will still fail on other errors) 
+                    timeout: 10000,
+                    captureFile: 'results.txt', // Optionally capture the reporter output to a file
+                    quiet: false,               // Optionally suppress output to standard out (defaults to false)
+                    clearRequireCache: true,    // Optionally clear the require cache before running tests (defaults to false)
+                    noFail: false               // Optionally set to not fail on failed tests (will still fail on other errors)
                 },
                 src: ['test.js']
             }
@@ -901,7 +901,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-assemble');
     grunt.loadNpmTasks('grunt-mocha-test');
-  
+
     grunt.registerTask('default', function() {
         grunt.task.run(['clean', 'browserify']);
         grunt.task.run(['copy:js', 'copy:img', 'copy:css', 'copy:fonts', 'copy:data']);

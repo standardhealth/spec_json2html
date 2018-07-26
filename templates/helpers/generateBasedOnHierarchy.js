@@ -33,7 +33,7 @@ module.exports.register = function (Handlebars, options, params) {
     };
 
     var getLink = function (name, namespace) {
-        var partialPath = namespace.split('.')[1];
+        var partialPath = namespace;
         var link = '/shr/' + partialPath + '/#' + name;
         return link;
     };
@@ -75,9 +75,9 @@ module.exports.register = function (Handlebars, options, params) {
                                         children: []
                                     };
                                 }
-                                parent.children.push(fieldNode); 
+                                parent.children.push(fieldNode);
                             }
-                            
+
                         if (de.value.type !== "ChoiceValue") {
                             addValueNode(de.value, entryNode);
                         } else {
@@ -93,7 +93,7 @@ module.exports.register = function (Handlebars, options, params) {
                             entryNode.children.push(parentNode);
                         }
                     }
-                    
+
                     _.forEach(de.fieldList, function (field) {
 
                         var fieldListLink = getLink(field.label, field.namespace);

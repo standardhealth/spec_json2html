@@ -16,14 +16,14 @@ module.exports.register = function (Handlebars, options, params) {
     }
     Handlebars.registerHelper('getCodeLink', function(url, hier, code, context) {
         if (url.startsWith('http://standardhealthrecord.org') || !url.startsWith('http')) {
-            if (url.startsWith("urn:tbd") || url == "") { 
+            if (url.startsWith("urn:tbd") || url == "") {
                 return "TBD";
-            } else { 
+            } else {
                 var codesystems = hier.csysLookup;
                 var cs = codesystems[url];
-                return new Handlebars.SafeString('/shr/' + cs.namespace.split('.')[1] + '/cs/#' + code);
+                return new Handlebars.SafeString('/shr/' + cs.namespace + '/cs/#' + code);
             }
-        } else { 
+        } else {
             return url;
         }
     });
