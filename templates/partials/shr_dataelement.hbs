@@ -1,7 +1,7 @@
 <h3>
     <a class='paddedId' id="{{label}}"></a>{{label}}
 	{{#if isEntry}}
-		[<a href="/shr/base/index.html#Entry">Entry</a>]
+		[<a href="/shr/shr.base/index.html#Entry">Entry</a>]
 	{{else}}
 		{{#if isAbstract}}
 			[Abstract]
@@ -12,7 +12,7 @@
     {{#if description}}
         {{description}}
     {{else}}
-        No Description 
+        No Description
     {{/if}}
     {{> shr_concepts}}
 </p>
@@ -31,10 +31,10 @@
 					{{#if subvalue}}
 						<tr>
 						  {{>shr_field subvalue childValue=true}}
-						</tr>			
+						</tr>
 					{{/if}}
 				{{/each}}
-			{{/if}}			
+			{{/if}}
         {{/if}}
 		{{> shr_fields }}
   </tbody>
